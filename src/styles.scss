@@ -1,3 +1,31 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Modal QR Styles */
+.qr-modal {
+  --width: 100%;
+  --max-width: 500px;
+  --height: auto;
+  --max-height: 90vh;
+  --border-radius: 12px;
+}
+
+.qr-modal .modal-wrapper {
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.qr-modal ion-content {
+  --overflow: auto;
+  display: block !important;
+  flex: 1 !important;
+  height: auto !important;
+  min-height: 400px !important;
+}
+
+.qr-modal ion-header {
+  display: block !important;
+}

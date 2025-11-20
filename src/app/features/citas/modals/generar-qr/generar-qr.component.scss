@@ -1,0 +1,235 @@
+// Modal Styles
+.modal-toolbar {
+  --background: #1f2937;
+  --color: white;
+  --border-color: #374151;
+}
+
+.modal-title {
+  color: white;
+  font-weight: 600;
+}
+
+.close-btn {
+  --color: #9ca3af;
+}
+
+.close-icon {
+  font-size: 1.25rem;
+}
+
+.modal-content {
+  --background: #111827;
+  --color: white;
+  height: auto;
+  min-height: 500px;
+  display: block !important;
+  visibility: visible !important;
+}
+
+// Ticket Container
+.ticket-container {
+  max-width: 28rem;
+  margin: 0 auto;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+// Header Section
+.ticket-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.logo-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.logo-container {
+  width: 4rem;
+  height: 4rem;
+  background-color: #14b8a6;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-icon {
+  color: white;
+  font-size: 1.5rem;
+}
+
+.app-info {
+  text-align: center;
+}
+
+.app-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 0.25rem;
+}
+
+.ticket-subtitle {
+  color: #9ca3af;
+  font-size: 0.875rem;
+}
+
+// QR Code Section
+.qr-section {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.qr-container {
+  background-color: white;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.qr-image {
+  width: 12rem;
+  height: 12rem;
+  border-radius: 0.5rem;
+  display: block;
+}
+
+// Ticket Info Section
+.ticket-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.info-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  background-color: #1f2937;
+  border-radius: 0.5rem;
+  border: 1px solid #374151;
+}
+
+.info-icon {
+  color: #14b8a6;
+  font-size: 1.125rem;
+}
+
+.info-content {
+  flex: 1;
+}
+
+.info-label {
+  display: block;
+  font-size: 0.75rem;
+  color: #9ca3af;
+  margin-bottom: 0.25rem;
+}
+
+.info-value {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: white;
+}
+
+.info-value.status.confirmada {
+  color: #34d399;
+}
+
+.info-value.status.programada {
+  color: #60a5fa;
+}
+
+// Instructions
+.instructions {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background-color: #1f2937;
+  border-radius: 0.5rem;
+  border: 1px solid #374151;
+}
+
+.instructions-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 0.5rem;
+}
+
+.instructions-text {
+  font-size: 0.875rem;
+  color: #9ca3af;
+}
+
+// Action Buttons
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.download-btn {
+  --background: transparent;
+  --background-hover: #1f2937;
+  --color: #14b8a6;
+  --border-color: #14b8a6;
+  --border-width: 1px;
+  height: 48px;
+}
+
+.share-btn {
+  --background: #14b8a6;
+  --background-hover: #0d9488;
+  --color: white;
+  height: 48px;
+}
+
+// Responsive Design
+@media (max-width: 640px) {
+  .ticket-container {
+    padding: 1rem;
+  }
+  
+  .qr-image {
+    width: 10rem;
+    height: 10rem;
+  }
+  
+  .info-row {
+    padding: 0.5rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .ticket-container {
+    max-width: 32rem;
+  }
+}
+
+// Custom Modal Class
+:host {
+  --ion-backdrop-opacity: 0.6;
+  
+  ion-content {
+    --background: #111827 !important;
+    --color: white !important;
+    display: block !important;
+    height: auto !important;
+    min-height: 500px !important;
+  }
+  
+  .scroll-content {
+    overflow-y: auto !important;
+  }
+}

@@ -25,6 +25,8 @@ export const appConfig: ApplicationConfig = {
         apiBaseUrlInterceptor,
         errorInterceptor
       ])
-    ), provideIonicAngular({})
+    ), provideIonicAngular({
+      mode: 'md'
+    })
   ]
 };

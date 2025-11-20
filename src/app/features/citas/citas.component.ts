@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ModalController } from '@ionic/angular';
 import { HeaderComponent } from "../../shared/header/header.component";
 import { FooterComponent } from "../../shared/footer/footer.component";
 import { IonContent, IonButton, IonIcon, IonBadge, IonSpinner } from "@ionic/angular/standalone";
+import { GenerarQrComponent } from './modals/generar-qr/generar-qr.component';
 
 export interface CitaCard {
   citaId: number;
@@ -30,6 +32,7 @@ export interface CitaCard {
   styleUrls: ['./citas.component.scss'],
   standalone: true,
   imports: [CommonModule, HeaderComponent, FooterComponent, IonContent, IonButton, IonIcon, IonBadge, IonSpinner],
+  providers: [ModalController]
 })
 export class CitasComponent implements OnInit {
   citas: CitaCard[] = [];
@@ -114,7 +117,7 @@ export class CitasComponent implements OnInit {
     }
   ];
 
-  constructor() { }
+  constructor(private modalController: ModalController) { }
 
   ngOnInit() {
     this.cargarCitas();
@@ -129,9 +132,17 @@ export class CitasComponent implements OnInit {
     }, 1000);
   }
 
-  generarTicket(cita: CitaCard) {
-    console.log('Generando ticket para cita:', cita.citaId);
-    // Aquí implementarías la lógica para generar el ticket con QR
+  async generarQr(cita: CitaCard) {
+    const modal = await this.modalController.create({
+      component: GenerarQrComponent,
+      componentProps: {
+        cita: cita
+      },
+      cssClass: 'qr-modal',
+      backdropDismiss: true
+    });
+    
+    await modal.present();
   }
 
   getEstadoBadgeClass(estado: string): string {
