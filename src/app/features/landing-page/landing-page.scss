@@ -1,0 +1,369 @@
+// Contenido General
+.contenido-landing {
+  --background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  --color: white;
+}
+
+// === HERO SECTION ===
+.seccion-hero {
+  @apply relative min-h-screen flex items-center justify-center;
+  background: 
+    linear-gradient(135deg, rgba(15, 23, 42, 0.85) 0%, rgba(30, 41, 59, 0.75) 50%, rgba(20, 184, 166, 0.25) 100%),
+    url('https://wallpapercave.com/wp/wp14241974.jpg') center/cover no-repeat fixed;
+  
+  &::before {
+    content: '';
+    @apply absolute inset-0;
+    background: 
+      radial-gradient(ellipse at center, rgba(20, 184, 166, 0.1) 0%, transparent 70%),
+      linear-gradient(135deg, rgba(15, 23, 42, 0.6) 0%, rgba(30, 41, 59, 0.4) 100%);
+  }
+}
+
+.contenedor-hero {
+  @apply relative z-10 max-w-6xl mx-auto px-6 text-center;
+}
+
+.contenido-hero {
+  @apply animate-fade-in;
+}
+
+.titulo-principal {
+  @apply text-6xl md:text-8xl font-bold mb-6;
+  background: linear-gradient(135deg, #14b8a6, #06b6d4, #3b82f6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 4px 20px rgba(20, 184, 166, 0.3);
+  animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+  from {
+    filter: drop-shadow(0 0 20px rgba(20, 184, 166, 0.3));
+  }
+  to {
+    filter: drop-shadow(0 0 30px rgba(20, 184, 166, 0.6));
+  }
+}
+
+.lema-empresa {
+  @apply text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed;
+  font-weight: 300;
+}
+
+.botones-hero {
+  @apply flex flex-col md:flex-row gap-4 justify-center items-center;
+}
+
+.boton-primario {
+  @apply h-14 px-8 font-semibold text-lg;
+  --background: linear-gradient(135deg, #14b8a6, #06b6d4);
+  --background-hover: linear-gradient(135deg, #0f766e, #0891b2);
+  --color: white;
+  --border-radius: 12px;
+  --box-shadow: 0 10px 25px rgba(20, 184, 166, 0.3);
+}
+
+.boton-secundario {
+  @apply h-14 px-8 font-semibold text-lg;
+  --background: transparent;
+  --color: #14b8a6;
+  --border-color: #14b8a6;
+  --background-hover: rgba(20, 184, 166, 0.1);
+  --border-radius: 12px;
+}
+
+// === ESPECIALIDADES SECTION ===
+.seccion-especialidades {
+  @apply py-20 relative;
+  background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+}
+
+.contenedor-especialidades {
+  @apply max-w-7xl mx-auto px-6;
+}
+
+.titulo-seccion {
+  @apply text-4xl md:text-5xl font-bold text-center mb-4;
+  color: #14b8a6;
+}
+
+.subtitulo-seccion {
+  @apply text-lg text-gray-400 text-center mb-12 max-w-2xl mx-auto;
+}
+
+.grid-especialidades {
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6;
+}
+
+.tarjeta-especialidad {
+  @apply bg-slate-800 rounded-2xl p-6 border border-slate-700 transition-all duration-300;
+  @apply hover:bg-slate-700 hover:border-teal-500 hover:shadow-2xl hover:-translate-y-2;
+  
+  &:hover {
+    box-shadow: 0 25px 50px rgba(20, 184, 166, 0.2);
+    
+    .icono-medico {
+      @apply text-teal-400 scale-110;
+    }
+    
+    .nombre-especialidad {
+      @apply text-teal-300;
+    }
+  }
+}
+
+.icono-especialidad {
+  @apply flex items-center justify-center w-16 h-16 bg-teal-500 bg-opacity-20 rounded-xl mb-4 mx-auto;
+}
+
+.icono-medico {
+  @apply text-3xl text-teal-400 transition-all duration-300;
+}
+
+.nombre-especialidad {
+  @apply text-xl font-semibold text-white mb-3 text-center transition-colors duration-300;
+}
+
+.descripcion-especialidad {
+  @apply text-gray-400 text-sm mb-4 text-center leading-relaxed;
+}
+
+.info-especialidad {
+  @apply flex flex-col gap-2;
+}
+
+.doctores-disponibles,
+.horario-atencion {
+  @apply flex items-center gap-2 text-xs text-gray-500;
+  
+  ion-icon {
+    @apply text-teal-400;
+  }
+}
+
+// === NOSOTROS SECTION ===
+.seccion-nosotros {
+  @apply py-20;
+}
+
+.contenedor-nosotros {
+  @apply max-w-7xl mx-auto px-6;
+}
+
+.grid-nosotros {
+  @apply grid grid-cols-1 lg:grid-cols-3 gap-8;
+}
+
+.tarjeta-nosotros {
+  @apply bg-white bg-opacity-10 backdrop-blur-lg rounded-2xl p-8 border border-white border-opacity-20;
+  @apply transition-all duration-300 hover:bg-opacity-20 hover:scale-105;
+  
+  &.mision {
+    @apply hover:border-red-400;
+  }
+  
+  &.vision {
+    @apply hover:border-blue-400;
+  }
+  
+  &.quienes-somos {
+    @apply hover:border-green-400;
+  }
+}
+
+.icono-nosotros {
+  @apply flex items-center justify-center w-20 h-20 mx-auto mb-6;
+  
+  .mision & {
+    @apply bg-red-500 bg-opacity-20 rounded-full;
+  }
+  
+  .vision & {
+    @apply bg-blue-500 bg-opacity-20 rounded-full;
+  }
+  
+  .quienes-somos & {
+    @apply bg-green-500 bg-opacity-20 rounded-full;
+  }
+}
+
+.icono-principal {
+  @apply text-4xl;
+  
+  .mision & {
+    @apply text-red-400;
+  }
+  
+  .vision & {
+    @apply text-blue-400;
+  }
+  
+  .quienes-somos & {
+    @apply text-green-400;
+  }
+}
+
+.titulo-nosotros {
+  @apply text-2xl font-bold text-white mb-4 text-center;
+}
+
+.texto-nosotros {
+  @apply text-gray-300 leading-relaxed text-center;
+}
+
+// === CONTACTO SECTION ===
+.seccion-contacto {
+  @apply py-20;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+}
+
+.contenedor-contacto {
+  @apply max-w-6xl mx-auto px-6;
+}
+
+.titulo-contacto {
+  @apply text-4xl font-bold text-center mb-4 text-teal-400;
+}
+
+.subtitulo-contacto {
+  @apply text-lg text-gray-400 text-center mb-12;
+}
+
+.grid-contacto {
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12;
+}
+
+.tarjeta-contacto {
+  @apply bg-slate-800 rounded-xl p-6 text-center border border-slate-700;
+  @apply transition-all duration-300 hover:bg-slate-700 hover:border-teal-500 hover:shadow-lg;
+}
+
+.icono-contacto {
+  @apply flex items-center justify-center w-16 h-16 bg-teal-500 bg-opacity-20 rounded-full mx-auto mb-4;
+}
+
+.icono-comunicacion {
+  @apply text-2xl text-teal-400;
+}
+
+.titulo-contacto-item {
+  @apply text-lg font-semibold text-white mb-2;
+}
+
+.info-contacto {
+  @apply text-gray-300 mb-2;
+}
+
+.horario-contacto {
+  @apply text-sm text-gray-500;
+}
+
+.boton-chat {
+  @apply mt-3;
+  --color: #14b8a6;
+  --border-color: #14b8a6;
+}
+
+// Alerta de Emergencia
+.alerta-emergencia {
+  @apply bg-red-900 bg-opacity-30 border border-red-500 rounded-xl p-6 flex items-center gap-4;
+  @apply backdrop-blur-sm;
+}
+
+.icono-emergencia {
+  @apply text-3xl text-red-400 flex-shrink-0;
+}
+
+.texto-emergencia {
+  h4 {
+    @apply text-lg font-semibold text-red-300 mb-1;
+  }
+  
+  p {
+    @apply text-gray-300;
+    
+    strong {
+      @apply text-red-400 font-bold text-xl;
+    }
+  }
+}
+
+// === RESPONSIVE ===
+@media (max-width: 768px) {
+  .titulo-principal {
+    @apply text-4xl mb-4;
+  }
+  
+  .lema-empresa {
+    @apply text-lg mb-6;
+  }
+  
+  .botones-hero {
+    @apply flex-col gap-3;
+  }
+  
+  .boton-primario,
+  .boton-secundario {
+    @apply w-full max-w-xs;
+  }
+  
+  .titulo-seccion {
+    @apply text-3xl;
+  }
+  
+  .grid-especialidades {
+    @apply grid-cols-1 gap-4;
+  }
+  
+  .grid-nosotros {
+    @apply grid-cols-1 gap-6;
+  }
+  
+  .grid-contacto {
+    @apply grid-cols-1 gap-4;
+  }
+  
+  .alerta-emergencia {
+    @apply flex-col text-center gap-3;
+  }
+}
+
+// === ANIMACIONES ===
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 1s ease-out;
+}
+
+// Animación de scroll reveal
+@media (prefers-reduced-motion: no-preference) {
+  .tarjeta-especialidad,
+  .tarjeta-nosotros,
+  .tarjeta-contacto {
+    @apply transform transition-all;
+    animation: fade-in 0.6s ease-out forwards;
+  }
+  
+  .tarjeta-especialidad:nth-child(2) {
+    animation-delay: 0.1s;
+  }
+  
+  .tarjeta-especialidad:nth-child(3) {
+    animation-delay: 0.2s;
+  }
+  
+  .tarjeta-especialidad:nth-child(4) {
+    animation-delay: 0.3s;
+  }
+}
