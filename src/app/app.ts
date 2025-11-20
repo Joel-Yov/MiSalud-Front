@@ -5,10 +5,11 @@ import { FontAwesomeModule, FaIconLibrary } from "@fortawesome/angular-fontaweso
 import { fas } from '@fortawesome/pro-solid-svg-icons';
 import { far } from '@fortawesome/pro-regular-svg-icons';
 import { fal } from '@fortawesome/pro-light-svg-icons';
+import { HeaderComponent } from "./shared/header/header.component";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, FontAwesomeModule],
+  imports: [RouterOutlet, FontAwesomeModule, HeaderComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

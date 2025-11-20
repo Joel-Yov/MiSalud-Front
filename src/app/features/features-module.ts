@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { FeaturesRoutingModule } from './features-routing-module';
 import { LandingPage } from './landing-page/landing-page';
+import { HeaderComponent } from "../shared/header/header.component";
 
 
 @NgModule({
@@ -11,7 +12,8 @@ import { LandingPage } from './landing-page/landing-page';
   ],
   imports: [
     CommonModule,
-    FeaturesRoutingModule
+    FeaturesRoutingModule,
+    HeaderComponent
   ]
 })
 export class FeaturesModule { }
