@@ -6,6 +6,7 @@ import { AppConfigService } from './core/config/app-config.service';
 import { apiBaseUrlInterceptor } from './core/http/api-base-url.interceptor';
 import { errorInterceptor } from './core/http/error.interceptor';
 import { authInterceptor } from './core/http/auth.interceptor';
+import { provideIonicAngular } from '@ionic/angular/standalone';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -24,6 +25,6 @@ export const appConfig: ApplicationConfig = {
         apiBaseUrlInterceptor,
         errorInterceptor
       ])
-    )
+    ), provideIonicAngular({})
   ]
 };
