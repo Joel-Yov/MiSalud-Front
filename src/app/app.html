@@ -233,6 +233,22 @@
       <h1>Hello, {{ title() }}</h1>
       <p>Congratulations! Your app is running. 🎉</p>
     </div>
+
+    <!-- PRUEBA PARA VER SI FUNCIONA EL TAILWIND Y EL FONTAWESOME -->
+    <div class="p-4 bg-gray-100 rounded-lg shadow-md max-w-sm mx-auto">
+      <h3 class="text-xl font-bold mb-3 text-center">Prueba de Icono</h3>
+
+      <p class="mb-2 flex items-center justify-center space-x-2">
+        <fa-icon [icon]="['fas', 'check-circle']" class="text-green-500 text-3xl"></fa-icon>
+        <span class="text-lg">Icono Sólido Funciona FAS LA S ES DE SOLID</span>
+      </p>
+
+      <p class="mb-2 flex items-center justify-center space-x-2">
+        <fa-icon [icon]="['far', 'star']" class="text-yellow-500 text-3xl"></fa-icon>
+        <span class="text-lg">Icono Regular Funciona FAR es R DE REGULAR</span>
+      </p>
+    </div>
+
     <div class="divider" role="separator" aria-label="Divider"></div>
     <div class="right-side">
       <div class="pill-group">
