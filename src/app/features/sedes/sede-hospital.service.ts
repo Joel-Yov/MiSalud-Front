@@ -1,32 +1,32 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { SedeHospital } from '../../core/models/api-models';
+import { SedeHospitalRequest, SedeHospitalResponse } from '../../core/models/api-models';
 
 @Injectable({ providedIn: 'root' })
 export class SedeHospitalService {
-  private readonly basePath = '/api/sedes';
+  private readonly basePath = '/api/v1/sedes';
 
   constructor(private http: HttpClient) {}
 
-  listar(): Observable<SedeHospital[]> {
-    return this.http.get<SedeHospital[]>(this.basePath);
+  listar(): Observable<SedeHospitalResponse[]> {
+    return this.http.get<SedeHospitalResponse[]>(this.basePath);
   }
 
-  obtener(id: number): Observable<SedeHospital> {
-    return this.http.get<SedeHospital>(`${this.basePath}/${id}`);
+  obtener(id: number): Observable<SedeHospitalResponse> {
+    return this.http.get<SedeHospitalResponse>(`${this.basePath}/${id}`);
   }
 
-  listarPorHospital(hospitalId: number): Observable<SedeHospital[]> {
-    return this.http.get<SedeHospital[]>(`${this.basePath}/hospital/${hospitalId}`);
+  listarPorHospital(hospitalId: number): Observable<SedeHospitalResponse[]> {
+    return this.http.get<SedeHospitalResponse[]>(`${this.basePath}/hospital/${hospitalId}`);
   }
 
-  crear(body: SedeHospital): Observable<SedeHospital> {
-    return this.http.post<SedeHospital>(this.basePath, body);
+  crear(body: SedeHospitalRequest): Observable<SedeHospitalResponse> {
+    return this.http.post<SedeHospitalResponse>(this.basePath, body);
   }
 
-  actualizar(id: number, body: SedeHospital): Observable<SedeHospital> {
-    return this.http.put<SedeHospital>(`${this.basePath}/${id}`, body);
+  actualizar(id: number, body: SedeHospitalRequest): Observable<SedeHospitalResponse> {
+    return this.http.put<SedeHospitalResponse>(`${this.basePath}/${id}`, body);
   }
 
   eliminar(id: number): Observable<void> {

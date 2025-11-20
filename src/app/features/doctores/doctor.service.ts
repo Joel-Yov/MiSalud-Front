@@ -1,28 +1,28 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Doctor } from '../../core/models/api-models';
+import { DoctorRequest, DoctorResponse } from '../../core/models/api-models';
 
 @Injectable({ providedIn: 'root' })
 export class DoctorService {
-  private readonly basePath = '/api/doctores';
+  private readonly basePath = '/api/v1/doctores';
 
   constructor(private http: HttpClient) {}
 
-  listar(): Observable<Doctor[]> {
-    return this.http.get<Doctor[]>(this.basePath);
+  listar(): Observable<DoctorResponse[]> {
+    return this.http.get<DoctorResponse[]>(this.basePath);
   }
 
-  obtener(id: number): Observable<Doctor> {
-    return this.http.get<Doctor>(`${this.basePath}/${id}`);
+  obtener(id: number): Observable<DoctorResponse> {
+    return this.http.get<DoctorResponse>(`${this.basePath}/${id}`);
   }
 
-  crear(body: Doctor): Observable<Doctor> {
-    return this.http.post<Doctor>(this.basePath, body);
+  crear(body: DoctorRequest): Observable<DoctorResponse> {
+    return this.http.post<DoctorResponse>(this.basePath, body);
   }
 
-  actualizar(id: number, body: Doctor): Observable<Doctor> {
-    return this.http.put<Doctor>(`${this.basePath}/${id}`, body);
+  actualizar(id: number, body: DoctorRequest): Observable<DoctorResponse> {
+    return this.http.put<DoctorResponse>(`${this.basePath}/${id}`, body);
   }
 
   eliminar(id: number): Observable<void> {

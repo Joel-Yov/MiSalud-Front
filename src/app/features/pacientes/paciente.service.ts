@@ -1,28 +1,28 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Paciente } from '../../core/models/api-models';
+import { PacienteRequest, PacienteResponse } from '../../core/models/api-models';
 
 @Injectable({ providedIn: 'root' })
 export class PacienteService {
-  private readonly basePath = '/api/pacientes';
+  private readonly basePath = '/api/v1/pacientes';
 
   constructor(private http: HttpClient) {}
 
-  listar(): Observable<Paciente[]> {
-    return this.http.get<Paciente[]>(this.basePath);
+  listar(): Observable<PacienteResponse[]> {
+    return this.http.get<PacienteResponse[]>(this.basePath);
   }
 
-  obtener(id: number): Observable<Paciente> {
-    return this.http.get<Paciente>(`${this.basePath}/${id}`);
+  obtener(id: number): Observable<PacienteResponse> {
+    return this.http.get<PacienteResponse>(`${this.basePath}/${id}`);
   }
 
-  crear(body: Paciente): Observable<Paciente> {
-    return this.http.post<Paciente>(this.basePath, body);
+  crear(body: PacienteRequest): Observable<PacienteResponse> {
+    return this.http.post<PacienteResponse>(this.basePath, body);
   }
 
-  actualizar(id: number, body: Paciente): Observable<Paciente> {
-    return this.http.put<Paciente>(`${this.basePath}/${id}`, body);
+  actualizar(id: number, body: PacienteRequest): Observable<PacienteResponse> {
+    return this.http.put<PacienteResponse>(`${this.basePath}/${id}`, body);
   }
 
   eliminar(id: number): Observable<void> {
