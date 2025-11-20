@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { IonHeader, IonToolbar, IonButton } from "@ionic/angular/standalone";
 
 @Component({
@@ -6,7 +7,7 @@ import { IonHeader, IonToolbar, IonButton } from "@ionic/angular/standalone";
   standalone: true,
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
-  imports: [IonHeader, IonToolbar, IonButton],
+  imports: [IonHeader, IonToolbar, IonButton, RouterLink],
 })
 export class HeaderComponent  implements OnInit {
 

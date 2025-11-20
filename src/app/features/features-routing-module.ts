@@ -1,8 +1,13 @@
-import { NgModule } from '@angular/core';
+import { Component, NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LandingPage } from './landing-page/landing-page';
+import { DoctoresComponent } from './doctores/doctores.component';
 
-const routes: Routes = [];
+const routes: Routes = [
+  {
+    path: 'doctores',
+    component: DoctoresComponent
+  }
+];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
