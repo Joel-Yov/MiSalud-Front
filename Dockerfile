@@ -4,7 +4,7 @@ WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-ARG FONTAWESOME_TOKEN=FB2FE594-3C3D-4FED-AA64-80DCE991876F
+ARG FONTAWESOME_TOKEN=REEMPLAZAR
 RUN npm config set "@fortawesome:registry" https://npm.fontawesome.com/ \
     && npm config set "//npm.fontawesome.com/:_authToken" "$FONTAWESOME_TOKEN" \
     && npm install
