@@ -1,5 +1,105 @@
 <app-header></app-header>
 
-<div class="citas-container">
-  <p>citas works!</p>
-</div>
+<ion-content class="p-5">
+  <!-- Header -->
+  <div class="citas-header">
+    <h1 class="citas-title">Mis Citas Médicas</h1>
+    <p class="citas-subtitle">Gestiona y consulta tus próximas citas médicas</p>
+  </div>
+
+  <!-- Citas Grid -->
+  <div class="citas-grid mb-20">
+    <div *ngFor="let cita of citas; trackBy: trackByCitaId" class="cita-card">
+      <!-- Header Row -->
+      <div class="cita-header">
+        <!-- Time Section -->
+        <div class="time-section">
+          <ion-icon name="time-outline" class="time-icon"></ion-icon>
+          <div class="time-info">
+            <span class="hora">{{ cita.hora }}</span>
+            <span class="duracion">{{ cita.fechaCompleta }}</span>
+          </div>
+        </div>
+
+        <!-- Status Badges -->
+        <div class="status-badges">
+          <ion-badge class="badge-programada" *ngIf="cita.estado === 'programada'">Programada</ion-badge>
+          <ion-badge class="badge-confirmada" *ngIf="cita.estado === 'confirmada'">Confirmada</ion-badge>
+        </div>
+
+        <!-- More Options -->
+        <div class="more-options">
+          <ion-button fill="clear" class="more-btn">
+            <ion-icon name="ellipsis-vertical"></ion-icon>
+          </ion-button>
+        </div>
+      </div>
+
+      <!-- Content Row -->
+      <div class="cita-content">
+        <!-- Left Column - Patient Info -->
+        <div class="left-column">
+          <div class="patient-info">
+            <ion-icon name="person-outline" class="info-icon"></ion-icon>
+            <div class="info-details">
+              <h3 class="patient-name">{{ cita.paciente.nombre }}</h3>
+              <p class="patient-doc">{{ cita.paciente.documento }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column - Doctor Info -->
+        <div class="right-column">
+          <div class="doctor-info">
+            <ion-icon name="medical-outline" class="info-icon"></ion-icon>
+            <div class="info-details">
+              <h3 class="doctor-name">{{ cita.doctor.nombre }}</h3>
+              <p class="doctor-specialty">{{ cita.doctor.especialidad }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Location Row -->
+      <div class="location-row">
+        <div class="location-info">
+          <ion-icon name="location-outline" class="location-icon"></ion-icon>
+          <span class="location-text">{{ cita.consultorio }} - {{ cita.piso }}</span>
+          <span class="motivo-separator">Motivo:</span>
+          <span class="motivo-text">{{ cita.motivo }}</span>
+        </div>
+      </div>
+
+      <!-- Confirmation Row -->
+      <div class="confirmation-row">
+        <p class="confirmation-text">{{ cita.confirmadoPor }} vía {{ cita.tipoConfirmacion }}</p>
+      </div>
+
+      <!-- Generate Ticket Button -->
+      <div class="ticket-section">
+        <ion-button 
+          expand="block" 
+          class="ticket-btn"
+          (click)="generarTicket(cita)">
+          <ion-icon name="qr-code-outline" slot="start"></ion-icon>
+          Generar Ticket con QR
+        </ion-button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-container">
+    <ion-spinner name="crescent" class="loading-spinner"></ion-spinner>
+    <p class="loading-text">Cargando citas...</p>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!loading && citas.length === 0" class="empty-state">
+    <ion-icon name="calendar-outline" class="empty-icon"></ion-icon>
+    <h3 class="empty-title">No tienes citas programadas</h3>
+    <p class="empty-message">Agenda una cita con uno de nuestros especialistas.</p>
+  </div>
+
+  <app-footer></app-footer>
+</ion-content>

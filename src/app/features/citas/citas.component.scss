@@ -1,0 +1,243 @@
+// Header Styles
+.citas-header {
+  @apply mb-8 text-center;
+}
+
+.citas-title {
+  @apply text-3xl font-bold text-white mb-2;
+}
+
+.citas-subtitle {
+  @apply text-lg text-gray-300 mb-6;
+}
+
+// Grid Layout
+.citas-grid {
+  @apply space-y-4 p-4;
+}
+
+// Cita Card
+.cita-card {
+  @apply bg-gray-800 rounded-xl shadow-lg p-4 border border-gray-600;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    @apply shadow-xl;
+  }
+}
+
+// Header Row
+.cita-header {
+  @apply flex items-center justify-between mb-4;
+}
+
+// Time Section
+.time-section {
+  @apply flex items-center gap-2;
+}
+
+.time-icon {
+  @apply text-teal-400 text-lg;
+}
+
+.time-info {
+  @apply flex flex-col;
+}
+
+.hora {
+  @apply text-lg font-bold text-teal-400;
+}
+
+.duracion {
+  @apply text-xs text-gray-400;
+}
+
+// Status Badges
+.status-badges {
+  @apply flex gap-2;
+}
+
+.badge-programada {
+  @apply bg-gray-700 text-white text-xs px-2 py-1 rounded border border-gray-600;
+}
+
+.badge-confirmada {
+  @apply bg-green-700 text-white text-xs px-2 py-1 rounded border border-green-600;
+}
+
+.badge-cancelada {
+  @apply bg-red-700 text-white text-xs px-2 py-1 rounded border border-red-600;
+}
+
+.badge-completada {
+  @apply bg-blue-700 text-white text-xs px-2 py-1 rounded border border-blue-600;
+}
+
+// More Options
+.more-options {
+  @apply flex items-center;
+}
+
+.more-btn {
+  @apply text-gray-400;
+  --color: theme('colors.gray.400');
+}
+
+// Content Row (Two Columns)
+.cita-content {
+  @apply grid grid-cols-2 gap-4 mb-4;
+}
+
+.left-column,
+.right-column {
+  @apply flex flex-col;
+}
+
+// Info Styles (Patient & Doctor)
+.patient-info,
+.doctor-info {
+  @apply flex items-start gap-3;
+}
+
+.info-icon {
+  @apply text-gray-400 text-base mt-1;
+}
+
+.info-details {
+  @apply flex-1;
+}
+
+.patient-name,
+.doctor-name {
+  @apply text-sm font-medium text-white mb-1 leading-tight;
+}
+
+.patient-doc {
+  @apply text-xs text-gray-400;
+}
+
+.doctor-specialty {
+  @apply text-xs text-gray-400;
+}
+
+// Location Row
+.location-row {
+  @apply mb-3;
+}
+
+.location-info {
+  @apply flex items-center gap-2 text-xs text-gray-300 flex-wrap;
+}
+
+.location-icon {
+  @apply text-gray-400 text-sm;
+}
+
+.location-text {
+  @apply text-gray-300;
+}
+
+.motivo-separator {
+  @apply text-gray-400 ml-2;
+}
+
+.motivo-text {
+  @apply font-medium text-white;
+}
+
+// Confirmation Row
+.confirmation-row {
+  @apply mb-4;
+}
+
+.confirmation-text {
+  @apply text-xs text-gray-400;
+}
+
+// Ticket Section
+.ticket-section {
+  @apply border-t border-gray-700 pt-3;
+}
+
+.ticket-btn {
+  @apply bg-gray-700 text-white font-medium rounded-lg border border-gray-600;
+  --background: theme('colors.gray.700');
+  --color: white;
+  --background-hover: theme('colors.gray.600');
+  height: 40px;
+  font-size: 0.8rem;
+}
+
+// Loading State
+.loading-container {
+  @apply flex flex-col items-center justify-center py-12;
+}
+
+.loading-spinner {
+  @apply mb-4;
+  --color: theme('colors.teal.500');
+}
+
+.loading-text {
+  @apply text-gray-400 text-sm;
+}
+
+// Empty State
+.empty-state {
+  @apply flex flex-col items-center justify-center py-16 text-center;
+}
+
+.empty-icon {
+  @apply text-6xl text-gray-600 mb-4;
+}
+
+.empty-title {
+  @apply text-xl font-semibold text-white mb-2;
+}
+
+.empty-message {
+  @apply text-gray-400 max-w-md;
+}
+
+// Responsive Design
+@media (max-width: 640px) {
+  .citas-grid {
+    @apply space-y-3 p-2;
+  }
+  
+  .cita-card {
+    @apply p-3;
+  }
+  
+  .citas-title {
+    @apply text-2xl;
+  }
+  
+  .citas-subtitle {
+    @apply text-base;
+  }
+  
+  .cita-content {
+    @apply grid-cols-1 gap-3;
+  }
+  
+  .cita-header {
+    @apply flex-col items-start gap-2;
+  }
+  
+  .status-badges {
+    @apply self-start;
+  }
+}
+
+@media (min-width: 768px) {
+  .citas-grid {
+    @apply space-y-4 p-4;
+  }
+}
+
+@media (min-width: 1024px) {
+  .citas-grid {
+    @apply grid grid-cols-2 gap-6 space-y-0;
+  }
+}
