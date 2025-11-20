@@ -11,6 +11,15 @@
   @apply text-lg text-gray-300 mb-6;
 }
 
+// Botón Crear Cita
+.crear-cita-btn {
+  @apply mt-4 h-12 font-semibold;
+  --background: linear-gradient(135deg, theme('colors.teal.500'), theme('colors.teal.600'));
+  --background-hover: linear-gradient(135deg, theme('colors.teal.600'), theme('colors.teal.700'));
+  --color: white;
+  --border-radius: 12px;
+}
+
 // Grid Layout
 .citas-grid {
   @apply space-y-4 p-4;
@@ -67,6 +76,25 @@
 
 .badge-cancelada {
   @apply bg-red-700 text-white text-xs px-2 py-1 rounded border border-red-600;
+}
+
+// Botones de Acción
+.action-buttons {
+  @apply flex gap-1;
+}
+
+.edit-btn {
+  --color: theme('colors.blue.400');
+  --background: transparent;
+  --background-hover: rgba(59, 130, 246, 0.1);
+  @apply h-8 w-8;
+}
+
+.delete-btn {
+  --color: theme('colors.red.400');
+  --background: transparent;
+  --background-hover: rgba(239, 68, 68, 0.1);
+  @apply h-8 w-8;
 }
 
 .badge-completada {

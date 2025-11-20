@@ -29,3 +29,64 @@
 .qr-modal ion-header {
   display: block !important;
 }
+
+/* Modal Cita Styles */
+.cita-modal {
+  --width: 90%;
+  --max-width: 800px;
+  --height: auto;
+  --max-height: 90vh;
+  --border-radius: 12px;
+}
+
+.cita-modal .modal-wrapper {
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex !important;
+  flex-direction: column !important;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-height: 90vh;
+  width: 90%;
+  max-width: 800px;
+}
+
+.cita-modal ion-content {
+  --overflow: auto;
+  display: block !important;
+  flex: 1 !important;
+  height: auto !important;
+  max-height: calc(90vh - 60px);
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+.cita-modal ion-header {
+  display: block !important;
+  flex-shrink: 0;
+}
+
+.cita-modal app-crear-cita {
+  display: block !important;
+  height: 100%;
+}
+
+.cita-modal .modal-backdrop {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 0.4 !important;
+  pointer-events: auto !important;
+}
+
+.cita-modal .modal-container {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  pointer-events: none;
+}
+
+.cita-modal .modal-container .modal-wrapper {
+  pointer-events: auto;
+}

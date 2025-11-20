@@ -1,3 +1,173 @@
-<p>
-  crear-cita works!
-</p>
+<ion-header>
+  <ion-toolbar class="barra-herramientas-modal">
+    <ion-title class="titulo-modal">{{ obtenerTituloModal() }}</ion-title>
+    <ion-button fill="clear" slot="end" (click)="cerrarModal()" class="boton-cerrar">
+      <ion-icon name="close" class="icono-cerrar"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="contenido-modal">
+  <div class="contenedor-formulario">
+    <form [formGroup]="formularioCita" (ngSubmit)="guardarCita()" class="formulario-cita">
+      
+      <!-- Selección de Paciente -->
+      <div class="grupo-campo">
+        <ion-item class="item-campo" [class.error]="obtenerMensajeError('pacienteId')">
+          <ion-icon name="person-outline" slot="start" class="icono-campo"></ion-icon>
+          <ion-select
+            placeholder="Seleccione un paciente"
+            formControlName="pacienteId"
+            class="select-campo"
+            interface="popover"
+          >
+            <ion-select-option *ngFor="let paciente of pacientesDisponibles" [value]="paciente.id">
+              {{ paciente.nombre }} - {{ paciente.documento }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+        <div class="mensaje-error" *ngIf="obtenerMensajeError('pacienteId')">
+          {{ obtenerMensajeError('pacienteId') }}
+        </div>
+      </div>
+
+      <!-- Selección de Doctor -->
+      <div class="grupo-campo">
+        <ion-item class="item-campo" [class.error]="obtenerMensajeError('doctorId')">
+          <ion-icon name="medical-outline" slot="start" class="icono-campo"></ion-icon>
+          <ion-select
+            placeholder="Seleccione un doctor"
+            formControlName="doctorId"
+            class="select-campo"
+            interface="popover"
+          >
+            <ion-select-option *ngFor="let doctor of doctoresDisponibles" [value]="doctor.id">
+              {{ doctor.nombre }} - {{ doctor.especialidad }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+        <div class="mensaje-error" *ngIf="obtenerMensajeError('doctorId')">
+          {{ obtenerMensajeError('doctorId') }}
+        </div>
+      </div>
+
+      <!-- Fecha y Hora -->
+      <div class="fila-campos">
+        <div class="grupo-campo medio">
+          <ion-item class="item-campo" [class.error]="obtenerMensajeError('fechaCita')">
+            <ion-icon name="calendar-outline" slot="start" class="icono-campo"></ion-icon>
+            <ion-input
+              type="date"
+              placeholder="Fecha de la cita"
+              formControlName="fechaCita"
+              class="input-campo"
+            ></ion-input>
+          </ion-item>
+          <div class="mensaje-error" *ngIf="obtenerMensajeError('fechaCita')">
+            {{ obtenerMensajeError('fechaCita') }}
+          </div>
+        </div>
+
+        <div class="grupo-campo medio">
+          <ion-item class="item-campo" [class.error]="obtenerMensajeError('horaCita')">
+            <ion-icon name="time-outline" slot="start" class="icono-campo"></ion-icon>
+            <ion-select
+              placeholder="Hora"
+              formControlName="horaCita"
+              class="select-campo"
+              interface="popover"
+            >
+              <ion-select-option *ngFor="let hora of horariosDisponibles" [value]="hora">
+                {{ hora }}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+          <div class="mensaje-error" *ngIf="obtenerMensajeError('horaCita')">
+            {{ obtenerMensajeError('horaCita') }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Consultorio -->
+      <div class="grupo-campo">
+        <ion-item class="item-campo" [class.error]="obtenerMensajeError('consultorioNumero')">
+          <ion-icon name="location-outline" slot="start" class="icono-campo"></ion-icon>
+          <ion-select
+            placeholder="Seleccione consultorio"
+            formControlName="consultorioNumero"
+            class="select-campo"
+            interface="popover"
+          >
+            <ion-select-option *ngFor="let consultorio of consultoriosDisponibles" [value]="consultorio.numero">
+              Consultorio {{ consultorio.numero }} - {{ consultorio.piso }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+        <div class="mensaje-error" *ngIf="obtenerMensajeError('consultorioNumero')">
+          {{ obtenerMensajeError('consultorioNumero') }}
+        </div>
+      </div>
+
+      <!-- Motivo de la Consulta -->
+      <div class="grupo-campo">
+        <ion-item class="item-campo item-textarea" [class.error]="obtenerMensajeError('motivoConsulta')">
+          <ion-icon name="document-text-outline" slot="start" class="icono-campo icono-textarea"></ion-icon>
+          <ion-textarea
+            placeholder="Describe el motivo de la consulta (mínimo 10 caracteres)"
+            formControlName="motivoConsulta"
+            class="textarea-campo"
+            rows="3"
+            maxlength="500"
+          ></ion-textarea>
+        </ion-item>
+        <div class="contador-caracteres">
+          {{ formularioCita.get('motivoConsulta')?.value?.length || 0 }}/500 caracteres
+        </div>
+        <div class="mensaje-error" *ngIf="obtenerMensajeError('motivoConsulta')">
+          {{ obtenerMensajeError('motivoConsulta') }}
+        </div>
+      </div>
+
+      <!-- Observaciones (Opcional) -->
+      <div class="grupo-campo">
+        <ion-item class="item-campo item-textarea">
+          <ion-icon name="document-text-outline" slot="start" class="icono-campo icono-textarea"></ion-icon>
+          <ion-textarea
+            placeholder="Observaciones adicionales (opcional)"
+            formControlName="observaciones"
+            class="textarea-campo"
+            rows="2"
+            maxlength="1000"
+          ></ion-textarea>
+        </ion-item>
+        <div class="contador-caracteres">
+          {{ formularioCita.get('observaciones')?.value?.length || 0 }}/1000 caracteres
+        </div>
+      </div>
+
+      <!-- Botones de Acción -->
+      <div class="botones-accion">
+        <ion-button 
+          fill="outline"
+          expand="block"
+          (click)="cerrarModal()"
+          class="boton-cancelar"
+          [disabled]="guardandoCita"
+        >
+          Cancelar
+        </ion-button>
+        
+        <ion-button 
+          expand="block"
+          type="submit"
+          class="boton-guardar"
+          [disabled]="guardandoCita"
+        >
+          <ion-icon [name]="modoEdicion ? 'save-outline' : 'add-circle-outline'" slot="start" *ngIf="!guardandoCita"></ion-icon>
+          <div class="spinner-carga" *ngIf="guardandoCita"></div>
+          {{ obtenerTextoBoton() }}
+        </ion-button>
+      </div>
+    </form>
+  </div>
+</ion-content>

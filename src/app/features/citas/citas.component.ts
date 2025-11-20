@@ -5,6 +5,8 @@ import { HeaderComponent } from "../../shared/header/header.component";
 import { FooterComponent } from "../../shared/footer/footer.component";
 import { IonContent, IonButton, IonIcon, IonBadge, IonSpinner } from "@ionic/angular/standalone";
 import { GenerarQrComponent } from './modals/generar-qr/generar-qr.component';
+import { addIcons } from 'ionicons';
+import { timeOutline, personOutline, medicalOutline, locationOutline, qrCodeOutline, calendarOutline, addCircleOutline, createOutline, trashOutline, ellipsisVertical } from 'ionicons/icons';
 
 export interface CitaCard {
   citaId: number;
@@ -117,7 +119,20 @@ export class CitasComponent implements OnInit {
     }
   ];
 
-  constructor(private modalController: ModalController) { }
+  constructor(private modalController: ModalController) {
+    addIcons({
+      timeOutline,
+      personOutline,
+      medicalOutline,
+      locationOutline,
+      qrCodeOutline,
+      calendarOutline,
+      addCircleOutline,
+      createOutline,
+      trashOutline,
+      ellipsisVertical
+    });
+  }
 
   ngOnInit() {
     this.cargarCitas();
@@ -143,6 +158,103 @@ export class CitasComponent implements OnInit {
     });
     
     await modal.present();
+  }
+
+  async abrirCrearCitaModal() {
+    const { CrearCitaComponent } = await import('./modals/crear-cita/crear-cita.component');
+    
+    const modal = await this.modalController.create({
+      component: CrearCitaComponent,
+      componentProps: {
+        modoEdicion: false
+      },
+      cssClass: 'cita-modal',
+      backdropDismiss: false
+    });
+    
+    await modal.present();
+    
+    const { data } = await modal.onWillDismiss();
+    if (data && data.accion === 'crear') {
+      console.log('Nueva cita creada:', data.datos);
+      // Aquí añadirías la nueva cita a la lista
+      this.agregarNuevaCita(data.datos);
+    }
+  }
+
+  async abrirEditarCitaModal(cita: CitaCard) {
+    const { CrearCitaComponent } = await import('./modals/crear-cita/crear-cita.component');
+    
+    const modal = await this.modalController.create({
+      component: CrearCitaComponent,
+      componentProps: {
+        modoEdicion: true,
+        citaParaEditar: cita
+      },
+      cssClass: 'cita-modal',
+      backdropDismiss: false
+    });
+    
+    await modal.present();
+    
+    const { data } = await modal.onWillDismiss();
+    if (data && data.accion === 'editar') {
+      console.log('Cita editada:', data.datos);
+      // Aquí actualizarías la cita en la lista
+      this.actualizarCita(data.datos);
+    }
+  }
+
+  eliminarCita(citaId: number) {
+    // Simular eliminación
+    console.log('Eliminando cita:', citaId);
+    this.citas = this.citas.filter(cita => cita.citaId !== citaId);
+  }
+
+  private agregarNuevaCita(nuevaCita: any) {
+    // Simular agregar nueva cita
+    const citaCompleta: CitaCard = {
+      citaId: nuevaCita.id,
+      hora: nuevaCita.hora,
+      fechaCompleta: this.formatearFecha(nuevaCita.fecha),
+      paciente: nuevaCita.paciente,
+      doctor: nuevaCita.doctor,
+      consultorio: nuevaCita.consultorio,
+      piso: nuevaCita.piso,
+      motivo: nuevaCita.motivo,
+      estado: 'programada',
+      confirmadoPor: 'Pendiente de confirmación',
+      tipoConfirmacion: 'app'
+    };
+    
+    this.citas.unshift(citaCompleta);
+  }
+
+  private actualizarCita(citaEditada: any) {
+    // Simular actualización de cita
+    const index = this.citas.findIndex(c => c.citaId === citaEditada.id);
+    if (index !== -1) {
+      this.citas[index] = {
+        ...this.citas[index],
+        hora: citaEditada.hora,
+        fechaCompleta: this.formatearFecha(citaEditada.fecha),
+        paciente: citaEditada.paciente,
+        doctor: citaEditada.doctor,
+        consultorio: citaEditada.consultorio,
+        piso: citaEditada.piso,
+        motivo: citaEditada.motivo
+      };
+    }
+  }
+
+  private formatearFecha(fechaISO: string): string {
+    const fecha = new Date(fechaISO);
+    return fecha.toLocaleDateString('es-ES', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
   }
 
   getEstadoBadgeClass(estado: string): string {

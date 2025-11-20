@@ -1,0 +1,196 @@
+// Barra de Herramientas del Modal
+.barra-herramientas-modal {
+  --background: theme('colors.gray.800');
+  --color: white;
+  --border-color: theme('colors.gray.700');
+}
+
+.titulo-modal {
+  @apply text-white font-semibold;
+}
+
+.boton-cerrar {
+  --color: theme('colors.gray.400');
+}
+
+.icono-cerrar {
+  @apply text-xl;
+}
+
+// Contenido del Modal
+.contenido-modal {
+  --background: theme('colors.gray.900');
+  --color: white;
+  display: block !important;
+  visibility: visible !important;
+  height: auto !important;
+  min-height: 600px !important;
+}
+
+// Contenedor del Formulario
+.contenedor-formulario {
+  @apply max-w-2xl mx-auto p-6;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  height: auto !important;
+}
+
+// Formulario
+.formulario-cita {
+  @apply flex flex-col gap-6;
+}
+
+// Grupos de Campos
+.grupo-campo {
+  @apply flex flex-col gap-2;
+  
+  &.medio {
+    @apply flex-1;
+  }
+}
+
+.fila-campos {
+  @apply flex flex-col md:flex-row gap-4;
+}
+
+// Items de Campo
+.item-campo {
+  --background: rgba(55, 65, 81, 0.5);
+  --border-color: rgba(75, 85, 99, 0.5);
+  --color: white;
+  @apply rounded-lg transition-all duration-300;
+  
+  &:hover {
+    --border-color: rgba(20, 184, 166, 0.5);
+  }
+  
+  &.ion-focused {
+    --border-color: theme('colors.teal.500');
+    box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1);
+  }
+  
+  &.error {
+    --border-color: theme('colors.red.500');
+  }
+  
+  &.item-textarea {
+    @apply items-start;
+  }
+}
+
+// Iconos de Campo
+.icono-campo {
+  @apply text-gray-400 text-lg;
+  
+  &.icono-textarea {
+    @apply mt-3;
+  }
+}
+
+// Inputs y Selects
+.input-campo {
+  --color: white;
+  --placeholder-color: theme('colors.gray.400');
+}
+
+.select-campo {
+  --color: white;
+  --placeholder-color: theme('colors.gray.400');
+}
+
+.textarea-campo {
+  --color: white;
+  --placeholder-color: theme('colors.gray.400');
+  @apply min-h-20;
+}
+
+// Mensajes de Error
+.mensaje-error {
+  @apply text-red-400 text-xs mt-1 ml-2;
+}
+
+// Contador de Caracteres
+.contador-caracteres {
+  @apply text-gray-500 text-xs text-right mt-1;
+}
+
+// Botones de Acción
+.botones-accion {
+  @apply flex flex-col md:flex-row gap-4 mt-8 justify-end;
+}
+
+.boton-cancelar {
+  --color: theme('colors.gray.400');
+  --border-color: theme('colors.gray.600');
+  --background: transparent;
+  --background-hover: theme('colors.gray.800');
+  @apply h-12 font-semibold;
+}
+
+.boton-guardar {
+  --background: linear-gradient(135deg, theme('colors.teal.500'), theme('colors.teal.600'));
+  --background-hover: linear-gradient(135deg, theme('colors.teal.600'), theme('colors.teal.700'));
+  --color: white;
+  @apply h-12 font-semibold;
+  
+  &:disabled {
+    --background: rgba(75, 85, 99, 0.5);
+    --color: theme('colors.gray.400');
+  }
+}
+
+// Spinner de Carga
+.spinner-carga {
+  @apply w-4 h-4 border-2 border-transparent border-t-current rounded-full mr-2;
+  animation: girar 1s linear infinite;
+}
+
+@keyframes girar {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// Diseño Responsivo
+@media (max-width: 640px) {
+  .contenedor-formulario {
+    @apply p-4;
+  }
+  
+  .fila-campos {
+    @apply flex-col;
+  }
+  
+  .botones-accion {
+    @apply flex-col;
+  }
+}
+
+@media (min-width: 768px) {
+  .fila-campos {
+    @apply flex-row;
+  }
+  
+  .botones-accion {
+    @apply flex-row;
+  }
+}
+
+// Personalizar de Select Options y Host
+:host {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  height: auto !important;
+  
+  ion-select {
+    --placeholder-color: theme('colors.gray.400');
+    --color: white;
+  }
+  
+  ion-datetime {
+    --background: theme('colors.gray.800');
+    --color: white;
+  }
+}

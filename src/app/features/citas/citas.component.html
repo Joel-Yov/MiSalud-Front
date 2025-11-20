@@ -5,6 +5,12 @@
   <div class="citas-header">
     <h1 class="citas-title">Mis Citas Médicas</h1>
     <p class="citas-subtitle">Gestiona y consulta tus próximas citas médicas</p>
+
+    <!-- BOTON PARA EL FORMULARIO DE CREAR CITA NO TIENE ESTILOS AHORITA,LO AGREGO AQUI PARA QUE NO SE ME OLVIDE XD  -->
+    <ion-button expand="block" class="crear-cita-btn" (click)="abrirCrearCitaModal()">
+      <ion-icon name="add-circle-outline" slot="start"></ion-icon>
+      Agendar Nueva Cita
+    </ion-button>
   </div>
 
   <!-- Citas Grid -->
@@ -27,10 +33,16 @@
           <ion-badge class="badge-confirmada" *ngIf="cita.estado === 'confirmada'">Confirmada</ion-badge>
         </div>
 
-        <!-- More Options -->
-        <div class="more-options">
-          <ion-button fill="clear" class="more-btn">
-            <ion-icon name="ellipsis-vertical"></ion-icon>
+        <!-- Botones de Acción -->
+        <div class="action-buttons">
+          <!-- BOTON PARA EDITAR/REPROGRAMAR LA CITA -->
+          <ion-button fill="clear" class="edit-btn" (click)="abrirEditarCitaModal(cita)"> EDITAR CITA
+            <ion-icon name="create-outline"></ion-icon>
+          </ion-button>
+
+          <!-- BOTON PARA ELIMINAR LA CITA -->
+          <ion-button fill="clear" class="delete-btn" (click)="eliminarCita(cita.citaId)"> ELIMINAR CITA
+            <ion-icon name="trash-outline"></ion-icon>
           </ion-button>
         </div>
       </div>
