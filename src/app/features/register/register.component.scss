@@ -1,0 +1,235 @@
+// Contenido del Registro
+.contenido-registro {
+  --background: transparent;
+  @apply relative overflow-hidden;
+}
+
+// Fondo
+.fondo-registro {
+  @apply absolute top-0 left-0 w-full h-full;
+  z-index: 1;
+}
+
+.imagen-fondo {
+  @apply w-full h-full bg-cover bg-center bg-no-repeat;
+  filter: blur(2px);
+}
+
+.overlay-fondo {
+  @apply absolute top-0 left-0 w-full h-full;
+  background: linear-gradient(
+    135deg,
+    rgba(20, 184, 166, 0.8) 0%,
+    rgba(17, 24, 39, 0.9) 100%
+  );
+}
+
+// Contenedor del Registro
+.contenedor-registro {
+  @apply relative flex items-center justify-center min-h-screen p-4;
+  z-index: 2;
+}
+
+// Tarjeta del Registro
+.tarjeta-registro {
+  background: rgba(31, 41, 55, 0.95);
+  backdrop-filter: blur(10px);
+  @apply border border-gray-600 rounded-2xl p-6 w-full max-w-4xl;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+// Sección del Encabezado
+.encabezado-registro {
+  @apply text-center mb-8;
+}
+
+.seccion-logo {
+  @apply flex flex-col items-center gap-3 mb-6;
+}
+
+.contenedor-logo {
+  @apply w-16 h-16 rounded-full flex items-center justify-center;
+  background: linear-gradient(135deg, #14b8a6, #0d9488);
+  box-shadow: 0 10px 20px rgba(20, 184, 166, 0.3);
+}
+
+.icono-logo {
+  @apply text-white text-3xl;
+}
+
+.titulo-app {
+  @apply text-3xl font-bold text-white m-0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.titulo-registro {
+  @apply text-2xl font-semibold text-white mb-2;
+}
+
+.subtitulo-registro {
+  @apply text-gray-400 text-sm leading-relaxed;
+}
+
+// Formulario
+.formulario-registro {
+  @apply flex flex-col gap-6;
+}
+
+.fila-campos {
+  @apply flex flex-col md:flex-row gap-4;
+}
+
+.grupo-formulario {
+  @apply flex flex-col gap-2;
+  
+  &.medio {
+    @apply flex-1;
+  }
+}
+
+.item-formulario {
+  --background: rgba(55, 65, 81, 0.5);
+  --border-color: rgba(75, 85, 99, 0.5);
+  --color: white;
+  @apply rounded-lg transition-all duration-300;
+  
+  &:hover {
+    --border-color: rgba(20, 184, 166, 0.5);
+  }
+  
+  &.ion-focused {
+    --border-color: #14b8a6;
+    box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1);
+  }
+  
+  &.error {
+    --border-color: #ef4444;
+  }
+}
+
+.icono-input {
+  @apply text-gray-400 mr-2;
+}
+
+.input-formulario {
+  --color: white;
+  --placeholder-color: #9ca3af;
+}
+
+.select-formulario {
+  --color: white;
+  --placeholder-color: #9ca3af;
+}
+
+.boton-alternar-contrasena {
+  --color: #9ca3af;
+  --background: transparent;
+  @apply m-0;
+}
+
+.mensaje-error {
+  @apply text-red-400 text-xs mt-1 ml-2;
+}
+
+// Términos y Condiciones
+.etiqueta-terminos {
+  @apply flex items-start gap-3 text-gray-300 text-sm cursor-pointer;
+}
+
+.checkbox-terminos {
+  @apply w-4 h-4 mt-0.5;
+  accent-color: #14b8a6;
+}
+
+.texto-terminos {
+  @apply leading-relaxed;
+}
+
+.enlace-terminos {
+  @apply text-teal-400 no-underline transition-colors duration-300;
+  
+  &:hover {
+    @apply text-teal-300 underline;
+  }
+}
+
+// Botón de Registro
+.boton-registro {
+  --background: linear-gradient(135deg, #14b8a6, #0d9488);
+  --background-hover: linear-gradient(135deg, #0d9488, #0f766e);
+  --color: white;
+  --border-radius: 0.5rem;
+  @apply h-12 font-semibold mt-4 relative;
+  
+  &:disabled {
+    --background: rgba(75, 85, 99, 0.5);
+    --color: #9ca3af;
+  }
+}
+
+.spinner-carga {
+  @apply w-4 h-4 border-2 border-transparent border-t-current rounded-full mr-2;
+  animation: girar 1s linear infinite;
+}
+
+@keyframes girar {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// Enlace de Login
+.enlace-login {
+  @apply text-center mt-8 pt-6 border-t border-gray-600;
+}
+
+.texto-login {
+  @apply text-gray-300 text-sm m-0;
+}
+
+.texto-enlace-login {
+  @apply text-teal-400 no-underline font-semibold transition-colors duration-300;
+  
+  &:hover {
+    @apply text-teal-300 underline;
+  }
+}
+
+// Diseño Responsivo
+@media (max-width: 640px) {
+  .contenedor-registro {
+    @apply p-2;
+  }
+  
+  .tarjeta-registro {
+    @apply p-4;
+  }
+  
+  .titulo-app {
+    @apply text-2xl;
+  }
+  
+  .titulo-registro {
+    @apply text-xl;
+  }
+  
+  .fila-campos {
+    @apply flex-col;
+  }
+}
+
+@media (min-width: 768px) {
+  .tarjeta-registro {
+    @apply p-8;
+  }
+  
+  .fila-campos {
+    @apply flex-row;
+  }
+}
+
+@media (min-width: 1024px) {
+  .tarjeta-registro {
+    @apply p-10;
+  }
+}

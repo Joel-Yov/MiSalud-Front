@@ -1,5 +1,251 @@
 <app-header></app-header>
 
-<div class="register-container">
-  <p>register works!</p>
-</div>
+<ion-content class="contenido-registro">
+  <div class="fondo-registro">
+    <!-- Imagen de fondo (puedes cambiar la URL) -->
+    <div class="imagen-fondo" style="background-image: url('https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');"></div>
+    <div class="overlay-fondo"></div>
+  </div>
+
+  <div class="contenedor-registro">
+    <div class="tarjeta-registro">
+      <!-- Header del Registro -->
+      <div class="encabezado-registro">
+        <div class="seccion-logo">
+          <div class="contenedor-logo">
+            <ion-icon name="medical" class="icono-logo"></ion-icon>
+          </div>
+          <h1 class="titulo-app">MiSalud</h1>
+        </div>
+        <h2 class="titulo-registro">Crear Cuenta</h2>
+        <p class="subtitulo-registro">Completa tus datos para registrarte en MiSalud</p>
+      </div>
+
+      <!-- Formulario de Registro -->
+      <form [formGroup]="formularioRegistro" (ngSubmit)="enviarFormulario()" class="formulario-registro">
+        
+        <!-- Nombres y Apellidos -->
+        <div class="fila-campos">
+          <div class="grupo-formulario medio">
+            <ion-item class="item-formulario" [class.error]="obtenerMensajeError('nombres')">
+              <ion-icon name="person-outline" slot="start" class="icono-input"></ion-icon>
+              <ion-input
+                type="text"
+                placeholder="Nombres"
+                formControlName="nombres"
+                class="input-formulario"
+              ></ion-input>
+            </ion-item>
+            <div class="mensaje-error" *ngIf="obtenerMensajeError('nombres')">
+              {{ obtenerMensajeError('nombres') }}
+            </div>
+          </div>
+
+          <div class="grupo-formulario medio">
+            <ion-item class="item-formulario" [class.error]="obtenerMensajeError('apellidos')">
+              <ion-icon name="person-outline" slot="start" class="icono-input"></ion-icon>
+              <ion-input
+                type="text"
+                placeholder="Apellidos"
+                formControlName="apellidos"
+                class="input-formulario"
+              ></ion-input>
+            </ion-item>
+            <div class="mensaje-error" *ngIf="obtenerMensajeError('apellidos')">
+              {{ obtenerMensajeError('apellidos') }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Tipo y Número de Documento -->
+        <div class="fila-campos">
+          <div class="grupo-formulario medio">
+            <ion-item class="item-formulario" [class.error]="obtenerMensajeError('tipoDocumento')">
+              <ion-icon name="medical-outline" slot="start" class="icono-input"></ion-icon>
+              <ion-select
+                placeholder="Tipo de documento"
+                formControlName="tipoDocumento"
+                class="select-formulario"
+              >
+                <ion-select-option *ngFor="let tipo of tiposDocumento" [value]="tipo.valor">
+                  {{ tipo.texto }}
+                </ion-select-option>
+              </ion-select>
+            </ion-item>
+            <div class="mensaje-error" *ngIf="obtenerMensajeError('tipoDocumento')">
+              {{ obtenerMensajeError('tipoDocumento') }}
+            </div>
+          </div>
+
+          <div class="grupo-formulario medio">
+            <ion-item class="item-formulario" [class.error]="obtenerMensajeError('numeroDocumento')">
+              <ion-icon name="checkmark-circle-outline" slot="start" class="icono-input"></ion-icon>
+              <ion-input
+                type="text"
+                placeholder="Número de documento"
+                formControlName="numeroDocumento"
+                class="input-formulario"
+              ></ion-input>
+            </ion-item>
+            <div class="mensaje-error" *ngIf="obtenerMensajeError('numeroDocumento')">
+              {{ obtenerMensajeError('numeroDocumento') }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Fecha de Nacimiento y Género -->
+        <div class="fila-campos">
+          <div class="grupo-formulario medio">
+            <ion-item class="item-formulario" [class.error]="obtenerMensajeError('fechaNacimiento')">
+              <ion-icon name="calendar-outline" slot="start" class="icono-input"></ion-icon>
+              <ion-input
+                type="date"
+                placeholder="Fecha de nacimiento"
+                formControlName="fechaNacimiento"
+                class="input-formulario"
+              ></ion-input>
+            </ion-item>
+            <div class="mensaje-error" *ngIf="obtenerMensajeError('fechaNacimiento')">
+              {{ obtenerMensajeError('fechaNacimiento') }}
+            </div>
+          </div>
+
+          <div class="grupo-formulario medio">
+            <ion-item class="item-formulario" [class.error]="obtenerMensajeError('genero')">
+              <ion-icon name="person-outline" slot="start" class="icono-input"></ion-icon>
+              <ion-select
+                placeholder="Género"
+                formControlName="genero"
+                class="select-formulario"
+              >
+                <ion-select-option *ngFor="let genero of generos" [value]="genero.valor">
+                  {{ genero.texto }}
+                </ion-select-option>
+              </ion-select>
+            </ion-item>
+            <div class="mensaje-error" *ngIf="obtenerMensajeError('genero')">
+              {{ obtenerMensajeError('genero') }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Teléfono y Email -->
+        <div class="fila-campos">
+          <div class="grupo-formulario medio">
+            <ion-item class="item-formulario" [class.error]="obtenerMensajeError('telefono')">
+              <ion-icon name="call-outline" slot="start" class="icono-input"></ion-icon>
+              <ion-input
+                type="tel"
+                placeholder="Teléfono"
+                formControlName="telefono"
+                class="input-formulario"
+              ></ion-input>
+            </ion-item>
+            <div class="mensaje-error" *ngIf="obtenerMensajeError('telefono')">
+              {{ obtenerMensajeError('telefono') }}
+            </div>
+          </div>
+
+          <div class="grupo-formulario medio">
+            <ion-item class="item-formulario" [class.error]="obtenerMensajeError('email')">
+              <ion-icon name="mail-outline" slot="start" class="icono-input"></ion-icon>
+              <ion-input
+                type="email"
+                placeholder="Correo electrónico"
+                formControlName="email"
+                class="input-formulario"
+              ></ion-input>
+            </ion-item>
+            <div class="mensaje-error" *ngIf="obtenerMensajeError('email')">
+              {{ obtenerMensajeError('email') }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Contraseñas -->
+        <div class="grupo-formulario">
+          <ion-item class="item-formulario" [class.error]="obtenerMensajeError('contrasena')">
+            <ion-icon name="lock-closed-outline" slot="start" class="icono-input"></ion-icon>
+            <ion-input
+              [type]="mostrarContrasena ? 'text' : 'password'"
+              placeholder="Contraseña"
+              formControlName="contrasena"
+              class="input-formulario"
+            ></ion-input>
+            <ion-button 
+              fill="clear" 
+              slot="end" 
+              (click)="alternarVisibilidadContrasena()"
+              class="boton-alternar-contrasena">
+              <ion-icon [name]="mostrarContrasena ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
+            </ion-button>
+          </ion-item>
+          <div class="mensaje-error" *ngIf="obtenerMensajeError('contrasena')">
+            {{ obtenerMensajeError('contrasena') }}
+          </div>
+        </div>
+
+        <div class="grupo-formulario">
+          <ion-item class="item-formulario" [class.error]="obtenerMensajeError('confirmarContrasena')">
+            <ion-icon name="lock-closed-outline" slot="start" class="icono-input"></ion-icon>
+            <ion-input
+              [type]="mostrarConfirmarContrasena ? 'text' : 'password'"
+              placeholder="Confirmar contraseña"
+              formControlName="confirmarContrasena"
+              class="input-formulario"
+            ></ion-input>
+            <ion-button 
+              fill="clear" 
+              slot="end" 
+              (click)="alternarVisibilidadConfirmarContrasena()"
+              class="boton-alternar-contrasena">
+              <ion-icon [name]="mostrarConfirmarContrasena ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
+            </ion-button>
+          </ion-item>
+          <div class="mensaje-error" *ngIf="obtenerMensajeError('confirmarContrasena')">
+            {{ obtenerMensajeError('confirmarContrasena') }}
+          </div>
+        </div>
+
+        <!-- Términos y Condiciones -->
+        <div class="grupo-formulario">
+          <label class="etiqueta-terminos">
+            <input 
+              type="checkbox" 
+              formControlName="aceptarTerminos"
+              class="checkbox-terminos"
+            >
+            <span class="texto-terminos">
+              Acepto los 
+              <a href="#" class="enlace-terminos">términos y condiciones</a> 
+              y la 
+              <a href="#" class="enlace-terminos">política de privacidad</a>
+            </span>
+          </label>
+          <div class="mensaje-error" *ngIf="obtenerMensajeError('aceptarTerminos')">
+            {{ obtenerMensajeError('aceptarTerminos') }}
+          </div>
+        </div>
+
+        <!-- Botón de Registro -->
+        <ion-button 
+          expand="block" 
+          type="submit" 
+          class="boton-registro"
+          [disabled]="cargandoRegistro">
+          <ion-icon name="checkmark-circle-outline" slot="start" *ngIf="!cargandoRegistro"></ion-icon>
+          <div class="spinner-carga" *ngIf="cargandoRegistro"></div>
+          {{ cargandoRegistro ? 'Creando cuenta...' : 'Crear Cuenta' }}
+        </ion-button>
+      </form>
+
+      <!-- Link de Login -->
+      <div class="enlace-login">
+        <p class="texto-login">
+          ¿Ya tienes una cuenta? 
+          <a routerLink="/login" class="texto-enlace-login">Inicia sesión aquí</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</ion-content>
