@@ -7,6 +7,9 @@ import { IonContent, IonButton, IonIcon, IonBadge, IonSpinner } from "@ionic/ang
 import { GenerarQrComponent } from './modals/generar-qr/generar-qr.component';
 import { addIcons } from 'ionicons';
 import { timeOutline, personOutline, medicalOutline, locationOutline, qrCodeOutline, calendarOutline, addCircleOutline, createOutline, trashOutline, ellipsisVertical } from 'ionicons/icons';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
+import { faPen, faTrash } from '@fortawesome/pro-solid-svg-icons';
 
 export interface CitaCard {
   citaId: number;
@@ -33,7 +36,7 @@ export interface CitaCard {
   templateUrl: './citas.component.html',
   styleUrls: ['./citas.component.scss'],
   standalone: true,
-  imports: [CommonModule, HeaderComponent, FooterComponent, IonContent, IonButton, IonIcon, IonBadge, IonSpinner],
+  imports: [CommonModule, HeaderComponent, FooterComponent, IonContent, IonButton, IonIcon, IonBadge, IonSpinner, FontAwesomeModule],
   providers: [ModalController]
 })
 export class CitasComponent implements OnInit {
@@ -119,7 +122,7 @@ export class CitasComponent implements OnInit {
     }
   ];
 
-  constructor(private modalController: ModalController) {
+  constructor(private modalController: ModalController, private library: FaIconLibrary) {
     addIcons({
       timeOutline,
       personOutline,
@@ -132,6 +135,9 @@ export class CitasComponent implements OnInit {
       trashOutline,
       ellipsisVertical
     });
+    
+    // Agregar iconos de FontAwesome a la librería
+    library.addIcons(faPen, faTrash);
   }
 
   ngOnInit() {
