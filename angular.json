@@ -64,7 +64,8 @@
               "buildTarget": "MiSalud:build:production"
             },
             "development": {
-              "buildTarget": "MiSalud:build:development"
+              "buildTarget": "MiSalud:build:development",
+              "proxyConfig": "proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"

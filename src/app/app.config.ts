@@ -1,20 +1,27 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZoneChangeDetection } from '@angular/core';
+import { ApplicationConfig, APP_INITIALIZER, provideBrowserGlobalErrorListeners, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { routes } from './app.routes';
-import { provideIonicAngular } from '@ionic/angular/standalone';
-
-//IMPORTAR LA LIBRERIA DEL FONTAWESOME PARA LOS ICONOS 
-import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
-import { fas } from '@fortawesome/pro-solid-svg-icons';
-import { far } from '@fortawesome/pro-regular-svg-icons';
-import { fal } from '@fortawesome/pro-light-svg-icons';
+import { AppConfigService } from './core/config/app-config.service';
+import { apiBaseUrlInterceptor } from './core/http/api-base-url.interceptor';
+import { errorInterceptor } from './core/http/error.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideIonicAngular({}),
-    FaIconLibrary
+    {
+      provide: APP_INITIALIZER,
+      multi: true,
+      deps: [AppConfigService],
+      useFactory: (cfg: AppConfigService) => () => cfg.load()
+    },
+    provideHttpClient(
+      withInterceptors([
+        apiBaseUrlInterceptor,
+        errorInterceptor
+      ])
+    )
   ]
 };
