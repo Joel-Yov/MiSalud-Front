@@ -4,19 +4,25 @@ import { DoctorService, DoctorCard } from './doctor.service';
 import { IonSpinner, IonIcon, IonSearchbar, IonButton, IonContent } from "@ionic/angular/standalone";
 import { FooterComponent } from "../../shared/footer/footer.component";
 import { HeaderComponent } from "../../shared/header/header.component";
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
+import { faHospitalUser, faStars, faHospital, faClockDesk, faUserDoctor, faCalendar } from '@fortawesome/pro-solid-svg-icons';
 
 @Component({
   selector: 'app-doctores',
   templateUrl: './doctores.component.html',
   styleUrls: ['./doctores.component.scss'],
   standalone: true,
-  imports: [CommonModule, IonSpinner, IonIcon, FooterComponent, HeaderComponent, IonSearchbar, IonButton, IonContent],
+  imports: [CommonModule, IonSpinner, IonIcon, FooterComponent, HeaderComponent, IonSearchbar, IonButton, IonContent, FontAwesomeModule],
 })
 export class DoctoresComponent implements OnInit {
   doctores: DoctorCard[] = [];
   loading = false;
 
-  constructor(private doctorService: DoctorService) { }
+  constructor(private doctorService: DoctorService, private library: FaIconLibrary) {
+    // Agregar iconos de FontAwesome a la librería
+    library.addIcons(faHospitalUser, faStars, faHospital, faClockDesk, faUserDoctor, faCalendar);
+  }
 
   ngOnInit() {
     this.cargarDoctores();

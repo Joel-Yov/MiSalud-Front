@@ -41,7 +41,7 @@
         <!-- Stats Row -->
         <div class="stats-row">
           <div class="stat-item">
-            <ion-icon name="heart" class="stat-icon"></ion-icon>
+            <fa-icon [icon]="['fas', 'hospital-user']" class="text-[25px]"></fa-icon>
             <div class="stat-content">
               <span class="stat-label">Pacientes</span>
               <span class="stat-value">{{ doctor.pacientesAtendidos }}+</span>
@@ -49,7 +49,7 @@
           </div>
           
           <div class="stat-item">
-            <ion-icon name="trophy" class="stat-icon"></ion-icon>
+            <fa-icon [icon]="['fas', 'stars']" class="text-[25px]"></fa-icon>
             <div class="stat-content">
               <span class="stat-label">Calificación</span>
               <span class="stat-value">{{ doctor.calificacion }}/5.0</span>
@@ -67,17 +67,17 @@
         <!-- Location and Schedule -->
         <div class="doctor-details">
           <div class="detail-item">
-            <ion-icon name="location" class="detail-icon"></ion-icon>
+            <fa-icon [icon]="['fas', 'hospital']" class="text-[25px]"></fa-icon>
             <span>{{ doctor.consultorio }}</span>
           </div>
           
           <div class="detail-item">
-            <ion-icon name="time" class="detail-icon"></ion-icon>
+            <fa-icon [icon]="['fas', 'clock-desk']" class="text-[25px]"></fa-icon>
             <span>{{ doctor.horarios[0] }}</span>
           </div>
           
           <div class="detail-item">
-            <ion-icon name="school" class="detail-icon"></ion-icon>
+            <fa-icon [icon]="['fas', 'user-doctor']" class="text-[25px]"></fa-icon>
             <span>{{ doctor.experiencia }}</span>
           </div>
         </div>
@@ -87,7 +87,7 @@
           expand="block" 
           class="appointment-btn"
           (click)="agendarCita(doctor)">
-          <ion-icon name="calendar" slot="start"></ion-icon>
+          <fa-icon [icon]="['fas', 'calendar']" class="text-[25px]"></fa-icon>
           Agendar Cita
         </ion-button>
       </div>
