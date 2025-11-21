@@ -21,9 +21,8 @@ export class RegisterComponent implements OnInit {
   cargandoRegistro = false;
   
   tiposDocumento = [
-    { valor: 'cedula', texto: 'Cédula de Ciudadanía' },
+    { valor: 'dni', texto: 'DNI' },
     { valor: 'pasaporte', texto: 'Pasaporte' },
-    { valor: 'cedula_extranjeria', texto: 'Cédula de Extranjería' }
   ];
   
   generos = [
@@ -55,7 +54,7 @@ export class RegisterComponent implements OnInit {
       numeroDocumento: ['', [Validators.required, Validators.pattern(/^[0-9]+$/)]],
       fechaNacimiento: ['', [Validators.required, this.validadorEdadMinima]],
       genero: ['', [Validators.required]],
-      telefono: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
+      telefono: ['', [Validators.required, Validators.pattern(/^[0-9]{9}$/)]],
       email: ['', [Validators.required, Validators.email]],
       contrasena: ['', [Validators.required, Validators.minLength(8), this.validadorContrasenaFuerte]],
       confirmarContrasena: ['', [Validators.required]],
@@ -160,7 +159,7 @@ export class RegisterComponent implements OnInit {
           return 'Solo se permiten números';
         }
         if (nombreCampo === 'telefono') {
-          return 'El teléfono debe tener 10 dígitos';
+          return 'El teléfono debe tener 9 dígitos';
         }
       }
       if (campo.errors['edadMinima']) {
