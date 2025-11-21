@@ -19,7 +19,8 @@
       <!-- Header Row -->
       <div class="cita-header">
         <!-- Time Section -->
-        <div class="time-section">
+         <div class="flex items-center gap-5">
+          <div class="time-section">
           <ion-icon name="time-outline" class="time-icon"></ion-icon>
           <div class="time-info">
             <span class="hora">{{ cita.hora }}</span>
@@ -27,11 +28,12 @@
           </div>
         </div>
 
-        <!-- Status Badges -->
-        <div class="status-badges">
+        <!-- Estado de la cita -->
+        <div class="status-badges border-white border-2 rounded-lg p-2">
           <ion-badge class="badge-programada" *ngIf="cita.estado === 'programada'">Programada</ion-badge>
           <ion-badge class="badge-confirmada" *ngIf="cita.estado === 'confirmada'">Confirmada</ion-badge>
         </div>
+         </div>
 
         <!-- Botones de Acción -->
         <div class="action-buttons">
@@ -47,10 +49,10 @@
         </div>
       </div>
 
-      <!-- Content Row -->
-      <div class="cita-content">
-        <!-- Left Column - Patient Info -->
+      <div class="ml-[16%]">
+        <div class="cita-content">
         <div class="left-column">
+          <!-- INFORMACIÓN DEL PACIENTE -->
           <div class="patient-info">
             <ion-icon name="person-outline" class="info-icon"></ion-icon>
             <div class="info-details">
@@ -60,7 +62,7 @@
           </div>
         </div>
 
-        <!-- Right Column - Doctor Info -->
+        <!-- INFORMACIÓN DEL DOCTOR -->
         <div class="right-column">
           <div class="doctor-info">
             <ion-icon name="medical-outline" class="info-icon"></ion-icon>
@@ -72,7 +74,7 @@
         </div>
       </div>
 
-      <!-- Location Row -->
+
       <div class="location-row">
         <div class="location-info">
           <ion-icon name="location-outline" class="location-icon"></ion-icon>
@@ -82,10 +84,13 @@
         </div>
       </div>
 
-      <!-- Confirmation Row -->
+
       <div class="confirmation-row">
         <p class="confirmation-text">{{ cita.confirmadoPor }} vía {{ cita.tipoConfirmacion }}</p>
       </div>
+      </div>
+
+      
 
       <!-- Generate Ticket Button -->
       <div class="ticket-section">
