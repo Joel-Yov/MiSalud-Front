@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 import { HeaderComponent } from "../../shared/header/header.component";
 import { IonContent, IonButton, IonIcon, IonInput, IonItem, IonLabel } from "@ionic/angular/standalone";
 import { addIcons } from 'ionicons';
 import { eyeOutline, eyeOffOutline, mailOutline, lockClosedOutline, logInOutline, medical } from 'ionicons/icons';
+import { finalize } from 'rxjs';
+import { AuthService } from '../../core/auth/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -18,10 +21,13 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   showPassword = false;
   isLoading = false;
+  errorMessage = '';
 
   constructor(
     private formBuilder: FormBuilder,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute,
+    private authService: AuthService
   ) {
     addIcons({
       eyeOutline,
@@ -44,31 +50,34 @@ export class LoginComponent implements OnInit {
     this.showPassword = !this.showPassword;
   }
 
-  async onSubmit() {
-    if (this.loginForm.valid) {
-      this.isLoading = true;
-      
-      try {
-        // Simular login (aquí iría la lógica real de autenticación)
-        console.log('Login data:', this.loginForm.value);
-        
-        // Simular delay de la API
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        
-        // Redirigir al apartado de CITAS
-        this.router.navigate(['/citas']);
-        
-      } catch (error) {
-        console.error('Error en login:', error);
-      } finally {
-        this.isLoading = false;
-      }
-    } else {
-      // Marcar todos los campos como tocados para mostrar errores
-      Object.keys(this.loginForm.controls).forEach(key => {
-        this.loginForm.get(key)?.markAsTouched();
-      });
+  onSubmit(): void {
+    if (this.loginForm.invalid) {
+      this.loginForm.markAllAsTouched();
+      return;
     }
+
+    this.errorMessage = '';
+    this.isLoading = true;
+    this.loginForm.disable();
+
+    const { email, password } = this.loginForm.value;
+
+    this.authService
+      .login({ email, password })
+      .pipe(finalize(() => {
+        this.isLoading = false;
+        this.loginForm.enable();
+      }))
+      .subscribe({
+        next: () => {
+          const redirectTo = this.route.snapshot.queryParamMap.get('redirectTo');
+          this.router.navigateByUrl(redirectTo || '/citas');
+        },
+        error: (error: HttpErrorResponse) => {
+          const backendMessage = (error.error as { message?: string } | null)?.message;
+          this.errorMessage = backendMessage ?? 'No se pudo iniciar sesión. Verifica tus credenciales.';
+        },
+      });
   }
 
   getErrorMessage(fieldName: string): string {

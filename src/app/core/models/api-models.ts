@@ -108,10 +108,10 @@ export interface CitaMedicaResponse {
   fechaActualizacion: string;
 }
 
-export type UserRole = 'PACIENTE' | 'DOCTOR' | 'ADMIN' | 'RECEPCIONISTA';
+export type UserRole = string;
 
 export interface LoginRequest {
-  usernameOrEmail: string;
+  email: string;
   password: string;
 }
 
@@ -130,18 +130,19 @@ export interface MessageResponse {
 }
 
 export interface AuthUser {
-  usuarioId: number;
-  username: string;
+  id: number;
   email: string;
-  nombre: string;
-  apellido: string;
   rol: UserRole;
+  username?: string;
+  nombre?: string;
+  apellido?: string;
   estaActivo?: boolean;
 }
 
-export interface AuthResponse extends AuthUser {
+export interface AuthResponse {
   token: string;
   type?: string;
+  user: AuthUser;
 }
 
 export type AuthSession = AuthResponse;

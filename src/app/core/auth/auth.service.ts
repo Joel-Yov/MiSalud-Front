@@ -14,7 +14,7 @@ import { TokenStorageService } from './token-storage.service';
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private readonly http = inject(HttpClient);
-  private readonly basePath = '/api/auth';
+  private readonly basePath = '/api/v1/auth';
 
   readonly session: Signal<AuthSession | null>;
   readonly isAuthenticated: Signal<boolean>;
@@ -25,15 +25,7 @@ export class AuthService {
     this.session = this.tokenStorage.session;
     this.isAuthenticated = this.tokenStorage.isAuthenticated;
     this.token = this.tokenStorage.token;
-    this.currentUser = computed(() => {
-      const session = this.session();
-      if (!session) {
-        return null;
-      }
-
-      const { token: _token, type: _type, ...user } = session;
-      return user;
-    });
+    this.currentUser = computed(() => this.session()?.user ?? null);
   }
 
   login(payload: LoginRequest): Observable<AuthSession> {
@@ -52,7 +44,7 @@ export class AuthService {
       tap((user) => {
         const session = this.session();
         if (session) {
-          this.tokenStorage.setSession({ ...session, ...user });
+          this.tokenStorage.setSession({ ...session, user });
         }
       })
     );
@@ -64,7 +56,8 @@ export class AuthService {
 
   private normalizeResponse(response: AuthResponse): AuthSession {
     return {
-      ...response,
+      token: response.token,
+      user: response.user,
       type: response.type ?? 'Bearer',
     };
   }

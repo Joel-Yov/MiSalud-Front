@@ -21,6 +21,10 @@
         <p class="login-subtitle">Accede a tu cuenta para gestionar tus citas médicas</p>
       </div>
 
+      <div class="error-message" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+
       <!-- Formulario de Login -->
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
         <!-- Campo Email -->
