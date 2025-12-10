@@ -75,6 +75,10 @@
   @apply flex flex-col gap-6;
 }
 
+.mensaje-error-general {
+  @apply bg-red-500 bg-opacity-20 border border-red-500 text-red-400 px-4 py-3 rounded-lg text-sm;
+}
+
 .fila-campos {
   @apply flex flex-col md:flex-row gap-4;
 }

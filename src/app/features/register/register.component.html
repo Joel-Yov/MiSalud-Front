@@ -21,36 +21,68 @@
       <!-- Formulario de Registro -->
       <form [formGroup]="formularioRegistro" (ngSubmit)="enviarFormulario()" class="formulario-registro">
         
-        <!-- Nombres y Apellidos -->
+        <!-- Mensaje de Error General -->
+        <div class="mensaje-error-general" *ngIf="mensajeError">
+          {{ mensajeError }}
+        </div>
+
+        <!-- Primer y Segundo Nombre -->
         <div class="fila-campos">
           <div class="grupo-formulario medio">
-            <ion-item class="item-formulario" [class.error]="obtenerMensajeError('nombres')">
+            <ion-item class="item-formulario" [class.error]="obtenerMensajeError('primerNombre')">
               <ion-icon name="person-outline" slot="start" class="icono-input"></ion-icon>
               <ion-input
                 type="text"
-                placeholder="Nombres"
-                formControlName="nombres"
+                placeholder="Primer Nombre *"
+                formControlName="primerNombre"
                 class="input-formulario"
               ></ion-input>
             </ion-item>
-            <div class="mensaje-error" *ngIf="obtenerMensajeError('nombres')">
-              {{ obtenerMensajeError('nombres') }}
+            <div class="mensaje-error" *ngIf="obtenerMensajeError('primerNombre')">
+              {{ obtenerMensajeError('primerNombre') }}
             </div>
           </div>
 
           <div class="grupo-formulario medio">
-            <ion-item class="item-formulario" [class.error]="obtenerMensajeError('apellidos')">
+            <ion-item class="item-formulario">
               <ion-icon name="person-outline" slot="start" class="icono-input"></ion-icon>
               <ion-input
                 type="text"
-                placeholder="Apellidos"
-                formControlName="apellidos"
+                placeholder="Segundo Nombre (Opcional)"
+                formControlName="segundoNombre"
                 class="input-formulario"
               ></ion-input>
             </ion-item>
-            <div class="mensaje-error" *ngIf="obtenerMensajeError('apellidos')">
-              {{ obtenerMensajeError('apellidos') }}
+          </div>
+        </div>
+
+        <!-- Primer y Segundo Apellido -->
+        <div class="fila-campos">
+          <div class="grupo-formulario medio">
+            <ion-item class="item-formulario" [class.error]="obtenerMensajeError('primerApellido')">
+              <ion-icon name="person-outline" slot="start" class="icono-input"></ion-icon>
+              <ion-input
+                type="text"
+                placeholder="Primer Apellido *"
+                formControlName="primerApellido"
+                class="input-formulario"
+              ></ion-input>
+            </ion-item>
+            <div class="mensaje-error" *ngIf="obtenerMensajeError('primerApellido')">
+              {{ obtenerMensajeError('primerApellido') }}
             </div>
+          </div>
+
+          <div class="grupo-formulario medio">
+            <ion-item class="item-formulario">
+              <ion-icon name="person-outline" slot="start" class="icono-input"></ion-icon>
+              <ion-input
+                type="text"
+                placeholder="Segundo Apellido (Opcional)"
+                formControlName="segundoApellido"
+                class="input-formulario"
+              ></ion-input>
+            </ion-item>
           </div>
         </div>
 
@@ -126,47 +158,60 @@
           </div>
         </div>
 
-        <!-- Teléfono y Email -->
+        <!-- Teléfono y URL Foto -->
         <div class="fila-campos">
           <div class="grupo-formulario medio">
-            <ion-item class="item-formulario" [class.error]="obtenerMensajeError('telefono')">
+            <ion-item class="item-formulario" [class.error]="obtenerMensajeError('numeroTelefono')">
               <ion-icon name="call-outline" slot="start" class="icono-input"></ion-icon>
               <ion-input
                 type="tel"
-                placeholder="Teléfono"
-                formControlName="telefono"
+                placeholder="Teléfono *"
+                formControlName="numeroTelefono"
                 class="input-formulario"
               ></ion-input>
             </ion-item>
-            <div class="mensaje-error" *ngIf="obtenerMensajeError('telefono')">
-              {{ obtenerMensajeError('telefono') }}
+            <div class="mensaje-error" *ngIf="obtenerMensajeError('numeroTelefono')">
+              {{ obtenerMensajeError('numeroTelefono') }}
             </div>
           </div>
 
           <div class="grupo-formulario medio">
-            <ion-item class="item-formulario" [class.error]="obtenerMensajeError('email')">
-              <ion-icon name="mail-outline" slot="start" class="icono-input"></ion-icon>
+            <ion-item class="item-formulario">
+              <ion-icon name="person-outline" slot="start" class="icono-input"></ion-icon>
               <ion-input
-                type="email"
-                placeholder="Correo electrónico"
-                formControlName="email"
+                type="url"
+                placeholder="URL Foto Perfil (Opcional)"
+                formControlName="urlFotoPerfil"
                 class="input-formulario"
               ></ion-input>
             </ion-item>
-            <div class="mensaje-error" *ngIf="obtenerMensajeError('email')">
-              {{ obtenerMensajeError('email') }}
-            </div>
           </div>
         </div>
 
-        <!-- Contraseñas -->
+        <!-- Email y Contraseña -->
         <div class="grupo-formulario">
-          <ion-item class="item-formulario" [class.error]="obtenerMensajeError('contrasena')">
+          <ion-item class="item-formulario" [class.error]="obtenerMensajeError('email')">
+            <ion-icon name="mail-outline" slot="start" class="icono-input"></ion-icon>
+            <ion-input
+              type="email"
+              placeholder="Correo electrónico *"
+              formControlName="email"
+              class="input-formulario"
+            ></ion-input>
+          </ion-item>
+          <div class="mensaje-error" *ngIf="obtenerMensajeError('email')">
+            {{ obtenerMensajeError('email') }}
+          </div>
+        </div>
+
+        <!-- Contraseña -->
+        <div class="grupo-formulario">
+          <ion-item class="item-formulario" [class.error]="obtenerMensajeError('password')">
             <ion-icon name="lock-closed-outline" slot="start" class="icono-input"></ion-icon>
             <ion-input
               [type]="mostrarContrasena ? 'text' : 'password'"
-              placeholder="Contraseña"
-              formControlName="contrasena"
+              placeholder="Contraseña *"
+              formControlName="password"
               class="input-formulario"
             ></ion-input>
             <ion-button 
@@ -177,30 +222,8 @@
               <ion-icon [name]="mostrarContrasena ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
             </ion-button>
           </ion-item>
-          <div class="mensaje-error" *ngIf="obtenerMensajeError('contrasena')">
-            {{ obtenerMensajeError('contrasena') }}
-          </div>
-        </div>
-
-        <div class="grupo-formulario">
-          <ion-item class="item-formulario" [class.error]="obtenerMensajeError('confirmarContrasena')">
-            <ion-icon name="lock-closed-outline" slot="start" class="icono-input"></ion-icon>
-            <ion-input
-              [type]="mostrarConfirmarContrasena ? 'text' : 'password'"
-              placeholder="Confirmar contraseña"
-              formControlName="confirmarContrasena"
-              class="input-formulario"
-            ></ion-input>
-            <ion-button 
-              fill="clear" 
-              slot="end" 
-              (click)="alternarVisibilidadConfirmarContrasena()"
-              class="boton-alternar-contrasena">
-              <ion-icon [name]="mostrarConfirmarContrasena ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
-            </ion-button>
-          </ion-item>
-          <div class="mensaje-error" *ngIf="obtenerMensajeError('confirmarContrasena')">
-            {{ obtenerMensajeError('confirmarContrasena') }}
+          <div class="mensaje-error" *ngIf="obtenerMensajeError('password')">
+            {{ obtenerMensajeError('password') }}
           </div>
         </div>
 

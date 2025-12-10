@@ -130,13 +130,20 @@ export interface LoginRequest {
 }
 
 export interface RegistroRequest {
-  username: string;
+  persona: {
+    primerNombre: string;
+    segundoNombre?: string | null;
+    primerApellido: string;
+    segundoApellido?: string | null;
+    tipoDocumento: string;
+    numeroDocumento: string;
+    fechaNacimiento: string;
+    genero: string;
+    numeroTelefono: string;
+    urlFotoPerfil?: string | null;
+  };
   email: string;
   password: string;
-  confirmarPassword: string;
-  nombre: string;
-  apellido: string;
-  rol?: UserRole;
 }
 
 export interface MessageResponse {

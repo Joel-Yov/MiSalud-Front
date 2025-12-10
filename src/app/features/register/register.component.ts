@@ -6,6 +6,7 @@ import { HeaderComponent } from "../../shared/header/header.component";
 import { IonContent, IonButton, IonIcon, IonInput, IonItem, IonLabel, IonSelect, IonSelectOption } from "@ionic/angular/standalone";
 import { addIcons } from 'ionicons';
 import { eyeOutline, eyeOffOutline, mailOutline, lockClosedOutline, personOutline, callOutline, calendarOutline, medicalOutline, checkmarkCircleOutline } from 'ionicons/icons';
+import { AuthService } from '../../core/auth/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -17,23 +18,24 @@ import { eyeOutline, eyeOffOutline, mailOutline, lockClosedOutline, personOutlin
 export class RegisterComponent implements OnInit {
   formularioRegistro: FormGroup;
   mostrarContrasena = false;
-  mostrarConfirmarContrasena = false;
   cargandoRegistro = false;
+  mensajeError = '';
   
   tiposDocumento = [
-    { valor: 'dni', texto: 'DNI' },
-    { valor: 'pasaporte', texto: 'Pasaporte' },
+    { valor: 'DNI', texto: 'DNI' },
+    { valor: 'PASAPORTE', texto: 'Pasaporte' }
   ];
   
   generos = [
-    { valor: 'masculino', texto: 'Masculino' },
-    { valor: 'femenino', texto: 'Femenino' },
-    { valor: 'otro', texto: 'Otro' }
+    { valor: 'MASCULINO', texto: 'Masculino' },
+    { valor: 'FEMENINO', texto: 'Femenino' },
+    { valor: 'OTRO', texto: 'Otro' }
   ];
 
   constructor(
     private constructorFormulario: FormBuilder,
-    private enrutador: Router
+    private enrutador: Router,
+    private authService: AuthService
   ) {
     addIcons({
       eyeOutline,
@@ -48,19 +50,19 @@ export class RegisterComponent implements OnInit {
     });
 
     this.formularioRegistro = this.constructorFormulario.group({
-      nombres: ['', [Validators.required, Validators.minLength(2)]],
-      apellidos: ['', [Validators.required, Validators.minLength(2)]],
-      tipoDocumento: ['', [Validators.required]],
-      numeroDocumento: ['', [Validators.required, Validators.pattern(/^[0-9]+$/)]],
+      primerNombre: ['', [Validators.required, Validators.minLength(2)]],
+      segundoNombre: [''],
+      primerApellido: ['', [Validators.required, Validators.minLength(2)]],
+      segundoApellido: [''],
+      tipoDocumento: ['DNI', [Validators.required]],
+      numeroDocumento: ['', [Validators.required, Validators.minLength(8)]],
       fechaNacimiento: ['', [Validators.required, this.validadorEdadMinima]],
       genero: ['', [Validators.required]],
-      telefono: ['', [Validators.required, Validators.pattern(/^[0-9]{9}$/)]],
+      numeroTelefono: ['', [Validators.required, Validators.pattern(/^[0-9]{9}$/)]],
+      urlFotoPerfil: [''],
       email: ['', [Validators.required, Validators.email]],
-      contrasena: ['', [Validators.required, Validators.minLength(8), this.validadorContrasenaFuerte]],
-      confirmarContrasena: ['', [Validators.required]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
       aceptarTerminos: [false, [Validators.requiredTrue]]
-    }, {
-      validators: this.validadorContrasenasCoincidir
     });
   }
 
@@ -83,56 +85,47 @@ export class RegisterComponent implements OnInit {
     return edad >= 18 ? null : { edadMinima: true };
   }
 
-  // Validador para contraseña fuerte
-  validadorContrasenaFuerte(control: AbstractControl) {
-    if (!control.value) return null;
-    
-    const contrasena = control.value;
-    const tieneMinuscula = /[a-z]/.test(contrasena);
-    const tieneMayuscula = /[A-Z]/.test(contrasena);
-    const tieneNumero = /[0-9]/.test(contrasena);
-    const tieneCaracterEspecial = /[!@#$%^&*(),.?\":{}|<>]/.test(contrasena);
-    
-    const esValida = tieneMinuscula && tieneMayuscula && tieneNumero && tieneCaracterEspecial;
-    
-    return esValida ? null : { contrasenaDebil: true };
-  }
-
-  // Validador para que las contraseñas coincidan
-  validadorContrasenasCoincidir(formulario: AbstractControl) {
-    const contrasena = formulario.get('contrasena')?.value;
-    const confirmarContrasena = formulario.get('confirmarContrasena')?.value;
-    
-    return contrasena === confirmarContrasena ? null : { contrasenasNoCoinciden: true };
-  }
-
   alternarVisibilidadContrasena() {
     this.mostrarContrasena = !this.mostrarContrasena;
-  }
-
-  alternarVisibilidadConfirmarContrasena() {
-    this.mostrarConfirmarContrasena = !this.mostrarConfirmarContrasena;
   }
 
   async enviarFormulario() {
     if (this.formularioRegistro.valid) {
       this.cargandoRegistro = true;
+      this.mensajeError = '';
       
-      try {
-        // Simular registro (aquí iría la lógica real de registro)
-        console.log('Datos de registro:', this.formularioRegistro.value);
-        
-        // Simular delay de la API
-        await new Promise(resolve => setTimeout(resolve, 3000));
-        
-        // Redirigir al login después del registro exitoso
-        this.enrutador.navigate(['/login']);
-        
-      } catch (error) {
-        console.error('Error en registro:', error);
-      } finally {
-        this.cargandoRegistro = false;
-      }
+      const formValue = this.formularioRegistro.value;
+      
+      const registroData = {
+        persona: {
+          primerNombre: formValue.primerNombre,
+          segundoNombre: formValue.segundoNombre || null,
+          primerApellido: formValue.primerApellido,
+          segundoApellido: formValue.segundoApellido || null,
+          tipoDocumento: formValue.tipoDocumento,
+          numeroDocumento: formValue.numeroDocumento,
+          fechaNacimiento: formValue.fechaNacimiento,
+          genero: formValue.genero,
+          numeroTelefono: formValue.numeroTelefono,
+          urlFotoPerfil: formValue.urlFotoPerfil || null
+        },
+        email: formValue.email,
+        password: formValue.password
+      };
+      
+      this.authService.register(registroData).subscribe({
+        next: (response) => {
+          console.log('Registro exitoso:', response);
+          this.cargandoRegistro = false;
+          // Redirigir al login después del registro exitoso
+          this.enrutador.navigate(['/login']);
+        },
+        error: (error) => {
+          console.error('Error en registro:', error);
+          this.mensajeError = error.error?.message || 'Error al registrar. Por favor, intente nuevamente.';
+          this.cargandoRegistro = false;
+        }
+      });
     } else {
       // Marcar todos los campos como tocados para mostrar errores
       Object.keys(this.formularioRegistro.controls).forEach(clave => {
@@ -155,26 +148,16 @@ export class RegisterComponent implements OnInit {
         return `Debe tener al menos ${longitudMinima} caracteres`;
       }
       if (campo.errors['pattern']) {
-        if (nombreCampo === 'numeroDocumento') {
-          return 'Solo se permiten números';
-        }
-        if (nombreCampo === 'telefono') {
+        if (nombreCampo === 'numeroTelefono') {
           return 'El teléfono debe tener 9 dígitos';
         }
       }
       if (campo.errors['edadMinima']) {
         return 'Debes ser mayor de 18 años';
       }
-      if (campo.errors['contrasenaDebil']) {
-        return 'Debe contener mayúscula, minúscula, número y carácter especial';
-      }
       if (campo.errors['requiredTrue']) {
         return 'Debes aceptar los términos y condiciones';
       }
-    }
-    
-    if (this.formularioRegistro.errors?.['contrasenasNoCoinciden'] && nombreCampo === 'confirmarContrasena' && campo?.touched) {
-      return 'Las contraseñas no coinciden';
     }
     
     return '';
@@ -182,16 +165,18 @@ export class RegisterComponent implements OnInit {
 
   private obtenerEtiquetaCampo(nombreCampo: string): string {
     const etiquetas: { [key: string]: string } = {
-      'nombres': 'Nombres',
-      'apellidos': 'Apellidos',
+      'primerNombre': 'Primer nombre',
+      'segundoNombre': 'Segundo nombre',
+      'primerApellido': 'Primer apellido',
+      'segundoApellido': 'Segundo apellido',
       'tipoDocumento': 'Tipo de documento',
       'numeroDocumento': 'Número de documento',
       'fechaNacimiento': 'Fecha de nacimiento',
       'genero': 'Género',
-      'telefono': 'Teléfono',
+      'numeroTelefono': 'Teléfono',
+      'urlFotoPerfil': 'URL de foto',
       'email': 'Email',
-      'contrasena': 'Contraseña',
-      'confirmarContrasena': 'Confirmar contraseña'
+      'password': 'Contraseña'
     };
     return etiquetas[nombreCampo] || nombreCampo;
   }
