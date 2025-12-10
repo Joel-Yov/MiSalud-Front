@@ -1,6 +1,6 @@
 // Header Styles
 .doctors-header {
-  @apply mb-8 text-center;
+  @apply mb-8;
 }
 
 .doctors-title {
@@ -12,7 +12,7 @@
 }
 
 .search-container {
-  @apply max-w-md mx-auto;
+  @apply max-w-md;
 }
 
 .custom-searchbar {
@@ -197,4 +197,12 @@
   .doctors-grid {
     @apply grid-cols-3;
   }
+}
+
+.crear-doctor-btn {
+  @apply mt-4 h-12 font-semibold;
+  --background: linear-gradient(135deg, theme('colors.teal.500'), theme('colors.teal.600'));
+  --background-hover: linear-gradient(135deg, theme('colors.teal.600'), theme('colors.teal.700'));
+  --color: white;
+  --border-radius: 12px;
 }

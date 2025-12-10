@@ -2,17 +2,23 @@
 
 <ion-content class="p-5">
 <!-- Header -->
-<div class="doctors-header">
-  <h1 class="doctors-title">Nuestros Doctores</h1>
-  <p class="doctors-subtitle">Profesionales altamente calificados para tu cuidado médico</p>
-  
-  <!-- Search Bar -->
-  <div class="search-container">
-    <ion-searchbar 
-      placeholder="Buscar por nombre o especialidad..."
-      class="custom-searchbar">
-    </ion-searchbar>
+<div class="doctors-header flex justify-between items-center px-[1%]">
+  <div>
+    <h1 class="doctors-title">Nuestros Doctores</h1>
+    <p class="doctors-subtitle">Profesionales altamente calificados para tu cuidado médico</p>
+    
+    <!-- Search Bar -->
+    <div class="search-container">
+      <ion-searchbar 
+        placeholder="Buscar por nombre o especialidad..."
+        class="custom-searchbar">
+      </ion-searchbar>
+    </div>
   </div>
+  <ion-button class="crear-doctor-btn" (click)="abrirModalCrearDoctor()">
+    <fa-icon [icon]="['fas', 'user-doctor']" class="text-[25px]"></fa-icon>
+    CONTRATAR DOCTOR
+  </ion-button>
 </div>
 
 <!-- Doctors Grid -->

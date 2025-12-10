@@ -38,13 +38,27 @@ export interface EspecializacionResponse {
 }
 
 export interface DoctorRequest {
-  primerNombre: string;
-  segundoNombre?: string | null;
-  primerApellido: string;
-  segundoApellido: string;
-  sedeId: number;
-  turnoId: number;
-  especializacionIds?: number[];
+  persona: {
+    primerNombre: string;
+    segundoNombre?: string | null;
+    primerApellido: string;
+    segundoApellido?: string | null;
+    tipoDocumento: string;
+    numeroDocumento: string;
+    fechaNacimiento: string;
+    genero: string;
+    numeroTelefono: string;
+    urlFotoPerfil?: string | null;
+  };
+  colegiaturaNumero: string;
+  especialidadId: number;
+  consultorioId: number;
+  email: string;
+  password: string;
+  diasDisponibles: string[];
+  horaInicioJornada: string;
+  horaFinJornada: string;
+  precioConsulta: number;
 }
 
 export interface DoctorResponse {
