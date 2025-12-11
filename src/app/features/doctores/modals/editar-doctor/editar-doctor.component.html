@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Crear Nuevo Doctor</ion-title>
+    <ion-title>Editar Doctor</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="cerrarModal()">
         <ion-icon name="close"></ion-icon>
@@ -10,7 +10,14 @@
 </ion-header>
 
 <ion-content class="contenedor-principal">
-  <form [formGroup]="doctorForm" (ngSubmit)="guardarDoctor()" class="formulario-doctor">
+  <!-- Loading State -->
+  <div *ngIf="cargando" class="loading-state">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Cargando datos del doctor...</p>
+  </div>
+
+  <!-- Formulario -->
+  <form *ngIf="!cargando" [formGroup]="doctorForm" (ngSubmit)="guardarCambios()" class="formulario-doctor">
     
     <!-- Sección: Datos Personales -->
     <div class="seccion-formulario">
@@ -81,9 +88,6 @@
             >
               <option *ngFor="let tipo of tiposDocumento" [value]="tipo">{{ tipo }}</option>
             </select>
-            <span *ngIf="mostrarError('persona.tipoDocumento')" class="mensaje-error">
-              {{ obtenerMensajeError('persona.tipoDocumento') }}
-            </span>
           </div>
 
           <div class="campo">
@@ -110,9 +114,6 @@
               formControlName="fechaNacimiento"
               class="input-texto"
             />
-            <span *ngIf="mostrarError('persona.fechaNacimiento')" class="mensaje-error">
-              {{ obtenerMensajeError('persona.fechaNacimiento') }}
-            </span>
           </div>
 
           <div class="campo">
@@ -125,9 +126,6 @@
               <option value="">Seleccione género</option>
               <option *ngFor="let genero of generos" [value]="genero">{{ genero }}</option>
             </select>
-            <span *ngIf="mostrarError('persona.genero')" class="mensaje-error">
-              {{ obtenerMensajeError('persona.genero') }}
-            </span>
           </div>
         </div>
 
@@ -165,17 +163,14 @@
       <h2 class="titulo-seccion">Datos Profesionales</h2>
       
       <div class="campo">
-        <label for="colegiaturaNumero">Número de Colegiatura *</label>
+        <label for="numeroColegiatura">Número de Colegiatura</label>
         <input 
-          id="colegiaturaNumero"
+          id="numeroColegiatura"
           type="text" 
-          formControlName="colegiaturaNumero"
-          placeholder="CMP-123456"
+          formControlName="numeroColegiatura"
+          placeholder="CMP-123456 (opcional)"
           class="input-texto"
         />
-        <span *ngIf="mostrarError('colegiaturaNumero')" class="mensaje-error">
-          {{ obtenerMensajeError('colegiaturaNumero') }}
-        </span>
       </div>
 
       <div class="campo-completo">
@@ -185,7 +180,7 @@
             <input 
               type="number" 
               [formControlName]="i"
-              placeholder="ID de Especialidad (Ej: 3)"
+              placeholder="ID de Especialidad"
               class="input-texto"
               min="1"
             />
@@ -207,121 +202,6 @@
           + Agregar Especialidad
         </button>
       </div>
-
-      <div class="grupo-campos">
-        <div class="campo">
-          <label for="consultorioId">Consultorio ID *</label>
-          <input 
-            id="consultorioId"
-            type="number" 
-            formControlName="consultorioId"
-            placeholder="Ej: 5"
-            class="input-texto"
-            min="1"
-          />
-          <span *ngIf="mostrarError('consultorioId')" class="mensaje-error">
-            {{ obtenerMensajeError('consultorioId') }}
-          </span>
-        </div>
-
-        <div class="campo">
-          <label for="precioConsulta">Precio de Consulta *</label>
-          <input 
-            id="precioConsulta"
-            type="number" 
-            formControlName="precioConsulta"
-            placeholder="120.00"
-            class="input-texto"
-            min="0"
-            step="0.01"
-          />
-          <span *ngIf="mostrarError('precioConsulta')" class="mensaje-error">
-            {{ obtenerMensajeError('precioConsulta') }}
-          </span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Sección: Credenciales -->
-    <div class="seccion-formulario">
-      <h2 class="titulo-seccion">Credenciales de Acceso</h2>
-      
-      <div class="grupo-campos">
-        <div class="campo">
-          <label for="email">Email *</label>
-          <input 
-            id="email"
-            type="email" 
-            formControlName="email"
-            placeholder="doctor@misalud.com"
-            class="input-texto"
-          />
-          <span *ngIf="mostrarError('email')" class="mensaje-error">
-            {{ obtenerMensajeError('email') }}
-          </span>
-        </div>
-
-        <div class="campo">
-          <label for="password">Contraseña *</label>
-          <input 
-            id="password"
-            type="password" 
-            formControlName="password"
-            placeholder="Mínimo 6 caracteres"
-            class="input-texto"
-          />
-          <span *ngIf="mostrarError('password')" class="mensaje-error">
-            {{ obtenerMensajeError('password') }}
-          </span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Sección: Horarios -->
-    <div class="seccion-formulario">
-      <h2 class="titulo-seccion">Horarios de Atención</h2>
-      
-      <div class="campo-completo">
-        <label>Días Disponibles *</label>
-        <div class="contenedor-checkboxes" formArrayName="diasDisponibles">
-          <label *ngFor="let dia of diasSemana; let i = index" class="etiqueta-checkbox">
-            <input 
-              type="checkbox" 
-              [formControlName]="i"
-              class="input-checkbox"
-            />
-            <span class="texto-checkbox">{{ dia }}</span>
-          </label>
-        </div>
-      </div>
-
-      <div class="grupo-campos">
-        <div class="campo">
-          <label for="horaInicioJornada">Hora Inicio *</label>
-          <input 
-            id="horaInicioJornada"
-            type="time" 
-            formControlName="horaInicioJornada"
-            class="input-texto"
-          />
-          <span *ngIf="mostrarError('horaInicioJornada')" class="mensaje-error">
-            {{ obtenerMensajeError('horaInicioJornada') }}
-          </span>
-        </div>
-
-        <div class="campo">
-          <label for="horaFinJornada">Hora Fin *</label>
-          <input 
-            id="horaFinJornada"
-            type="time" 
-            formControlName="horaFinJornada"
-            class="input-texto"
-          />
-          <span *ngIf="mostrarError('horaFinJornada')" class="mensaje-error">
-            {{ obtenerMensajeError('horaFinJornada') }}
-          </span>
-        </div>
-      </div>
     </div>
 
     <!-- Botones de acción -->
@@ -339,7 +219,7 @@
         class="boton boton-guardar"
         [disabled]="enviando"
       >
-        {{ enviando ? 'Guardando...' : 'Guardar Doctor' }}
+        {{ enviando ? 'Guardando...' : 'Guardar Cambios' }}
       </button>
     </div>
 

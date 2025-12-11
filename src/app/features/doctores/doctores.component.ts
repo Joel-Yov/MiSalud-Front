@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DoctorService, DoctorCard } from './doctor.service';
-import { IonSpinner, IonIcon, IonSearchbar, IonButton, IonContent, ModalController } from "@ionic/angular/standalone";
+import { IonSpinner, IonIcon, IonSearchbar, IonButton, IonContent, ModalController, AlertController } from "@ionic/angular/standalone";
 import { FooterComponent } from "../../shared/footer/footer.component";
 import { HeaderComponent } from "../../shared/header/header.component";
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
-import { faHospitalUser, faStars, faHospital, faClockDesk, faUserDoctor, faCalendar } from '@fortawesome/pro-solid-svg-icons';
+import { faHospitalUser, faStars, faHospital, faClockDesk, faUserDoctor, faCalendar, faFilePen, faTrash } from '@fortawesome/pro-solid-svg-icons';
 import { CrearDoctorComponent } from './modals/crear-doctor/crear-doctor.component';
+import { EditarDoctorComponent } from './modals/editar-doctor/editar-doctor.component';
 
 @Component({
   selector: 'app-doctores',
@@ -23,10 +24,11 @@ export class DoctoresComponent implements OnInit {
   constructor(
     private doctorService: DoctorService, 
     private library: FaIconLibrary,
-    private modalController: ModalController
+    private modalController: ModalController,
+    private alertController: AlertController
   ) {
     // Agregar iconos de FontAwesome a la librería
-    library.addIcons(faHospitalUser, faStars, faHospital, faClockDesk, faUserDoctor, faCalendar);
+    library.addIcons(faHospitalUser, faStars, faHospital, faClockDesk, faUserDoctor, faCalendar, faFilePen, faTrash);
   }
 
   ngOnInit() {
@@ -35,7 +37,7 @@ export class DoctoresComponent implements OnInit {
 
   cargarDoctores() {
     this.loading = true;
-    this.doctorService.obtenerDoctoresEstaticos().subscribe({
+    this.doctorService.listarDoctorCards().subscribe({
       next: (doctores) => {
         this.doctores = doctores;
         this.loading = false;
@@ -63,5 +65,66 @@ export class DoctoresComponent implements OnInit {
     if (data && data.doctorCreado) {
       this.cargarDoctores();
     }
+  }
+
+  async abrirEditarDoctorModal(doctorId: number) {
+    const modal = await this.modalController.create({
+      component: EditarDoctorComponent,
+      componentProps: {
+        doctorId: doctorId
+      }
+    });
+
+    await modal.present();
+
+    const { data } = await modal.onWillDismiss();
+    if (data && data.doctorActualizado) {
+      this.cargarDoctores();
+    }
+  }
+
+  async eliminarDoctor(doctorId: number) {
+    const alert = await this.alertController.create({
+      header: '¿Eliminar Doctor?',
+      message: '¿Estás seguro de que deseas eliminar este doctor? Esta acción no se puede deshacer.',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+        },
+        {
+          text: 'Eliminar',
+          role: 'destructive',
+          handler: () => {
+            this.confirmarEliminacion(doctorId);
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
+  confirmarEliminacion(doctorId: number) {
+    this.doctorService.eliminar(doctorId).subscribe({
+      next: () => {
+        console.log('Doctor eliminado exitosamente');
+        this.cargarDoctores();
+      },
+      error: (error) => {
+        console.error('Error al eliminar doctor:', error);
+        this.mostrarErrorEliminacion();
+      }
+    });
+  }
+
+  async mostrarErrorEliminacion() {
+    const alert = await this.alertController.create({
+      header: 'Error',
+      message: 'No se pudo eliminar el doctor. Por favor, intenta nuevamente.',
+      buttons: ['OK']
+    });
+
+    await alert.present();
   }
 }

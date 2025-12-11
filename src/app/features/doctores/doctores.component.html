@@ -26,10 +26,17 @@
   <div *ngFor="let doctor of doctores" class="doctor-card">
     <!-- Card Top Section with gradient background -->
     <div class="card-top">
-      <!-- Favorite button -->
-      <ion-button fill="clear" class="favorite-btn">
-        <ion-icon name="star" class="favorite-icon"></ion-icon>
-      </ion-button>
+      <div class="action-buttons flex justify-end">
+          <!-- BOTON PARA EDITAR/REPROGRAMAR LA CITA -->
+          <ion-button fill="clear" class="edit-btn" (click)="abrirEditarDoctorModal(doctor.doctorId)">
+            <fa-icon [icon]="['fas', 'file-pen']" class="text-[25px]"></fa-icon>
+          </ion-button>
+
+          <!-- BOTON PARA ELIMINAR LA CITA -->
+          <ion-button fill="clear" class="delete-btn" (click)="eliminarDoctor(doctor.doctorId)">
+            <fa-icon [icon]="['fas', 'trash']" class="text-[25px]"></fa-icon>
+          </ion-button>
+        </div>
       
       <!-- Doctor Image -->
       <div class="doctor-image-container">
@@ -85,6 +92,14 @@
           <div class="detail-item">
             <fa-icon [icon]="['fas', 'user-doctor']" class="text-[25px]"></fa-icon>
             <span>{{ doctor.experiencia }}</span>
+          </div>
+          <div class="detail-item">
+            <fa-icon [icon]="['fas', 'user-doctor']" class="text-[25px]"></fa-icon>
+            <span>Colegiatura: {{ doctor.numeroColegiatura }}</span>
+          </div>
+          <div class="detail-item">
+            <fa-icon [icon]="['fas', 'user-doctor']" class="text-[25px]"></fa-icon>
+            <span>Doctor: {{ doctor.doctorId }}</span>
           </div>
         </div>
         

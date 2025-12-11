@@ -51,7 +51,7 @@ export interface DoctorRequest {
     urlFotoPerfil?: string | null;
   };
   colegiaturaNumero: string;
-  especialidadId: number;
+  especialidadIds: number[];
   consultorioId: number;
   email: string;
   password: string;
@@ -61,18 +61,40 @@ export interface DoctorRequest {
   precioConsulta: number;
 }
 
+export interface DoctorUpdateRequest {
+  persona: {
+    primerNombre: string;
+    segundoNombre?: string | null;
+    primerApellido: string;
+    segundoApellido?: string | null;
+    tipoDocumento: string;
+    numeroDocumento: string;
+    fechaNacimiento: string;
+    genero: string;
+    numeroTelefono: string;
+    urlFotoPerfil?: string | null;
+  };
+  numeroColegiatura?: string | null;
+  especialidadIds: number[];
+}
+
 export interface DoctorResponse {
-  doctorId: number;
-  primerNombre: string;
-  segundoNombre?: string | null;
-  primerApellido: string;
-  segundoApellido: string;
-  sedeId: number;
-  turnoId: number;
-  estaActivo?: boolean;
-  fechaCreacion: string;
-  fechaActualizacion: string;
-  especializacionIds: number[];
+  id: number;
+  persona: {
+    id: number;
+    primerNombre: string;
+    segundoNombre?: string | null;
+    primerApellido: string;
+    segundoApellido?: string | null;
+    tipoDocumento: string;
+    numeroDocumento: string;
+    fechaNacimiento: string;
+    genero: string;
+    numeroTelefono: string;
+    urlFotoPerfil?: string | null;
+  };
+  numeroColegiatura?: string | null;
+  especialidadIds: number[] | string[]; //Si logras que en el backend te traigas las especialidades en vez de los IDS por eso le dejo la alternativa de string[]
 }
 
 export interface PacienteRequest {

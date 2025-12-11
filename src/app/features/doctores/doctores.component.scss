@@ -206,3 +206,17 @@
   --color: white;
   --border-radius: 12px;
 }
+
+.edit-btn {
+  --color: theme('colors.blue.400');
+  --background: transparent;
+  --background-hover: rgba(59, 130, 246, 0.1);
+  @apply h-8 w-8;
+}
+
+.delete-btn {
+  --color: theme('colors.red.400');
+  --background: transparent;
+  --background-hover: rgba(239, 68, 68, 0.1);
+  @apply h-8 w-8;
+}

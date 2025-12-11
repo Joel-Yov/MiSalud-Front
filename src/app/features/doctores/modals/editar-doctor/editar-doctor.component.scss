@@ -2,6 +2,18 @@
   @apply p-4 bg-gray-50;
 }
 
+.loading-state {
+  @apply flex flex-col items-center justify-center py-12;
+  
+  ion-spinner {
+    @apply mb-4;
+  }
+  
+  p {
+    @apply text-gray-600;
+  }
+}
+
 .formulario-doctor {
   @apply max-w-4xl mx-auto;
 }
@@ -42,22 +54,6 @@ label {
 
 .mensaje-error {
   @apply text-xs text-red-600 mt-1;
-}
-
-.contenedor-checkboxes {
-  @apply grid grid-cols-2 md:grid-cols-4 gap-3 mt-2;
-}
-
-.etiqueta-checkbox {
-  @apply flex items-center space-x-2 cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors;
-}
-
-.input-checkbox {
-  @apply w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 cursor-pointer;
-}
-
-.texto-checkbox {
-  @apply text-sm text-gray-700 select-none;
 }
 
 .especialidad-item {
