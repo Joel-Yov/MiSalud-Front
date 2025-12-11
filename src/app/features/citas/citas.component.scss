@@ -1,14 +1,46 @@
 // Header Styles
 .citas-header {
-  @apply mb-8 text-center flex justify-between items-center mx-[5%];
+  @apply mb-8 flex justify-between items-start flex-wrap gap-4 mx-[5%];
+}
+
+.filters {
+  @apply grid gap-3 mb-6 px-[5%];
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  align-items: end;
+}
+
+.filter-group {
+  @apply flex flex-col gap-1 text-sm text-gray-300;
+}
+
+.filter-group label {
+  @apply text-xs uppercase tracking-wide text-gray-400;
+}
+
+.filter-group select,
+.filter-group input {
+  @apply bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-gray-100;
+}
+
+.filter-group select:focus,
+.filter-group input:focus {
+  @apply outline-none border-teal-500 ring-1 ring-teal-500;
+}
+
+.text-filter {
+  @apply col-span-2;
+}
+
+.filter-actions {
+  @apply flex justify-end items-center h-full;
 }
 
 .citas-title {
-  @apply text-3xl font-bold text-white mb-2;
+  @apply text-3xl font-bold text-white mb-1;
 }
 
 .citas-subtitle {
-  @apply text-lg text-gray-300 mb-6;
+  @apply text-base text-gray-300;
 }
 
 // Botón Crear Cita
@@ -22,79 +54,162 @@
 
 // Grid Layout
 .citas-grid {
-  @apply space-y-4 p-4;
+  @apply grid gap-4 p-4;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
 }
 
 // Cita Card
 .cita-card {
-  @apply bg-gray-800 rounded-xl shadow-lg p-4 border border-gray-600;
-  transition: all 0.3s ease;
-  
+  @apply bg-gray-900 rounded-2xl shadow-lg p-5 border border-gray-700 text-white relative overflow-hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+
   &:hover {
-    @apply shadow-xl;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+    @apply border-gray-500;
   }
 }
 
 // Header Row
 .cita-header {
-  @apply flex items-center justify-between mb-4;
+  @apply flex items-center justify-between mb-4 gap-3;
+}
+
+.header-meta {
+  @apply grid grid-cols-2 gap-2 flex-1 items-stretch;
+}
+
+.cita-content {
+  @apply grid grid-cols-2 gap-4 mb-4 items-start;
+}
+
+.card-body {
+  @apply flex flex-col gap-3;
+}
+
+.meta-row {
+  @apply grid grid-cols-2 gap-3;
+}
+
+.meta-item {
+  @apply flex items-start gap-2 bg-gray-800 border border-gray-700 rounded-xl px-3 py-2;
+}
+
+.info-label {
+  @apply text-xs text-gray-400 block;
+}
+
+.info-value {
+  @apply text-sm text-gray-200 font-semibold;
+}
+
+.pill {
+  @apply inline-flex px-2 py-1 rounded-full bg-gray-700 text-gray-200 text-xs font-semibold;
+}
+
+.price-row {
+  @apply grid grid-cols-3 gap-2;
+}
+
+.price-chip {
+  @apply bg-gray-800 border border-gray-700 rounded-xl px-3 py-2 flex flex-col gap-1;
+}
+
+.price-chip .chip-label {
+  @apply text-xs text-gray-400;
+}
+
+.price-chip .chip-value {
+  @apply text-sm font-semibold text-gray-200;
+}
+
+.price-chip.total {
+  @apply border border-blue-500 bg-gray-800;
+}
+
+.price-chip.total .chip-value {
+  @apply text-blue-300;
+}
+
+.insurance-row {
+  @apply flex items-center gap-2 text-sm text-gray-200 bg-gray-800 border border-gray-700 rounded-xl px-3 py-2 flex-wrap;
+}
+
+.separator {
+  @apply text-gray-500 px-1;
 }
 
 // Time Section
 .time-section {
-  @apply flex items-center gap-2 p-5 bg-[#3F6F71] rounded-lg	;
+  @apply flex items-center gap-3 px-4 py-3 rounded-xl border border-gray-700 bg-gray-800 w-full h-full;
 }
 
 .time-icon {
-  @apply text-white text-lg;
+  @apply text-teal-300 text-lg;
 }
 
 .time-info {
-  @apply flex flex-col text-white;
+  @apply flex items-center gap-2 text-gray-100 whitespace-nowrap;
 }
 
 .hora {
-  @apply text-lg font-bold text-white;
+  @apply text-lg font-semibold text-white leading-tight;
 }
 
 .duracion {
-  @apply text-xs text-white;
+  @apply text-xs text-teal-200;
+}
+
+.dot {
+  @apply text-gray-500 text-base leading-none;
 }
 
 // Status Badges
 .status-badges {
-  @apply flex gap-2;
+  @apply flex gap-2 items-center justify-center px-3 py-2 rounded-xl bg-gray-800 border border-gray-700 w-full h-full;
+  white-space: nowrap;
 }
 
-.badge-programada {
-  @apply bg-gray-700 text-white text-xs px-2 py-1 rounded border border-gray-600;
+.status-badges ion-badge {
+  @apply w-full flex items-center justify-center text-center;
 }
 
-.badge-confirmada {
-  @apply bg-green-700 text-white text-xs px-2 py-1 rounded border border-green-600;
-}
-
-.badge-cancelada {
-  @apply bg-red-700 text-white text-xs px-2 py-1 rounded border border-red-600;
-}
+.badge-programada { @apply text-xs px-2.5 py-1 rounded-full border font-semibold; background: rgba(59, 130, 246, 0.12); color: #c7d2fe; border-color: rgba(59, 130, 246, 0.32); }
+.badge-confirmada { @apply text-xs px-2.5 py-1 rounded-full border font-semibold; background: rgba(16, 185, 129, 0.14); color: #befae3; border-color: rgba(16, 185, 129, 0.3); }
+.badge-cancelada { @apply text-xs px-2.5 py-1 rounded-full border font-semibold; background: rgba(248, 113, 113, 0.14); color: #fecdd3; border-color: rgba(248, 113, 113, 0.32); }
+.badge-completada { @apply text-xs px-2.5 py-1 rounded-full border font-semibold; background: rgba(59, 130, 246, 0.1); color: #dbeafe; border-color: rgba(59, 130, 246, 0.25); }
+.badge-pendiente { @apply text-xs px-2.5 py-1 rounded-full border font-semibold; background: rgba(234, 179, 8, 0.14); color: #fef9c3; border-color: rgba(234, 179, 8, 0.32); }
+.badge-no_asistio { @apply text-xs px-2.5 py-1 rounded-full border font-semibold; background: rgba(248, 180, 180, 0.16); color: #fee2e2; border-color: rgba(239, 68, 68, 0.32); }
 
 // Botones de Acción
 .action-buttons {
-  @apply flex gap-1;
+  @apply flex gap-2;
 }
 
 .edit-btn {
-  --color: theme('colors.blue.400');
+  --color: #60a5fa;
   --background: transparent;
-  --background-hover: rgba(59, 130, 246, 0.1);
-  @apply h-8 w-8;
+  --background-hover: rgba(59, 130, 246, 0.12);
+  --border-color: rgba(59, 130, 246, 0.4);
+  --border-width: 1px;
+  @apply h-9 w-9 rounded-full border border-slate-700 flex items-center justify-center;
+
+  &:hover {
+    border-color: rgba(59, 130, 246, 0.6);
+  }
 }
 
 .delete-btn {
-  --color: theme('colors.red.400');
+  --color: #fca5a5;
   --background: transparent;
-  --background-hover: rgba(239, 68, 68, 0.1);
-  @apply h-8 w-8;
+  --background-hover: rgba(239, 68, 68, 0.12);
+  --border-color: rgba(239, 68, 68, 0.4);
+  --border-width: 1px;
+  @apply h-9 w-9 rounded-full border border-slate-700 flex items-center justify-center;
+
+  &:hover {
+    border-color: rgba(239, 68, 68, 0.65);
+  }
 }
 
 .badge-completada {
@@ -112,6 +227,7 @@
 }
 
 // Content Row (Two Columns)
+
 .cita-content {
   @apply grid grid-cols-2 gap-4 mb-4;
 }
@@ -137,24 +253,22 @@
 
 .patient-name,
 .doctor-name {
-  @apply text-sm font-medium text-white mb-1 leading-tight;
+  @apply text-sm font-semibold text-white mb-1 leading-tight;
 }
 
-.patient-doc {
-  @apply text-xs text-gray-400;
-}
-
+.patient-doc,
 .doctor-specialty {
-  @apply text-xs text-gray-400;
+  @apply text-xs text-gray-300;
 }
 
 // Location Row
+
 .location-row {
   @apply mb-3 border-t border-gray-700 pt-3;
 }
 
 .location-info {
-  @apply flex items-center gap-2 text-xs text-gray-300 flex-wrap;
+  @apply flex items-center gap-3 text-sm text-gray-200 flex-wrap;
 }
 
 .location-icon {
@@ -170,7 +284,7 @@
 }
 
 .motivo-text {
-  @apply font-medium text-white;
+  @apply font-semibold text-white;
 }
 
 // Confirmation Row
@@ -179,7 +293,7 @@
 }
 
 .confirmation-text {
-  @apply text-xs text-gray-400;
+  @apply text-sm text-gray-200;
 }
 
 // Ticket Section
@@ -188,12 +302,14 @@
 }
 
 .ticket-btn {
-  @apply bg-gray-700 text-white font-medium rounded-lg border border-gray-600;
-  --background: theme('colors.gray.700');
+  @apply text-white font-semibold rounded-xl border border-gray-600 bg-gray-800;
+  --background: transparent;
   --color: white;
-  --background-hover: theme('colors.gray.600');
-  height: 40px;
-  font-size: 0.8rem;
+  height: 44px;
+  font-size: 0.9rem;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+
+  &:hover { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(0,0,0,0.25); }
 }
 
 // Loading State
@@ -230,7 +346,7 @@
 // Responsive Design
 @media (max-width: 640px) {
   .citas-grid {
-    @apply space-y-3 p-2;
+    @apply p-2;
   }
   
   .cita-card {
@@ -248,13 +364,21 @@
   .cita-content {
     @apply grid-cols-1 gap-3;
   }
+
+  .meta-row {
+    @apply grid-cols-1;
+  }
+
+  .price-row {
+    @apply grid-cols-1;
+  }
   
   .cita-header {
     @apply flex-col items-start gap-2;
   }
   
   .status-badges {
-    @apply self-start;
+    @apply self-start mt-2;
   }
 }
 

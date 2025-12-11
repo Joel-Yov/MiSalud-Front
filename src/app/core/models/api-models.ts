@@ -119,9 +119,14 @@ export interface PacienteResponse {
   fechaActualizacion: string;
 }
 
-export type CitaMedicaEstado = 'PENDIENTE' | 'CONFIRMADA' | 'CANCELADA' | 'COMPLETADA' | 'NO_ASISTIO';
+export type EstadoCita = 'PENDIENTE' | 'CONFIRMADA' | 'CANCELADA' | 'COMPLETADA' | 'NO_ASISTIO';
 
-export type CitaMedicaTipo = 'PRESENCIAL' | 'TELECONSULTA' | 'DOMICILIARIA';
+export type TipoAtencion = 'PRESENCIAL' | 'TELECONSULTA' | 'DOMICILIARIA';
+
+// Mantener compatibilidad con el resto del código que usa los alias anteriores
+export type CitaMedicaEstado = EstadoCita;
+
+export type CitaMedicaTipo = TipoAtencion;
 
 export interface CitaRequest {
   doctorId: number;
@@ -162,6 +167,9 @@ export interface CitaResponse {
   seguroId?: number | null;
   nombreSeguro?: string | null;
   copagoEstimado?: number | null;
+  nombreCompletoPaciente?: string | null;
+  nombreCompletoDoctor?: string | null;
+  nombreConsultorio?: string | null;
 }
 
 export interface CitaMedicaResponse {

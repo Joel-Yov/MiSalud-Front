@@ -1,14 +1,14 @@
 .footer-container {
-  background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #06b6d4 100%);
+  background: #0f172a;
   color: white;
-  padding: 2rem 2rem 1rem;
+  padding: 2rem;
   min-height: 120px;
 }
 
 .footer-content {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   max-width: 1200px;
   margin: 0 auto;
   gap: 3rem;
@@ -22,12 +22,27 @@
 
 .footer-left {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: flex-start;
+
+  @media (max-width: 768px) {
+    align-items: center;
+    text-align: center;
+  }
   
   .footer-logo {
     display: flex;
     align-items: center;
     gap: 0.75rem;
     margin-bottom: 1rem;
+    width: 100%;
+    justify-content: flex-start;
+
+    @media (max-width: 768px) {
+      justify-content: center;
+    }
     
     .logo-footer {
       height: 45px;
@@ -43,6 +58,13 @@
   }
   
   .slogan {
+    width: 100%;
+    text-align: left;
+
+    @media (max-width: 768px) {
+      text-align: center;
+    }
+
     .main-slogan {
       font-size: 1.1rem;
       font-weight: 500;
@@ -61,6 +83,15 @@
 
 .footer-right {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.75rem;
+
+  @media (max-width: 768px) {
+    align-items: center;
+    text-align: center;
+  }
   
   .social-title {
     margin-bottom: 1rem;
@@ -77,9 +108,11 @@
     display: flex;
     gap: 1rem;
     flex-wrap: wrap;
+    justify-content: flex-end;
     
     @media (max-width: 768px) {
       justify-content: center;
+      align-items: center;
     }
     
     .social-link {

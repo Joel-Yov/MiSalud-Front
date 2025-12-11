@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { ModalController, AlertController } from '@ionic/angular';
 import { HeaderComponent } from "../../shared/header/header.component";
 import { FooterComponent } from "../../shared/footer/footer.component";
@@ -11,24 +12,28 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { faPen, faTrash } from '@fortawesome/pro-solid-svg-icons';
 import { CitaMedicaService } from './cita-medica.service';
-import { CitaResponse } from '../../core/models/api-models';
+import { CitaResponse, EstadoCita, TipoAtencion } from '../../core/models/api-models';
 import { AuthService } from '../../core/auth/auth.service';
 
 export interface CitaCard {
-  citaId: number;
+  id: number;
   pacienteId: number;
   doctorId: number;
   consultorioId: number;
   fechaCita: string;
   horaCita: string;
   duracionMinutos: number;
-  estado: string;
-  tipoAtencion: string;
+  estado: EstadoCita;
+  tipoAtencion: TipoAtencion;
   precioBase: number;
   montoDescuento: number;
   costoNetoCita: number;
-  nombreSeguro?: string;
-  copagoEstimado?: number;
+  nombreSeguro?: string | null;
+  copagoEstimado?: number | null;
+  nombreCompletoPaciente?: string | null;
+  nombreCompletoDoctor?: string | null;
+  nombreConsultorio?: string | null;
+  seguroId?: number | null;
 }
 
 @Component({
@@ -36,12 +41,16 @@ export interface CitaCard {
   templateUrl: './citas.component.html',
   styleUrls: ['./citas.component.scss'],
   standalone: true,
-  imports: [CommonModule, HeaderComponent, FooterComponent, IonContent, IonButton, IonIcon, IonBadge, IonSpinner, FontAwesomeModule],
+  imports: [CommonModule, FormsModule, HeaderComponent, FooterComponent, IonContent, IonButton, IonIcon, IonBadge, IonSpinner, FontAwesomeModule],
   providers: [ModalController]
 })
 export class CitasComponent implements OnInit {
   citas: CitaCard[] = [];
   loading = false;
+  filtroEstado: EstadoCita | 'TODOS' = 'TODOS';
+  filtroTipo: TipoAtencion | 'TODOS' = 'TODOS';
+  filtroTexto = '';
+  esPaciente = false;
 
   constructor(
     private modalController: ModalController, 
@@ -74,6 +83,7 @@ export class CitasComponent implements OnInit {
   cargarCitas() {
     this.loading = true;
     const user = this.authService.currentUser();
+    this.esPaciente = user?.rol === 'PACIENTE';
     
     // NOTA: El patrón es que pacienteId = user.id - 1
     // Ejemplo: user.id = 3 → pacienteId = 2, user.id = 5 → pacienteId = 4
@@ -110,7 +120,7 @@ export class CitasComponent implements OnInit {
 
   transformarCitaResponse(cita: CitaResponse): CitaCard {
     return {
-      citaId: cita.id,
+      id: cita.id,
       pacienteId: cita.pacienteId,
       doctorId: cita.doctorId,
       consultorioId: cita.consultorioId,
@@ -122,9 +132,26 @@ export class CitasComponent implements OnInit {
       precioBase: cita.precioBase,
       montoDescuento: cita.montoDescuento,
       costoNetoCita: cita.costoNetoCita,
-      nombreSeguro: cita.nombreSeguro || undefined,
-      copagoEstimado: cita.copagoEstimado || undefined
+      nombreSeguro: cita.nombreSeguro ?? null,
+      copagoEstimado: cita.copagoEstimado ?? null,
+      nombreCompletoPaciente: cita.nombreCompletoPaciente ?? null,
+      nombreCompletoDoctor: cita.nombreCompletoDoctor ?? null,
+      nombreConsultorio: cita.nombreConsultorio ?? null,
+      seguroId: cita.seguroId ?? null
     };
+  }
+
+  get citasFiltradas(): CitaCard[] {
+    const termino = this.filtroTexto.trim().toLowerCase();
+    return this.citas.filter((cita) => {
+      const coincideEstado = this.filtroEstado === 'TODOS' || cita.estado === this.filtroEstado;
+      const coincideTipo = this.filtroTipo === 'TODOS' || cita.tipoAtencion === this.filtroTipo;
+      const camposBusqueda = this.esPaciente
+        ? [cita.nombreCompletoDoctor, cita.nombreConsultorio]
+        : [cita.nombreCompletoPaciente, cita.nombreCompletoDoctor, cita.nombreConsultorio];
+      const coincideTexto = !termino || camposBusqueda.some((campo) => (campo || '').toLowerCase().includes(termino));
+      return coincideEstado && coincideTipo && coincideTexto;
+    });
   }
 
   async generarQr(cita: CitaCard) {
@@ -146,7 +173,7 @@ export class CitasComponent implements OnInit {
     const modal = await this.modalController.create({
       component: CrearCitaComponent,
       componentProps: {
-        citaId: cita.citaId,
+        citaId: cita.id,
         doctorId: cita.doctorId,
         modoEdicion: true
       }
@@ -207,7 +234,13 @@ export class CitasComponent implements OnInit {
   }
 
   trackByCitaId(index: number, cita: CitaCard): number {
-    return cita.citaId;
+    return cita.id;
+  }
+
+  limpiarFiltros() {
+    this.filtroEstado = 'TODOS';
+    this.filtroTipo = 'TODOS';
+    this.filtroTexto = '';
   }
 
   obtenerNombreEstado(estado: string): string {
@@ -219,6 +252,24 @@ export class CitasComponent implements OnInit {
       'NO_ASISTIO': 'No Asistió'
     };
     return estados[estado] || estado;
+  }
+
+  formatearHora(hora?: string | null): string {
+    if (!hora) return 'Hora no disponible';
+    return hora.slice(0, 5);
+  }
+
+  formatearFecha(fecha?: string | null): string {
+    if (!fecha) return 'Fecha no disponible';
+    const date = new Date(fecha);
+    if (Number.isNaN(date.getTime())) {
+      return fecha;
+    }
+    return date.toLocaleDateString('es-PE', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric'
+    });
   }
 
 }
