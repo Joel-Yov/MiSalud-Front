@@ -95,6 +95,7 @@ export interface DoctorResponse {
   };
   numeroColegiatura?: string | null;
   especialidadIds: number[] | string[]; //Si logras que en el backend te traigas las especialidades en vez de los IDS por eso le dejo la alternativa de string[]
+  especialidades?: string[]; // Opcional si el backend ya entrega los nombres
 }
 
 export interface PacienteRequest {

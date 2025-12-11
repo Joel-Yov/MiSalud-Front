@@ -40,7 +40,7 @@
       
       <!-- Doctor Image -->
       <div class="doctor-image-container">
-        <img [src]="doctor.imagen" [alt]="doctor.nombre" class="doctor-image" />
+        <img [src]="doctor.foto" [alt]="doctor.nombre" class="doctor-image" (error)="onImageError($event)" />
       </div>
     </div>
     
@@ -49,57 +49,28 @@
       <!-- Doctor Info -->
       <div class="doctor-info">
         <h3 class="doctor-name">{{ doctor.nombre }}</h3>
-        <p class="doctor-specialty">{{ doctor.especialidad }}</p>
-        
-        <!-- Stats Row -->
-        <div class="stats-row">
-          <div class="stat-item">
-            <fa-icon [icon]="['fas', 'hospital-user']" class="text-[25px]"></fa-icon>
-            <div class="stat-content">
-              <span class="stat-label">Pacientes</span>
-              <span class="stat-value">{{ doctor.pacientesAtendidos }}+</span>
-            </div>
-          </div>
-          
-          <div class="stat-item">
-            <fa-icon [icon]="['fas', 'stars']" class="text-[25px]"></fa-icon>
-            <div class="stat-content">
-              <span class="stat-label">Calificación</span>
-              <span class="stat-value">{{ doctor.calificacion }}/5.0</span>
-            </div>
-          </div>
+        <p class="doctor-specialty">{{ doctor.especialidadPrincipal }}</p>
+
+        <div class="specialties" *ngIf="doctor.especialidades?.length">
+          <span class="specialty-badge" *ngFor="let esp of doctor.especialidades">{{ esp }}</span>
         </div>
-        
-        <!-- Certifications -->
-        <div class="certifications">
-          <span *ngFor="let cert of doctor.certificaciones" class="certification-badge">
-            {{ cert }}
-          </span>
-        </div>
-        
-        <!-- Location and Schedule -->
+
         <div class="doctor-details">
           <div class="detail-item">
-            <fa-icon [icon]="['fas', 'hospital']" class="text-[25px]"></fa-icon>
-            <span>{{ doctor.consultorio }}</span>
-          </div>
-          
-          <div class="detail-item">
-            <fa-icon [icon]="['fas', 'clock-desk']" class="text-[25px]"></fa-icon>
-            <span>{{ doctor.horarios[0] }}</span>
-          </div>
-          
-          <div class="detail-item">
-            <fa-icon [icon]="['fas', 'user-doctor']" class="text-[25px]"></fa-icon>
-            <span>{{ doctor.experiencia }}</span>
+            <fa-icon [icon]="['fas', 'user-doctor']" class="text-[22px]"></fa-icon>
+            <span>Colegiatura: {{ doctor.numeroColegiatura || 'No disponible' }}</span>
           </div>
           <div class="detail-item">
-            <fa-icon [icon]="['fas', 'user-doctor']" class="text-[25px]"></fa-icon>
-            <span>Colegiatura: {{ doctor.numeroColegiatura }}</span>
+            <fa-icon [icon]="['fas', 'hospital-user']" class="text-[22px]"></fa-icon>
+            <span>{{ (doctor.tipoDocumento && doctor.numeroDocumento) ? (doctor.tipoDocumento + ' ' + doctor.numeroDocumento) : 'No disponible' }}</span>
           </div>
           <div class="detail-item">
-            <fa-icon [icon]="['fas', 'user-doctor']" class="text-[25px]"></fa-icon>
-            <span>Doctor: {{ doctor.doctorId }}</span>
+            <fa-icon [icon]="['fas', 'phone']" class="text-[22px]"></fa-icon>
+            <span>{{ doctor.numeroTelefono || 'No disponible' }}</span>
+          </div>
+          <div class="detail-item">
+            <fa-icon [icon]="['fas', 'user']" class="text-[22px]"></fa-icon>
+            <span>{{ doctor.genero || 'No disponible' }}</span>
           </div>
         </div>
         

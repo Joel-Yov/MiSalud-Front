@@ -34,7 +34,7 @@
 // Doctor Card
 .doctor-card {
   @apply bg-gray-800 rounded-2xl shadow-xl transform transition-all duration-300 hover:scale-105 hover:shadow-2xl overflow-hidden;
-  min-height: 520px;
+  min-height: 420px;
   border: 1px solid #374151;
 }
 
@@ -80,38 +80,12 @@
   @apply text-teal-400 text-sm font-medium mb-6;
 }
 
-// Stats Section
-.stats-row {
-  @apply flex justify-between items-center mb-6 bg-gray-700 rounded-lg p-4;
+.specialties {
+  @apply flex flex-wrap justify-center gap-2 mb-5;
 }
 
-.stat-item {
-  @apply flex items-center gap-3;
-}
-
-.stat-icon {
-  @apply text-teal-400 text-lg;
-}
-
-.stat-content {
-  @apply text-left;
-}
-
-.stat-label {
-  @apply block text-xs text-gray-400 mb-1;
-}
-
-.stat-value {
-  @apply text-sm font-semibold text-white;
-}
-
-// Certifications
-.certifications {
-  @apply flex flex-wrap justify-center gap-2 mb-6;
-}
-
-.certification-badge {
-  @apply bg-gray-700 text-xs px-3 py-1 rounded-full text-gray-300 border border-gray-600;
+.specialty-badge {
+  @apply bg-gray-700 text-xs px-3 py-1 rounded-full text-gray-200 border border-gray-600;
 }
 
 // Doctor Details

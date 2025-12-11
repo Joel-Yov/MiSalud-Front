@@ -6,7 +6,7 @@ import { FooterComponent } from "../../shared/footer/footer.component";
 import { HeaderComponent } from "../../shared/header/header.component";
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
-import { faHospitalUser, faStars, faHospital, faClockDesk, faUserDoctor, faCalendar, faFilePen, faTrash } from '@fortawesome/pro-solid-svg-icons';
+import { faHospitalUser, faUserDoctor, faCalendar, faFilePen, faTrash, faPhone, faUser } from '@fortawesome/pro-solid-svg-icons';
 import { CrearDoctorComponent } from './modals/crear-doctor/crear-doctor.component';
 import { EditarDoctorComponent } from './modals/editar-doctor/editar-doctor.component';
 import { AuthService } from '../../core/auth/auth.service';
@@ -22,6 +22,7 @@ import { CrearCitaComponent } from '../citas/modals/crear-cita/crear-cita.compon
 export class DoctoresComponent implements OnInit {
   doctores: DoctorCard[] = [];
   loading = false;
+  readonly fallbackFoto = 'https://via.placeholder.com/200?text=Doctor';
 
   constructor(
     private doctorService: DoctorService, 
@@ -31,7 +32,7 @@ export class DoctoresComponent implements OnInit {
     private authService: AuthService
   ) {
     // Agregar iconos de FontAwesome a la librería
-    library.addIcons(faHospitalUser, faStars, faHospital, faClockDesk, faUserDoctor, faCalendar, faFilePen, faTrash);
+    library.addIcons(faHospitalUser, faUserDoctor, faCalendar, faFilePen, faTrash, faPhone, faUser);
   }
 
   // VALIDACIONES PARA MOSTRAR O NO FLUJOS ACORDE A LOS ROLES
@@ -151,5 +152,10 @@ export class DoctoresComponent implements OnInit {
     });
 
     await alert.present();
+  }
+
+  onImageError(event: Event) {
+    const img = event.target as HTMLImageElement;
+    img.src = this.fallbackFoto;
   }
 }
