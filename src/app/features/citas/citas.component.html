@@ -7,12 +7,6 @@
       <h1 class="citas-title">Mis Citas Médicas</h1>
       <p class="citas-subtitle">Gestiona y consulta tus próximas citas médicas</p>
     </div>
-
-    <!-- BOTON PARA EL FORMULARIO DE CREAR CITA NO TIENE ESTILOS AHORITA,LO AGREGO AQUI PARA QUE NO SE ME OLVIDE XD  -->
-    <ion-button expand="block" class="crear-cita-btn" (click)="abrirCrearCitaModal()">
-      <ion-icon name="add-circle-outline" slot="start"></ion-icon>
-      Agendar Nueva Cita
-    </ion-button>
   </div>
 
   <!-- Citas Grid -->
@@ -25,15 +19,14 @@
           <div class="time-section">
           <ion-icon name="time-outline" class="time-icon"></ion-icon>
           <div class="time-info">
-            <span class="hora">{{ cita.hora }}</span>
-            <span class="duracion">{{ cita.fechaCompleta }}</span>
+            <span class="hora">{{ cita.horaCita }}</span>
+            <span class="duracion">{{ cita.fechaCita }}</span>
           </div>
         </div>
 
         <!-- Estado de la cita -->
         <div class="status-badges border-white border-2 rounded-lg p-2">
-          <ion-badge class="badge-programada" *ngIf="cita.estado === 'programada'">Programada</ion-badge>
-          <ion-badge class="badge-confirmada" *ngIf="cita.estado === 'confirmada'">Confirmada</ion-badge>
+          <ion-badge [class]="'badge-' + cita.estado.toLowerCase()">{{ obtenerNombreEstado(cita.estado) }}</ion-badge>
         </div>
          </div>
 
@@ -58,19 +51,19 @@
           <div class="patient-info">
             <ion-icon name="person-outline" class="info-icon"></ion-icon>
             <div class="info-details">
-              <h3 class="patient-name">{{ cita.paciente.nombre }}</h3>
-              <p class="patient-doc">{{ cita.paciente.documento }}</p>
+              <h3 class="patient-name">Paciente ID: {{ cita.pacienteId }}</h3>
+              <p class="patient-doc">Doctor ID: {{ cita.doctorId }}</p>
             </div>
           </div>
         </div>
 
-        <!-- INFORMACIÓN DEL DOCTOR -->
+        <!-- INFORMACIÓN DEL CONSULTORIO -->
         <div class="right-column">
           <div class="doctor-info">
             <ion-icon name="medical-outline" class="info-icon"></ion-icon>
             <div class="info-details">
-              <h3 class="doctor-name">{{ cita.doctor.nombre }}</h3>
-              <p class="doctor-specialty">{{ cita.doctor.especialidad }}</p>
+              <h3 class="doctor-name">Consultorio: {{ cita.consultorioId }}</h3>
+              <p class="doctor-specialty">{{ cita.tipoAtencion }}</p>
             </div>
           </div>
         </div>
@@ -79,16 +72,16 @@
 
       <div class="location-row">
         <div class="location-info">
-          <ion-icon name="location-outline" class="location-icon"></ion-icon>
-          <span class="location-text">{{ cita.consultorio }} - {{ cita.piso }}</span>
-          <span class="motivo-separator">Motivo:</span>
-          <span class="motivo-text">{{ cita.motivo }}</span>
+          <ion-icon name="cash-outline" class="location-icon"></ion-icon>
+          <span class="location-text">Precio: S/ {{ cita.precioBase }}</span>
+          <span class="motivo-separator">Descuento: S/ {{ cita.montoDescuento }}</span>
+          <span class="motivo-text">Total: S/ {{ cita.costoNetoCita }}</span>
         </div>
       </div>
 
 
-      <div class="confirmation-row">
-        <p class="confirmation-text">{{ cita.confirmadoPor }} vía {{ cita.tipoConfirmacion }}</p>
+      <div class="confirmation-row" *ngIf="cita.nombreSeguro">
+        <p class="confirmation-text">Seguro: {{ cita.nombreSeguro }} - Copago: S/ {{ cita.copagoEstimado }}</p>
       </div>
       </div>
 

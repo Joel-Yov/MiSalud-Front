@@ -1,3 +1,4 @@
+import { AuthService } from './../../core/auth/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { IonHeader, IonToolbar, IonButton } from "@ionic/angular/standalone";
@@ -11,7 +12,12 @@ import { IonHeader, IonToolbar, IonButton } from "@ionic/angular/standalone";
 })
 export class HeaderComponent  implements OnInit {
 
-  constructor() { }
+  constructor(private authService: AuthService) { }
+
+  get esRolPaciente(): boolean {
+    const user = this.authService.currentUser();
+    return user?.rol === 'PACIENTE';
+  }
 
   ngOnInit() {}
 

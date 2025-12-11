@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ModalController } from '@ionic/angular';
+import { ModalController, AlertController } from '@ionic/angular';
 import { HeaderComponent } from "../../shared/header/header.component";
 import { FooterComponent } from "../../shared/footer/footer.component";
 import { IonContent, IonButton, IonIcon, IonBadge, IonSpinner } from "@ionic/angular/standalone";
@@ -10,25 +10,25 @@ import { timeOutline, personOutline, medicalOutline, locationOutline, qrCodeOutl
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { faPen, faTrash } from '@fortawesome/pro-solid-svg-icons';
+import { CitaMedicaService } from './cita-medica.service';
+import { CitaResponse } from '../../core/models/api-models';
+import { AuthService } from '../../core/auth/auth.service';
 
 export interface CitaCard {
   citaId: number;
-  hora: string;
-  fechaCompleta: string;
-  paciente: {
-    nombre: string;
-    documento: string;
-  };
-  doctor: {
-    nombre: string;
-    especialidad: string;
-  };
-  consultorio: string;
-  piso: string;
-  motivo: string;
-  estado: 'programada' | 'confirmada' | 'cancelada' | 'completada';
-  confirmadoPor: string;
-  tipoConfirmacion: string;
+  pacienteId: number;
+  doctorId: number;
+  consultorioId: number;
+  fechaCita: string;
+  horaCita: string;
+  duracionMinutos: number;
+  estado: string;
+  tipoAtencion: string;
+  precioBase: number;
+  montoDescuento: number;
+  costoNetoCita: number;
+  nombreSeguro?: string;
+  copagoEstimado?: number;
 }
 
 @Component({
@@ -43,86 +43,13 @@ export class CitasComponent implements OnInit {
   citas: CitaCard[] = [];
   loading = false;
 
-  private citasEstaticas: CitaCard[] = [
-    {
-      citaId: 1,
-      hora: '09:00',
-      fechaCompleta: '10:00',
-      paciente: {
-        nombre: 'Juan Pérez García',
-        documento: 'Doc: 12345678'
-      },
-      doctor: {
-        nombre: 'Dra. María González López',
-        especialidad: 'Medicina General'
-      },
-      consultorio: 'Consultorio 101',
-      piso: 'Piso 1',
-      motivo: 'Control médico rutinario',
-      estado: 'confirmada',
-      confirmadoPor: 'Recepcionista Ana',
-      tipoConfirmacion: 'TELÉFONO'
-    },
-    {
-      citaId: 2,
-      hora: '11:30',
-      fechaCompleta: '12:00',
-      paciente: {
-        nombre: 'Ana Martínez Silva',
-        documento: 'Doc: 87654321'
-      },
-      doctor: {
-        nombre: 'Dr. Carlos Rodríguez Silva',
-        especialidad: 'Cardiología'
-      },
-      consultorio: 'Consultorio 205',
-      piso: 'Piso 2',
-      motivo: 'Revisión cardiológica',
-      estado: 'programada',
-      confirmadoPor: 'Pendiente confirmación',
-      tipoConfirmacion: 'EMAIL'
-    },
-    {
-      citaId: 3,
-      hora: '14:15',
-      fechaCompleta: '14:45',
-      paciente: {
-        nombre: 'Luis Roberto Vega',
-        documento: 'Doc: 11223344'
-      },
-      doctor: {
-        nombre: 'Dra. Patricia López Herrera',
-        especialidad: 'Dermatología'
-      },
-      consultorio: 'Consultorio 301',
-      piso: 'Piso 3',
-      motivo: 'Consulta dermatológica',
-      estado: 'confirmada',
-      confirmadoPor: 'Recepcionista Carlos',
-      tipoConfirmacion: 'PRESENCIAL'
-    },
-    {
-      citaId: 4,
-      hora: '16:00',
-      fechaCompleta: '16:30',
-      paciente: {
-        nombre: 'Carmen Ruiz Morales',
-        documento: 'Doc: 55667788'
-      },
-      doctor: {
-        nombre: 'Dr. Roberto Silva Vega',
-        especialidad: 'Traumatología'
-      },
-      consultorio: 'Consultorio 105',
-      piso: 'Piso 1',
-      motivo: 'Control post-operatorio',
-      estado: 'programada',
-      confirmadoPor: 'Pendiente confirmación',
-      tipoConfirmacion: 'SMS'
-    }
-  ];
-
-  constructor(private modalController: ModalController, private library: FaIconLibrary) {
+  constructor(
+    private modalController: ModalController, 
+    private library: FaIconLibrary,
+    private citaMedicaService: CitaMedicaService,
+    private authService: AuthService,
+    private alertController: AlertController
+  ) {
     addIcons({
       timeOutline,
       personOutline,
@@ -146,11 +73,58 @@ export class CitasComponent implements OnInit {
 
   cargarCitas() {
     this.loading = true;
-    // Simular carga de datos
-    setTimeout(() => {
-      this.citas = this.citasEstaticas;
-      this.loading = false;
-    }, 1000);
+    const user = this.authService.currentUser();
+    
+    // NOTA: El patrón es que pacienteId = user.id - 1
+    // Ejemplo: user.id = 3 → pacienteId = 2, user.id = 5 → pacienteId = 4
+    const pacienteId = user?.id ? user.id - 1 : null;
+    
+    if (pacienteId) {
+      // Usar el endpoint específico para traer solo las citas del paciente
+      this.citaMedicaService.listar().subscribe({
+        next: (todasLasCitas) => {
+          // Filtrar solo las citas del paciente logueado
+          const citasDelPaciente = todasLasCitas.filter(cita => cita.pacienteId === pacienteId);
+          this.citas = citasDelPaciente.map(this.transformarCitaResponse);
+          this.loading = false;
+        },
+        error: (error) => {
+          console.error('Error al cargar citas:', error);
+          this.loading = false;
+        }
+      });
+    } else {
+      // Si no hay usuario logueado, mostrar todas las citas (temporal)
+      this.citaMedicaService.listar().subscribe({
+        next: (citas) => {
+          this.citas = citas.map(this.transformarCitaResponse);
+          this.loading = false;
+        },
+        error: (error) => {
+          console.error('Error al cargar citas:', error);
+          this.loading = false;
+        }
+      });
+    }
+  }
+
+  transformarCitaResponse(cita: CitaResponse): CitaCard {
+    return {
+      citaId: cita.id,
+      pacienteId: cita.pacienteId,
+      doctorId: cita.doctorId,
+      consultorioId: cita.consultorioId,
+      fechaCita: cita.fechaCita,
+      horaCita: cita.horaCita,
+      duracionMinutos: cita.duracionMinutos,
+      estado: cita.estado,
+      tipoAtencion: cita.tipoAtencion,
+      precioBase: cita.precioBase,
+      montoDescuento: cita.montoDescuento,
+      costoNetoCita: cita.costoNetoCita,
+      nombreSeguro: cita.nombreSeguro || undefined,
+      copagoEstimado: cita.copagoEstimado || undefined
+    };
   }
 
   async generarQr(cita: CitaCard) {
@@ -166,115 +140,84 @@ export class CitasComponent implements OnInit {
     await modal.present();
   }
 
-  async abrirCrearCitaModal() {
-    const { CrearCitaComponent } = await import('./modals/crear-cita/crear-cita.component');
-    
-    const modal = await this.modalController.create({
-      component: CrearCitaComponent,
-      componentProps: {
-        modoEdicion: false
-      },
-      cssClass: 'cita-modal',
-      backdropDismiss: false
-    });
-    
-    await modal.present();
-    
-    const { data } = await modal.onWillDismiss();
-    if (data && data.accion === 'crear') {
-      console.log('Nueva cita creada:', data.datos);
-      // Aquí añadirías la nueva cita a la lista
-      this.agregarNuevaCita(data.datos);
-    }
-  }
-
   async abrirEditarCitaModal(cita: CitaCard) {
     const { CrearCitaComponent } = await import('./modals/crear-cita/crear-cita.component');
     
     const modal = await this.modalController.create({
       component: CrearCitaComponent,
       componentProps: {
-        modoEdicion: true,
-        citaParaEditar: cita
-      },
-      cssClass: 'cita-modal',
-      backdropDismiss: false
+        citaId: cita.citaId,
+        modoEdicion: true
+      }
     });
-    
+
     await modal.present();
-    
+
     const { data } = await modal.onWillDismiss();
-    if (data && data.accion === 'editar') {
-      console.log('Cita editada:', data.datos);
-      // Aquí actualizarías la cita en la lista
-      this.actualizarCita(data.datos);
+    if (data && data.citaActualizada) {
+      console.log('Cita actualizada exitosamente');
+      this.cargarCitas();
     }
   }
 
-  eliminarCita(citaId: number) {
-    // Simular eliminación
-    console.log('Eliminando cita:', citaId);
-    this.citas = this.citas.filter(cita => cita.citaId !== citaId);
+  async eliminarCita(citaId: number) {
+    const alert = await this.alertController.create({
+      header: '¿Eliminar Cita?',
+      message: '¿Estás seguro de que deseas eliminar esta cita? Esta acción no se puede deshacer.',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+        },
+        {
+          text: 'Eliminar',
+          role: 'destructive',
+          handler: () => {
+            this.confirmarEliminacion(citaId);
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
 
-  private agregarNuevaCita(nuevaCita: any) {
-    // Simular agregar nueva cita
-    const citaCompleta: CitaCard = {
-      citaId: nuevaCita.id,
-      hora: nuevaCita.hora,
-      fechaCompleta: this.formatearFecha(nuevaCita.fecha),
-      paciente: nuevaCita.paciente,
-      doctor: nuevaCita.doctor,
-      consultorio: nuevaCita.consultorio,
-      piso: nuevaCita.piso,
-      motivo: nuevaCita.motivo,
-      estado: 'programada',
-      confirmadoPor: 'Pendiente de confirmación',
-      tipoConfirmacion: 'app'
-    };
-    
-    this.citas.unshift(citaCompleta);
-  }
-
-  private actualizarCita(citaEditada: any) {
-    // Simular actualización de cita
-    const index = this.citas.findIndex(c => c.citaId === citaEditada.id);
-    if (index !== -1) {
-      this.citas[index] = {
-        ...this.citas[index],
-        hora: citaEditada.hora,
-        fechaCompleta: this.formatearFecha(citaEditada.fecha),
-        paciente: citaEditada.paciente,
-        doctor: citaEditada.doctor,
-        consultorio: citaEditada.consultorio,
-        piso: citaEditada.piso,
-        motivo: citaEditada.motivo
-      };
-    }
-  }
-
-  private formatearFecha(fechaISO: string): string {
-    const fecha = new Date(fechaISO);
-    return fecha.toLocaleDateString('es-ES', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
+  confirmarEliminacion(citaId: number) {
+    this.citaMedicaService.eliminar(citaId).subscribe({
+      next: () => {
+        console.log('Cita eliminada exitosamente');
+        this.cargarCitas();
+      },
+      error: (error) => {
+        console.error('Error al eliminar cita:', error);
+        this.mostrarErrorEliminacion();
+      }
     });
   }
 
-  getEstadoBadgeClass(estado: string): string {
-    switch (estado) {
-      case 'confirmada': return 'badge-confirmada';
-      case 'programada': return 'badge-programada';
-      case 'cancelada': return 'badge-cancelada';
-      case 'completada': return 'badge-completada';
-      default: return 'badge-programada';
-    }
+  async mostrarErrorEliminacion() {
+    const alert = await this.alertController.create({
+      header: 'Error',
+      message: 'No se pudo eliminar la cita. Por favor, intenta nuevamente.',
+      buttons: ['OK']
+    });
+
+    await alert.present();
   }
 
   trackByCitaId(index: number, cita: CitaCard): number {
     return cita.citaId;
+  }
+
+  obtenerNombreEstado(estado: string): string {
+    const estados: { [key: string]: string } = {
+      'PENDIENTE': 'Pendiente',
+      'CONFIRMADA': 'Confirmada',
+      'CANCELADA': 'Cancelada',
+      'COMPLETADA': 'Completada',
+      'NO_ASISTIO': 'No Asistió'
+    };
+    return estados[estado] || estado;
   }
 
 }

@@ -10,6 +10,7 @@ import { faHospitalUser, faStars, faHospital, faClockDesk, faUserDoctor, faCalen
 import { CrearDoctorComponent } from './modals/crear-doctor/crear-doctor.component';
 import { EditarDoctorComponent } from './modals/editar-doctor/editar-doctor.component';
 import { AuthService } from '../../core/auth/auth.service';
+import { CrearCitaComponent } from '../citas/modals/crear-cita/crear-cita.component';
 
 @Component({
   selector: 'app-doctores',
@@ -33,10 +34,15 @@ export class DoctoresComponent implements OnInit {
     library.addIcons(faHospitalUser, faStars, faHospital, faClockDesk, faUserDoctor, faCalendar, faFilePen, faTrash);
   }
 
-  // Getter para verificar si el usuario tiene rol OPERACIONES
+  // VALIDACIONES PARA MOSTRAR O NO FLUJOS ACORDE A LOS ROLES
   get esRolOperaciones(): boolean {
     const user = this.authService.currentUser();
     return user?.rol === 'OPERACIONES';
+  }
+
+  get esRolPaciente(): boolean {
+    const user = this.authService.currentUser();
+    return user?.rol === 'PACIENTE';
   }
 
   ngOnInit() {
@@ -57,9 +63,20 @@ export class DoctoresComponent implements OnInit {
     });
   }
 
-  agendarCita(doctor: DoctorCard) {
-    console.log('Agendar cita con:', doctor.nombre);
-    // Aquí implementarías la lógica para agendar cita
+  async agendarCita(doctorId: number) {
+    const modal = await this.modalController.create({
+      component: CrearCitaComponent,
+      componentProps: {
+        doctorId: doctorId
+      }
+    });
+
+    await modal.present();
+
+    const { data } = await modal.onWillDismiss();
+    if (data && data.citaCreada) {
+      console.log('Cita creada exitosamente');
+    }
   }
 
   async abrirModalCrearDoctor(){

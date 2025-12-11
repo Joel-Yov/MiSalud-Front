@@ -1,119 +1,120 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { ModalController } from '@ionic/angular';
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonIcon, IonInput, IonItem, IonSelect, IonSelectOption, IonTextarea } from '@ionic/angular/standalone';
+import { IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonIcon, IonInput, IonItem, IonSelect, IonSelectOption, IonSpinner, ModalController, AlertController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { close, personOutline, medicalOutline, calendarOutline, timeOutline, locationOutline, documentTextOutline, saveOutline, addCircleOutline } from 'ionicons/icons';
-import { CitaCard } from '../../citas.component';
+import { close, calendarOutline, timeOutline, locationOutline, medicalOutline, cashOutline, pricetagOutline, flagOutline, shieldOutline, saveOutline, addCircleOutline } from 'ionicons/icons';
+import { CitaMedicaService } from '../../cita-medica.service';
+import { CitaRequest } from '../../../../core/models/api-models';
+import { AuthService } from '../../../../core/auth/auth.service';
 
 @Component({
   selector: 'app-crear-cita',
   templateUrl: './crear-cita.component.html',
   styleUrls: ['./crear-cita.component.scss'],
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonIcon, IonInput, IonItem, IonSelect, IonSelectOption, IonTextarea]
+  imports: [CommonModule, ReactiveFormsModule, IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonIcon, IonInput, IonItem, IonSelect, IonSelectOption, IonSpinner]
 })
 export class CrearCitaComponent implements OnInit {
-  @Input() citaParaEditar?: CitaCard;
+  @Input() doctorId?: number;
+  @Input() citaId?: number; // Para modo edición
   @Input() modoEdicion = false;
   
   formularioCita: FormGroup;
   guardandoCita = false;
-  
-  pacientesDisponibles = [
-    { id: 1, nombre: 'Juan Pérez García', documento: '12345678' },
-    { id: 2, nombre: 'María González López', documento: '87654321' },
-    { id: 3, nombre: 'Carlos Rodríguez Martín', documento: '11223344' },
-    { id: 4, nombre: 'Ana Fernández Torres', documento: '44332211' },
-    { id: 5, nombre: 'Luis García Sánchez', documento: '55667788' }
-  ];
-  
-  doctoresDisponibles = [
-    { id: 1, nombre: 'Dr. Roberto Mendoza', especialidad: 'Cardiología' },
-    { id: 2, nombre: 'Dra. María González López', especialidad: 'Neurología' },
-    { id: 3, nombre: 'Dr. Carlos López Herrera', especialidad: 'Pediatría' },
-    { id: 4, nombre: 'Dra. Ana Torres Ruiz', especialidad: 'Ginecología' },
-    { id: 5, nombre: 'Dr. Luis Fernández Castro', especialidad: 'Dermatología' }
-  ];
+  cargandoDatos = false;
   
   consultoriosDisponibles = [
-    { numero: '101', piso: '1er Piso' },
-    { numero: '102', piso: '1er Piso' },
-    { numero: '201', piso: '2do Piso' },
-    { numero: '202', piso: '2do Piso' },
-    { numero: '301', piso: '3er Piso' }
+    { id: 1, numero: '101', piso: '1er Piso' },
+    { id: 2, numero: '102', piso: '1er Piso' },
+    { id: 3, numero: '201', piso: '2do Piso' },
+    { id: 4, numero: '202', piso: '2do Piso' },
+    { id: 5, numero: '301', piso: '3er Piso' }
   ];
-  
-  horariosDisponibles = [
-    '08:00', '08:30', '09:00', '09:30', '10:00', '10:30',
-    '11:00', '11:30', '14:00', '14:30', '15:00', '15:30',
-    '16:00', '16:30', '17:00', '17:30'
+
+  segurosDisponibles = [
+    { id: 1, nombre: 'Sin Seguro' },
+    { id: 2, nombre: 'EsSalud' },
+    { id: 3, nombre: 'Pacífico Seguros' },
+    { id: 4, nombre: 'Rímac Seguros' },
+    { id: 5, nombre: 'Mapfre' }
   ];
 
   constructor(
     private constructorFormulario: FormBuilder,
-    private controladorModal: ModalController
+    private controladorModal: ModalController,
+    private citaMedicaService: CitaMedicaService,
+    private authService: AuthService,
+    private alertController: AlertController
   ) {
     console.log('CrearCitaComponent constructor ejecutado');
     addIcons({
       close,
-      personOutline,
-      medicalOutline,
       calendarOutline,
       timeOutline,
       locationOutline,
-      documentTextOutline,
+      medicalOutline,
+      cashOutline,
+      pricetagOutline,
+      flagOutline,
+      shieldOutline,
       saveOutline,
       addCircleOutline
     });
 
     this.formularioCita = this.constructorFormulario.group({
-      pacienteId: ['', [Validators.required]],
-      doctorId: ['', [Validators.required]],
+      consultorioId: [1, [Validators.required]],
       fechaCita: ['', [Validators.required, this.validadorFechaFutura]],
       horaCita: ['', [Validators.required]],
-      consultorioNumero: ['', [Validators.required]],
-      motivoConsulta: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(500)]],
-      observaciones: ['', [Validators.maxLength(1000)]]
+      tipoAtencion: ['PRESENCIAL', [Validators.required]],
+      duracionMinutos: [30, [Validators.required, Validators.min(15)]],
+      precioBase: [{value: 150, disabled: true}, [Validators.required, Validators.min(0)]],
+      montoDescuento: [{value: 25, disabled: true}, [Validators.min(0)]],
+      estado: ['PENDIENTE', [Validators.required]],
+      seguroId: [null]
     });
   }
 
   ngOnInit() {
-    console.log('CrearCitaComponent inicializado', { modoEdicion: this.modoEdicion, citaParaEditar: this.citaParaEditar });
+    console.log('CrearCitaComponent inicializado', { modoEdicion: this.modoEdicion, doctorId: this.doctorId, citaId: this.citaId });
     this.configurarFormulario();
   }
   
   configurarFormulario() {
-    if (this.modoEdicion && this.citaParaEditar) {
-      // Llenar formulario con datos existentes para edición
-      const pacienteSeleccionado = this.pacientesDisponibles.find(
-        p => p.nombre === this.citaParaEditar?.paciente.nombre
-      );
-      const doctorSeleccionado = this.doctoresDisponibles.find(
-        d => d.nombre === this.citaParaEditar?.doctor.nombre
-      );
-      const consultorioSeleccionado = this.consultoriosDisponibles.find(
-        c => c.numero === this.citaParaEditar?.consultorio
-      );
-      
-      this.formularioCita.patchValue({
-        pacienteId: pacienteSeleccionado?.id || '',
-        doctorId: doctorSeleccionado?.id || '',
-        fechaCita: this.obtenerFechaISO(),
-        horaCita: this.citaParaEditar.hora,
-        consultorioNumero: consultorioSeleccionado?.numero || '',
-        motivoConsulta: this.citaParaEditar.motivo,
-        observaciones: ''
-      });
+    if (this.modoEdicion && this.citaId) {
+      // Cargar datos de la cita para editar
+      this.cargarDatosCita();
+    } else if (this.doctorId) {
+      // No hacer nada, el doctorId se usará al guardar
+      console.log('Doctor preseleccionado:', this.doctorId);
     }
   }
-  
-  obtenerFechaISO(): string {
-    // Simular fecha actual para el ejemplo
-    const hoy = new Date();
-    hoy.setDate(hoy.getDate() + 1); // Día siguiente
-    return hoy.toISOString();
+
+  cargarDatosCita() {
+    this.cargandoDatos = true;
+    this.citaMedicaService.obtener(this.citaId!).subscribe({
+      next: (cita) => {
+        console.log('Datos de cita cargados:', cita);
+        this.formularioCita.patchValue({
+          consultorioId: cita.consultorioId,
+          fechaCita: cita.fechaCita,
+          horaCita: cita.horaCita.substring(0, 5), // Convertir HH:mm:ss a HH:mm
+          tipoAtencion: cita.tipoAtencion,
+          duracionMinutos: cita.duracionMinutos,
+          estado: cita.estado,
+          seguroId: cita.seguroId || null
+        });
+        // Los campos precioBase y montoDescuento están deshabilitados, usar setValue para campos disabled
+        this.formularioCita.get('precioBase')?.setValue(cita.precioBase);
+        this.formularioCita.get('montoDescuento')?.setValue(cita.montoDescuento);
+        this.cargandoDatos = false;
+      },
+      error: (error) => {
+        console.error('Error al cargar datos de cita:', error);
+        this.mostrarError('No se pudieron cargar los datos de la cita.');
+        this.cargandoDatos = false;
+      }
+    });
   }
   
   validadorFechaFutura(control: any) {
@@ -135,21 +136,42 @@ export class CrearCitaComponent implements OnInit {
       this.guardandoCita = true;
       
       try {
-        const datosCita = this.construirDatosCita();
-        console.log(this.modoEdicion ? 'Editando cita:' : 'Creando cita:', datosCita);
+        const citaRequest = this.construirCitaRequest();
         
-        // Simular delay de API
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        
-        // Cerrar modal con los datos
-        await this.controladorModal.dismiss({
-          accion: this.modoEdicion ? 'editar' : 'crear',
-          datos: datosCita
-        });
+        if (this.modoEdicion && this.citaId) {
+          // Actualizar cita existente
+          console.log('Actualizando cita:', citaRequest);
+          this.citaMedicaService.actualizar(this.citaId, citaRequest).subscribe({
+            next: async (response) => {
+              console.log('Cita actualizada exitosamente:', response);
+              await this.mostrarExito('La cita se ha actualizado correctamente.');
+              await this.controladorModal.dismiss({ citaActualizada: true });
+            },
+            error: async (error) => {
+              console.error('Error al actualizar cita:', error);
+              await this.mostrarError('No se pudo actualizar la cita. Por favor, intenta nuevamente.');
+              this.guardandoCita = false;
+            }
+          });
+        } else {
+          // Crear nueva cita
+          console.log('Creando cita:', citaRequest);
+          this.citaMedicaService.crear(citaRequest).subscribe({
+            next: async (response) => {
+              console.log('Cita creada exitosamente:', response);
+              await this.mostrarExito('La cita se ha creado correctamente.');
+              await this.controladorModal.dismiss({ citaCreada: true });
+            },
+            error: async (error) => {
+              console.error('Error al crear cita:', error);
+              await this.mostrarError('No se pudo crear la cita. Por favor, intenta nuevamente.');
+              this.guardandoCita = false;
+            }
+          });
+        }
         
       } catch (error) {
         console.error('Error al guardar cita:', error);
-      } finally {
         this.guardandoCita = false;
       }
     } else {
@@ -157,30 +179,47 @@ export class CrearCitaComponent implements OnInit {
     }
   }
   
-  construirDatosCita() {
-    const formValue = this.formularioCita.value;
-    const pacienteSeleccionado = this.pacientesDisponibles.find(p => p.id === formValue.pacienteId);
-    const doctorSeleccionado = this.doctoresDisponibles.find(d => d.id === formValue.doctorId);
-    const consultorioSeleccionado = this.consultoriosDisponibles.find(c => c.numero === formValue.consultorioNumero);
+  construirCitaRequest(): CitaRequest {
+    const formValue = this.formularioCita.getRawValue(); // getRawValue incluye campos disabled
+    const user = this.authService.currentUser();
+    
+    // Formatear la hora a HH:mm:ss
+    let horaCitaFormateada = formValue.horaCita;
+    if (horaCitaFormateada && horaCitaFormateada.length === 5) {
+      horaCitaFormateada = `${horaCitaFormateada}:00`;
+    }
     
     return {
-      id: this.modoEdicion ? this.citaParaEditar?.citaId : Date.now(),
-      paciente: {
-        nombre: pacienteSeleccionado?.nombre || '',
-        documento: `Doc: ${pacienteSeleccionado?.documento}` || ''
-      },
-      doctor: {
-        nombre: doctorSeleccionado?.nombre || '',
-        especialidad: doctorSeleccionado?.especialidad || ''
-      },
-      consultorio: consultorioSeleccionado?.numero || '',
-      piso: consultorioSeleccionado?.piso || '',
-      fecha: formValue.fechaCita,
-      hora: formValue.horaCita,
-      motivo: formValue.motivoConsulta,
-      observaciones: formValue.observaciones,
-      estado: this.modoEdicion ? this.citaParaEditar?.estado : 'programada'
+      doctorId: this.doctorId!,
+      pacienteId: user?.id || 1, // Obtener el ID del usuario logueado
+      consultorioId: formValue.consultorioId,
+      fechaCita: formValue.fechaCita,
+      horaCita: horaCitaFormateada,
+      tipoAtencion: formValue.tipoAtencion,
+      duracionMinutos: formValue.duracionMinutos,
+      precioBase: formValue.precioBase,
+      montoDescuento: formValue.montoDescuento,
+      estado: formValue.estado,
+      seguroId: formValue.seguroId
     };
+  }
+
+  async mostrarExito(mensaje?: string) {
+    const alert = await this.alertController.create({
+      header: 'Éxito',
+      message: mensaje || 'La operación se completó correctamente.',
+      buttons: ['OK']
+    });
+    await alert.present();
+  }
+
+  async mostrarError(mensaje?: string) {
+    const alert = await this.alertController.create({
+      header: 'Error',
+      message: mensaje || 'Ocurrió un error. Por favor, intenta nuevamente.',
+      buttons: ['OK']
+    });
+    await alert.present();
   }
   
   marcarCamposComoTocados() {
@@ -195,11 +234,8 @@ export class CrearCitaComponent implements OnInit {
       if (campo.errors['required']) {
         return `${this.obtenerEtiquetaCampo(nombreCampo)} es requerido`;
       }
-      if (campo.errors['minlength']) {
-        return `Mínimo ${campo.errors['minlength'].requiredLength} caracteres`;
-      }
-      if (campo.errors['maxlength']) {
-        return `Máximo ${campo.errors['maxlength'].requiredLength} caracteres`;
+      if (campo.errors['min']) {
+        return `Valor mínimo: ${campo.errors['min'].min}`;
       }
       if (campo.errors['fechaPasada']) {
         return 'La fecha debe ser futura';
@@ -210,12 +246,14 @@ export class CrearCitaComponent implements OnInit {
   
   private obtenerEtiquetaCampo(nombreCampo: string): string {
     const etiquetas: { [key: string]: string } = {
-      'pacienteId': 'Paciente',
-      'doctorId': 'Doctor',
+      'consultorioId': 'Consultorio',
       'fechaCita': 'Fecha',
       'horaCita': 'Hora',
-      'consultorioNumero': 'Consultorio',
-      'motivoConsulta': 'Motivo de consulta'
+      'tipoAtencion': 'Tipo de atención',
+      'duracionMinutos': 'Duración',
+      'precioBase': 'Precio base',
+      'montoDescuento': 'Descuento',
+      'estado': 'Estado'
     };
     return etiquetas[nombreCampo] || nombreCampo;
   }

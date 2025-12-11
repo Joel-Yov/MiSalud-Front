@@ -21,19 +21,11 @@
 .contenido-modal {
   --background: theme('colors.gray.900');
   --color: white;
-  display: block !important;
-  visibility: visible !important;
-  height: auto !important;
-  min-height: 600px !important;
 }
 
 // Contenedor del Formulario
 .contenedor-formulario {
-  @apply max-w-2xl mx-auto p-6;
-  display: block !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  height: auto !important;
+  @apply max-w-2xl mx-auto p-6 pb-12;
 }
 
 // Formulario
@@ -179,11 +171,6 @@
 
 // Personalizar de Select Options y Host
 :host {
-  display: block !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  height: auto !important;
-  
   ion-select {
     --placeholder-color: theme('colors.gray.400');
     --color: white;

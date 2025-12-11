@@ -119,9 +119,23 @@ export interface PacienteResponse {
   fechaActualizacion: string;
 }
 
-export type CitaMedicaEstado = string;
+export type CitaMedicaEstado = 'PENDIENTE' | 'CONFIRMADA' | 'CANCELADA' | 'COMPLETADA' | 'NO_ASISTIO';
 
-export type CitaMedicaTipo = string;
+export type CitaMedicaTipo = 'PRESENCIAL' | 'TELECONSULTA' | 'DOMICILIARIA';
+
+export interface CitaRequest {
+  doctorId: number;
+  pacienteId: number;
+  consultorioId: number;
+  fechaCita: string; // ISO date (YYYY-MM-DD)
+  horaCita: string; // HH:mm:ss
+  tipoAtencion: CitaMedicaTipo;
+  duracionMinutos: number;
+  precioBase: number;
+  montoDescuento: number;
+  estado: CitaMedicaEstado;
+  seguroId?: number;
+}
 
 export interface CitaMedicaRequest {
   fecha: string; // ISO date-time
@@ -130,6 +144,24 @@ export interface CitaMedicaRequest {
   costo: number;
   doctorId: number;
   pacienteId: number;
+}
+
+export interface CitaResponse {
+  id: number;
+  pacienteId: number;
+  doctorId: number;
+  consultorioId: number;
+  fechaCita: string; // YYYY-MM-DD
+  horaCita: string; // HH:mm:ss
+  duracionMinutos: number;
+  estado: CitaMedicaEstado;
+  tipoAtencion: CitaMedicaTipo;
+  precioBase: number;
+  montoDescuento: number;
+  costoNetoCita: number;
+  seguroId?: number | null;
+  nombreSeguro?: string | null;
+  copagoEstimado?: number | null;
 }
 
 export interface CitaMedicaResponse {

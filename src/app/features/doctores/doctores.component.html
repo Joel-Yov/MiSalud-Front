@@ -104,10 +104,10 @@
         </div>
         
         <!-- Appointment Button -->
-        <ion-button 
+        <ion-button *ngIf="esRolPaciente"
           expand="block" 
           class="appointment-btn"
-          (click)="agendarCita(doctor)">
+          (click)="agendarCita(doctor.doctorId)">
           <fa-icon [icon]="['fas', 'calendar']" class="text-[25px]"></fa-icon>
           Agendar Cita
         </ion-button>
