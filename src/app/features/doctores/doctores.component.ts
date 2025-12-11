@@ -9,6 +9,7 @@ import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { faHospitalUser, faStars, faHospital, faClockDesk, faUserDoctor, faCalendar, faFilePen, faTrash } from '@fortawesome/pro-solid-svg-icons';
 import { CrearDoctorComponent } from './modals/crear-doctor/crear-doctor.component';
 import { EditarDoctorComponent } from './modals/editar-doctor/editar-doctor.component';
+import { AuthService } from '../../core/auth/auth.service';
 
 @Component({
   selector: 'app-doctores',
@@ -25,10 +26,17 @@ export class DoctoresComponent implements OnInit {
     private doctorService: DoctorService, 
     private library: FaIconLibrary,
     private modalController: ModalController,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private authService: AuthService
   ) {
     // Agregar iconos de FontAwesome a la librería
     library.addIcons(faHospitalUser, faStars, faHospital, faClockDesk, faUserDoctor, faCalendar, faFilePen, faTrash);
+  }
+
+  // Getter para verificar si el usuario tiene rol OPERACIONES
+  get esRolOperaciones(): boolean {
+    const user = this.authService.currentUser();
+    return user?.rol === 'OPERACIONES';
   }
 
   ngOnInit() {

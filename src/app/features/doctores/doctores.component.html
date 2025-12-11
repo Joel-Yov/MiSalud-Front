@@ -15,7 +15,7 @@
       </ion-searchbar>
     </div>
   </div>
-  <ion-button class="crear-doctor-btn" (click)="abrirModalCrearDoctor()">
+  <ion-button *ngIf="esRolOperaciones" class="crear-doctor-btn" (click)="abrirModalCrearDoctor()">
     <fa-icon [icon]="['fas', 'user-doctor']" class="text-[25px]"></fa-icon>
     CONTRATAR DOCTOR
   </ion-button>
@@ -26,7 +26,7 @@
   <div *ngFor="let doctor of doctores" class="doctor-card">
     <!-- Card Top Section with gradient background -->
     <div class="card-top">
-      <div class="action-buttons flex justify-end">
+      <div *ngIf="esRolOperaciones" class="action-buttons flex justify-end">
           <!-- BOTON PARA EDITAR/REPROGRAMAR LA CITA -->
           <ion-button fill="clear" class="edit-btn" (click)="abrirEditarDoctorModal(doctor.doctorId)">
             <fa-icon [icon]="['fas', 'file-pen']" class="text-[25px]"></fa-icon>
