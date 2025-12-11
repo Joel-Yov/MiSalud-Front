@@ -134,7 +134,7 @@ export class DoctoresComponent implements OnInit {
     this.doctorService.eliminar(doctorId).subscribe({
       next: () => {
         console.log('Doctor eliminado exitosamente');
-        this.cargarDoctores();
+        window.location.reload();
       },
       error: (error) => {
         console.error('Error al eliminar doctor:', error);

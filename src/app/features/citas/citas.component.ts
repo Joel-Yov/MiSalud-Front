@@ -187,7 +187,7 @@ export class CitasComponent implements OnInit {
     this.citaMedicaService.eliminar(citaId).subscribe({
       next: () => {
         console.log('Cita eliminada exitosamente');
-        this.cargarCitas();
+        window.location.reload();
       },
       error: (error) => {
         console.error('Error al eliminar cita:', error);
