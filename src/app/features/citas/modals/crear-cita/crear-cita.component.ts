@@ -95,6 +95,10 @@ export class CrearCitaComponent implements OnInit {
     this.citaMedicaService.obtener(this.citaId!).subscribe({
       next: (cita) => {
         console.log('Datos de cita cargados:', cita);
+        // Guardar doctorId si no se pasó desde fuera
+        if (!this.doctorId) {
+          this.doctorId = cita.doctorId;
+        }
         this.formularioCita.patchValue({
           consultorioId: cita.consultorioId,
           fechaCita: cita.fechaCita,

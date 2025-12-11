@@ -147,6 +147,7 @@ export class CitasComponent implements OnInit {
       component: CrearCitaComponent,
       componentProps: {
         citaId: cita.citaId,
+        doctorId: cita.doctorId,
         modoEdicion: true
       }
     });
