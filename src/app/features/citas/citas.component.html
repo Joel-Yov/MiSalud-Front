@@ -9,93 +9,138 @@
     </div>
   </div>
 
+  <!-- Filters -->
+  <div class="filters">
+    <div class="filter-group">
+      <label>Estado</label>
+      <select [(ngModel)]="filtroEstado">
+        <option value="TODOS">Todos</option>
+        <option value="PENDIENTE">Pendiente</option>
+        <option value="CONFIRMADA">Confirmada</option>
+        <option value="CANCELADA">Cancelada</option>
+        <option value="COMPLETADA">Completada</option>
+        <option value="NO_ASISTIO">No Asistió</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label>Tipo de atención</label>
+      <select [(ngModel)]="filtroTipo">
+        <option value="TODOS">Todos</option>
+        <option value="PRESENCIAL">Presencial</option>
+        <option value="TELECONSULTA">Teleconsulta</option>
+        <option value="DOMICILIARIA">Domiciliaria</option>
+      </select>
+    </div>
+
+    <div class="filter-group text-filter">
+      <label>Buscar</label>
+      <input [(ngModel)]="filtroTexto" type="text" [placeholder]="esPaciente ? 'Doctor o consultorio' : 'Paciente, doctor o consultorio'" />
+    </div>
+
+    <div class="filter-actions">
+      <ion-button fill="clear" size="small" (click)="limpiarFiltros()">Limpiar</ion-button>
+    </div>
+  </div>
+
   <!-- Citas Grid -->
   <div class="citas-grid mb-20">
-    <div *ngFor="let cita of citas; trackBy: trackByCitaId" class="cita-card">
+    <div *ngFor="let cita of citasFiltradas; trackBy: trackByCitaId" class="cita-card">
       <!-- Header Row -->
       <div class="cita-header">
-        <!-- Time Section -->
-         <div class="flex items-center gap-5">
+        <div class="header-meta">
           <div class="time-section">
-          <ion-icon name="time-outline" class="time-icon"></ion-icon>
-          <div class="time-info">
-            <span class="hora">{{ cita.horaCita }}</span>
-            <span class="duracion">{{ cita.fechaCita }}</span>
+            <ion-icon name="time-outline" class="time-icon"></ion-icon>
+            <div class="time-info">
+              <span class="hora">{{ formatearHora(cita.horaCita) }}</span>
+              <span class="dot">·</span>
+              <span class="duracion">{{ formatearFecha(cita.fechaCita) }}</span>
+            </div>
+          </div>
+
+          <div class="status-badges">
+            <ion-badge [class]="'badge-' + cita.estado.toLowerCase()">{{ obtenerNombreEstado(cita.estado) }}</ion-badge>
           </div>
         </div>
 
-        <!-- Estado de la cita -->
-        <div class="status-badges border-white border-2 rounded-lg p-2">
-          <ion-badge [class]="'badge-' + cita.estado.toLowerCase()">{{ obtenerNombreEstado(cita.estado) }}</ion-badge>
-        </div>
-         </div>
-
-        <!-- Botones de Acción -->
         <div class="action-buttons">
-          <!-- BOTON PARA EDITAR/REPROGRAMAR LA CITA -->
           <ion-button fill="clear" class="edit-btn" (click)="abrirEditarCitaModal(cita)">
             <fa-icon [icon]="['fas', 'file-pen']" class="text-[25px]"></fa-icon>
           </ion-button>
-
-          <!-- BOTON PARA ELIMINAR LA CITA -->
-          <ion-button fill="clear" class="delete-btn" (click)="eliminarCita(cita.citaId)">
+          <ion-button fill="clear" class="delete-btn" (click)="eliminarCita(cita.id)">
             <fa-icon [icon]="['fas', 'trash']" class="text-[25px]"></fa-icon>
           </ion-button>
         </div>
       </div>
 
-      <div class="ml-[16%]">
-        <div class="cita-content">
-        <div class="left-column">
-          <!-- INFORMACIÓN DEL PACIENTE -->
-          <div class="patient-info">
+      <div class="card-body">
+        <div class="meta-row">
+          <div class="meta-item">
             <ion-icon name="person-outline" class="info-icon"></ion-icon>
             <div class="info-details">
-              <h3 class="patient-name">Paciente ID: {{ cita.pacienteId }}</h3>
-              <p class="patient-doc">Doctor ID: {{ cita.doctorId }}</p>
+              <span class="info-label">Paciente</span>
+              <span class="info-value">{{ cita.nombreCompletoPaciente || 'Paciente no disponible' }}</span>
             </div>
           </div>
-        </div>
-
-        <!-- INFORMACIÓN DEL CONSULTORIO -->
-        <div class="right-column">
-          <div class="doctor-info">
+          <div class="meta-item">
             <ion-icon name="medical-outline" class="info-icon"></ion-icon>
             <div class="info-details">
-              <h3 class="doctor-name">Consultorio: {{ cita.consultorioId }}</h3>
-              <p class="doctor-specialty">{{ cita.tipoAtencion }}</p>
+              <span class="info-label">Doctor</span>
+              <span class="info-value">{{ cita.nombreCompletoDoctor || 'Doctor no disponible' }}</span>
             </div>
           </div>
         </div>
-      </div>
 
-
-      <div class="location-row">
-        <div class="location-info">
-          <ion-icon name="cash-outline" class="location-icon"></ion-icon>
-          <span class="location-text">Precio: S/ {{ cita.precioBase }}</span>
-          <span class="motivo-separator">Descuento: S/ {{ cita.montoDescuento }}</span>
-          <span class="motivo-text">Total: S/ {{ cita.costoNetoCita }}</span>
+        <div class="meta-row">
+          <div class="meta-item">
+            <ion-icon name="location-outline" class="info-icon"></ion-icon>
+            <div class="info-details">
+              <span class="info-label">Consultorio</span>
+              <span class="info-value">{{ cita.nombreConsultorio || 'Consultorio no disponible' }}</span>
+            </div>
+          </div>
+          <div class="meta-item">
+            <ion-icon name="fitness-outline" class="info-icon"></ion-icon>
+            <div class="info-details">
+              <span class="info-label">Tipo de Atención</span>
+              <span class="info-value pill">{{ cita.tipoAtencion || 'Tipo no disponible' }}</span>
+            </div>
+          </div>
         </div>
-      </div>
 
+        <div class="price-row">
+          <div class="price-chip">
+            <span class="chip-label">Precio</span>
+            <span class="chip-value">S/ {{ cita.precioBase }}</span>
+          </div>
+          <div class="price-chip">
+            <span class="chip-label">Descuento</span>
+            <span class="chip-value">S/ {{ cita.montoDescuento }}</span>
+          </div>
+          <div class="price-chip total">
+            <span class="chip-label">Total</span>
+            <span class="chip-value">S/ {{ cita.costoNetoCita }}</span>
+          </div>
+        </div>
 
-      <div class="confirmation-row" *ngIf="cita.nombreSeguro">
-        <p class="confirmation-text">Seguro: {{ cita.nombreSeguro }} - Copago: S/ {{ cita.copagoEstimado }}</p>
-      </div>
-      </div>
+        <div class="insurance-row">
+          <ion-icon name="shield-outline" class="info-icon"></ion-icon>
+          <span class="info-label">Seguro</span>
+          <span class="info-value">{{ cita.nombreSeguro || 'Sin seguro' }}</span>
+          <span class="separator">•</span>
+          <span class="info-label">Copago</span>
+          <span class="info-value">S/ {{ cita.copagoEstimado ?? 0 }}</span>
+        </div>
 
-      
-
-      <!-- Generate Ticket Button -->
-      <div class="ticket-section">
-        <ion-button 
-          expand="block" 
-          class="ticket-btn"
-          (click)="generarQr(cita)">
-          <ion-icon name="qr-code-outline" slot="start"></ion-icon>
-          Generar Ticket con QR
-        </ion-button>
+        <div class="ticket-section">
+          <ion-button 
+            expand="block" 
+            class="ticket-btn"
+            (click)="generarQr(cita)">
+            <ion-icon name="qr-code-outline" slot="start"></ion-icon>
+            Generar Ticket con QR
+          </ion-button>
+        </div>
       </div>
     </div>
   </div>
