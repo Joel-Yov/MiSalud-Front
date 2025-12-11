@@ -1,0 +1,160 @@
+.footer-container {
+  background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #06b6d4 100%);
+  color: white;
+  padding: 2rem 2rem 1rem;
+  min-height: 120px;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  max-width: 1200px;
+  margin: 0 auto;
+  gap: 3rem;
+  
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 2rem;
+    text-align: center;
+  }
+}
+
+.footer-left {
+  flex: 1;
+  
+  .footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    
+    .logo-footer {
+      height: 45px;
+      width: 45px;
+      border-radius: 8px;
+    }
+    
+    .brand-name {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: white;
+    }
+  }
+  
+  .slogan {
+    .main-slogan {
+      font-size: 1.1rem;
+      font-weight: 500;
+      font-style: italic;
+      margin-bottom: 0.5rem;
+      color: #e0f2fe;
+    }
+    
+    .sub-slogan {
+      font-size: 0.9rem;
+      color: #b3e5fc;
+      font-weight: 300;
+    }
+  }
+}
+
+.footer-right {
+  flex: 1;
+  
+  .social-title {
+    margin-bottom: 1rem;
+    
+    h4 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: white;
+      margin: 0;
+    }
+  }
+  
+  .social-links {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    
+    @media (max-width: 768px) {
+      justify-content: center;
+    }
+    
+    .social-link {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 25px;
+      text-decoration: none;
+      color: white;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      
+      ion-icon {
+        font-size: 1.2rem;
+      }
+      
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      }
+      
+      &.facebook:hover {
+        background: #1877f2;
+        border-color: #1877f2;
+      }
+      
+      &.instagram:hover {
+        background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+        border-color: #bc1888;
+      }
+      
+      &.twitter:hover {
+        background: #1da1f2;
+        border-color: #1da1f2;
+      }
+      
+      &.linkedin:hover {
+        background: #0077b5;
+        border-color: #0077b5;
+      }
+    }
+  }
+}
+
+.footer-bottom {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  text-align: center;
+  
+  p {
+    margin: 0;
+    font-size: 0.8rem;
+    color: #b3e5fc;
+    font-weight: 300;
+  }
+}
+
+// Override ion-footer and ion-toolbar default styles
+ion-footer {
+  --background: transparent;
+  
+  ion-toolbar {
+    --background: transparent;
+    --color: white;
+    --border-width: 0;
+    --padding-start: 0;
+    --padding-end: 0;
+    --padding-top: 0;
+    --padding-bottom: 0;
+    --min-height: auto;
+  }
+}

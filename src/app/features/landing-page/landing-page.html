@@ -1,0 +1,148 @@
+<app-header></app-header>
+
+<ion-content class="contenido-landing">
+  <!-- Hero Section -->
+  <section class="seccion-hero">
+    <div class="contenedor-hero">
+      <div class="contenido-hero">
+        <h1 class="titulo-principal">MiSalud</h1>
+        <p class="lema-empresa">Tu bienestar es nuestra prioridad. Cuidando tu salud con tecnología y corazón.</p>
+        <div class="botones-hero">
+          <ion-button class="boton-primario" routerLink="/login">
+            <ion-icon name="person-outline" slot="start"></ion-icon>
+            Iniciar Sesión
+          </ion-button>
+          <ion-button class="boton-secundario" routerLink="/register">
+            <ion-icon name="person-add-outline" slot="start"></ion-icon>
+            Registrarse
+          </ion-button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Especialidades Section -->
+  <section class="seccion-especialidades">
+    <div class="contenedor-especialidades">
+      <h2 class="titulo-seccion">Nuestras Especialidades</h2>
+      <p class="subtitulo-seccion">Contamos con los mejores especialistas en cada área médica</p>
+      
+      <div class="grid-especialidades">
+        <div *ngFor="let especialidad of especialidades; trackBy: trackByEspecialidad" 
+             class="tarjeta-especialidad">
+          <div class="icono-especialidad">
+            <ion-icon [name]="especialidad.icono" class="icono-medico"></ion-icon>
+          </div>
+          <h3 class="nombre-especialidad">{{ especialidad.nombre }}</h3>
+          <p class="descripcion-especialidad">{{ especialidad.descripcion }}</p>
+          <div class="info-especialidad">
+            <span class="doctores-disponibles">
+              <ion-icon name="people-outline"></ion-icon>
+              {{ especialidad.doctores }} especialistas
+            </span>
+            <span class="horario-atencion">
+              <ion-icon name="time-outline"></ion-icon>
+              {{ especialidad.horario }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Misión, Visión y Quiénes Somos -->
+  <section class="seccion-nosotros">
+    <div class="contenedor-nosotros">
+      <div class="grid-nosotros">
+        <!-- Misión -->
+        <div class="tarjeta-nosotros mision">
+          <div class="icono-nosotros">
+            <ion-icon name="heart-outline" class="icono-principal"></ion-icon>
+          </div>
+          <h3 class="titulo-nosotros">Nuestra Misión</h3>
+          <p class="texto-nosotros">
+            Brindar servicios de salud de excelencia, con tecnología de vanguardia y un equipo humano 
+            comprometido con el bienestar integral de nuestros pacientes, garantizando atención médica 
+            oportuna, segura y de calidad.
+          </p>
+        </div>
+
+        <!-- Visión -->
+        <div class="tarjeta-nosotros vision">
+          <div class="icono-nosotros">
+            <ion-icon name="eye-outline" class="icono-principal"></ion-icon>
+          </div>
+          <h3 class="titulo-nosotros">Nuestra Visión</h3>
+          <p class="texto-nosotros">
+            Ser reconocidos como el hospital líder en innovación médica y atención humanizada, 
+            transformando la experiencia de salud a través de la tecnología y estableciendo nuevos 
+            estándares de excelencia en el cuidado médico.
+          </p>
+        </div>
+
+        <!-- Quiénes Somos -->
+        <div class="tarjeta-nosotros quienes-somos">
+          <div class="icono-nosotros">
+            <ion-icon name="business-outline" class="icono-principal"></ion-icon>
+          </div>
+          <h3 class="titulo-nosotros">Quiénes Somos</h3>
+          <p class="texto-nosotros">
+            Somos una institución de salud con más de 20 años de experiencia, dedicada a ofrecer 
+            atención médica integral. Contamos con un equipo de profesionales altamente calificados 
+            y tecnología de última generación para garantizar el mejor cuidado de tu salud.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sección de Contacto -->
+  <section class="seccion-contacto">
+    <div class="contenedor-contacto">
+      <h2 class="titulo-contacto">¿Tienes alguna duda?</h2>
+      <p class="subtitulo-contacto">Estamos aquí para ayudarte en cualquier momento</p>
+      
+      <div class="grid-contacto">
+        <div class="tarjeta-contacto">
+          <div class="icono-contacto">
+            <ion-icon name="call-outline" class="icono-comunicacion"></ion-icon>
+          </div>
+          <h4 class="titulo-contacto-item">Teléfono</h4>
+          <p class="info-contacto">+51 920 645 820</p>
+          <p class="horario-contacto">24 horas - 7 días a la semana</p>
+        </div>
+
+        <div class="tarjeta-contacto">
+          <div class="icono-contacto">
+            <ion-icon name="mail-outline" class="icono-comunicacion"></ion-icon>
+          </div>
+          <h4 class="titulo-contacto-item">Email</h4>
+          <p class="info-contacto">yovera@misalud.com</p>
+          <p class="horario-contacto">Respuesta en 24 horas</p>
+        </div>
+
+        <div class="tarjeta-contacto">
+          <div class="icono-contacto">
+            <ion-icon name="location-outline" class="icono-comunicacion"></ion-icon>
+          </div>
+          <h4 class="titulo-contacto-item">Dirección</h4>
+          <p class="info-contacto">UTP PIURA<br>Al costado del Real Plaza xd</p>
+          <p class="horario-contacto">Lunes a Domingo</p>
+        </div>
+
+        <div class="tarjeta-contacto">
+          <div class="icono-contacto">
+            <ion-icon name="chatbubble-outline" class="icono-comunicacion"></ion-icon>
+          </div>
+          <h4 class="titulo-contacto-item">Chat en Línea</h4>
+          <p class="info-contacto">Asistencia inmediata</p>
+          <ion-button class="boton-chat" fill="outline">
+            Iniciar Chat
+          </ion-button>
+        </div>
+      </div>
+    </div>
+  </section>
+</ion-content>
+
+<app-footer></app-footer>

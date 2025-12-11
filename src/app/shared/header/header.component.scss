@@ -1,0 +1,61 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+.logo {
+    @apply h-[70px] w-[70px];
+}
+
+.titulo {
+    @apply font-semibold text-4xl;
+}
+
+ion-button {
+    --color: white !important;
+    --background: transparent !important;
+    --background-activated: transparent !important;
+    --background-focused: transparent !important;
+    --background-hover: transparent !important;
+    --border-radius: 0.5rem !important;
+    --box-shadow: none !important;
+    --padding-start: 0 !important;
+    --padding-end: 0 !important;
+    --padding-top: 0 !important;
+    --padding-bottom: 0 !important;
+    
+    .button-native {
+        color: white !important;
+        background: transparent !important;
+        border: none !important;
+        border-radius: 0.5rem !important;
+    }
+}
+
+
+.citas-btn {
+    @apply bg-green-500 text-white font-medium px-4 py-2 rounded-lg transition-all duration-300 ease-in-out;
+    @apply hover:bg-green-600 hover:scale-105 hover:shadow-lg;
+    
+    --color: white !important;
+}
+
+.doctores-btn {
+    @apply bg-blue-500 text-white font-medium px-4 py-2 rounded-lg transition-all duration-300 ease-in-out;
+    @apply hover:bg-blue-600 hover:scale-105 hover:shadow-lg;
+    
+    --color: white !important;
+}
+
+.login-btn {
+    @apply border-2 border-gray-400 text-white font-medium px-4 py-2 rounded-lg transition-all duration-300 ease-in-out;
+    @apply hover:border-gray-600 hover:text-white hover:scale-105 hover:shadow-lg;
+    
+    --color: white !important;
+}
+
+.register-btn {
+    @apply bg-indigo-600 text-white font-medium px-4 py-2 rounded-lg transition-all duration-300 ease-in-out;
+    @apply hover:bg-indigo-700 hover:scale-105 hover:shadow-lg;
+    
+    --color: white !important;
+}

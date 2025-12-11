@@ -1,0 +1,227 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Editar Doctor</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cerrarModal()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="contenedor-principal">
+  <!-- Loading State -->
+  <div *ngIf="cargando" class="loading-state">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Cargando datos del doctor...</p>
+  </div>
+
+  <!-- Formulario -->
+  <form *ngIf="!cargando" [formGroup]="doctorForm" (ngSubmit)="guardarCambios()" class="formulario-doctor">
+    
+    <!-- Sección: Datos Personales -->
+    <div class="seccion-formulario">
+      <h2 class="titulo-seccion">Datos Personales</h2>
+      
+      <div formGroupName="persona">
+        <div class="grupo-campos">
+          <div class="campo">
+            <label for="primerNombre">Primer Nombre *</label>
+            <input 
+              id="primerNombre"
+              type="text" 
+              formControlName="primerNombre"
+              placeholder="Ingrese primer nombre"
+              class="input-texto"
+            />
+            <span *ngIf="mostrarError('persona.primerNombre')" class="mensaje-error">
+              {{ obtenerMensajeError('persona.primerNombre') }}
+            </span>
+          </div>
+
+          <div class="campo">
+            <label for="segundoNombre">Segundo Nombre</label>
+            <input 
+              id="segundoNombre"
+              type="text" 
+              formControlName="segundoNombre"
+              placeholder="Ingrese segundo nombre (opcional)"
+              class="input-texto"
+            />
+          </div>
+        </div>
+
+        <div class="grupo-campos">
+          <div class="campo">
+            <label for="primerApellido">Primer Apellido *</label>
+            <input 
+              id="primerApellido"
+              type="text" 
+              formControlName="primerApellido"
+              placeholder="Ingrese primer apellido"
+              class="input-texto"
+            />
+            <span *ngIf="mostrarError('persona.primerApellido')" class="mensaje-error">
+              {{ obtenerMensajeError('persona.primerApellido') }}
+            </span>
+          </div>
+
+          <div class="campo">
+            <label for="segundoApellido">Segundo Apellido</label>
+            <input 
+              id="segundoApellido"
+              type="text" 
+              formControlName="segundoApellido"
+              placeholder="Ingrese segundo apellido (opcional)"
+              class="input-texto"
+            />
+          </div>
+        </div>
+
+        <div class="grupo-campos">
+          <div class="campo">
+            <label for="tipoDocumento">Tipo de Documento *</label>
+            <select 
+              id="tipoDocumento"
+              formControlName="tipoDocumento"
+              class="input-select"
+            >
+              <option *ngFor="let tipo of tiposDocumento" [value]="tipo">{{ tipo }}</option>
+            </select>
+          </div>
+
+          <div class="campo">
+            <label for="numeroDocumento">Número de Documento *</label>
+            <input 
+              id="numeroDocumento"
+              type="text" 
+              formControlName="numeroDocumento"
+              placeholder="Ingrese número de documento"
+              class="input-texto"
+            />
+            <span *ngIf="mostrarError('persona.numeroDocumento')" class="mensaje-error">
+              {{ obtenerMensajeError('persona.numeroDocumento') }}
+            </span>
+          </div>
+        </div>
+
+        <div class="grupo-campos">
+          <div class="campo">
+            <label for="fechaNacimiento">Fecha de Nacimiento *</label>
+            <input 
+              id="fechaNacimiento"
+              type="date" 
+              formControlName="fechaNacimiento"
+              class="input-texto"
+            />
+          </div>
+
+          <div class="campo">
+            <label for="genero">Género *</label>
+            <select 
+              id="genero"
+              formControlName="genero"
+              class="input-select"
+            >
+              <option value="">Seleccione género</option>
+              <option *ngFor="let genero of generos" [value]="genero">{{ genero }}</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grupo-campos">
+          <div class="campo">
+            <label for="numeroTelefono">Teléfono *</label>
+            <input 
+              id="numeroTelefono"
+              type="tel" 
+              formControlName="numeroTelefono"
+              placeholder="999999999"
+              class="input-texto"
+            />
+            <span *ngIf="mostrarError('persona.numeroTelefono')" class="mensaje-error">
+              {{ obtenerMensajeError('persona.numeroTelefono') }}
+            </span>
+          </div>
+
+          <div class="campo">
+            <label for="urlFotoPerfil">URL Foto de Perfil</label>
+            <input 
+              id="urlFotoPerfil"
+              type="url" 
+              formControlName="urlFotoPerfil"
+              placeholder="https://ejemplo.com/foto.jpg (opcional)"
+              class="input-texto"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sección: Datos Profesionales -->
+    <div class="seccion-formulario">
+      <h2 class="titulo-seccion">Datos Profesionales</h2>
+      
+      <div class="campo">
+        <label for="numeroColegiatura">Número de Colegiatura</label>
+        <input 
+          id="numeroColegiatura"
+          type="text" 
+          formControlName="numeroColegiatura"
+          placeholder="CMP-123456 (opcional)"
+          class="input-texto"
+        />
+      </div>
+
+      <div class="campo-completo">
+        <label>Especialidades *</label>
+        <div formArrayName="especialidadIds">
+          <div *ngFor="let especialidad of especialidadIdsArray.controls; let i = index" class="especialidad-item">
+            <input 
+              type="number" 
+              [formControlName]="i"
+              placeholder="ID de Especialidad"
+              class="input-texto"
+              min="1"
+            />
+            <button 
+              type="button" 
+              (click)="eliminarEspecialidad(i)"
+              class="boton boton-eliminar-especialidad"
+              *ngIf="especialidadIdsArray.length > 1"
+            >
+              Eliminar
+            </button>
+          </div>
+        </div>
+        <button 
+          type="button" 
+          (click)="agregarEspecialidad()"
+          class="boton boton-agregar-especialidad"
+        >
+          + Agregar Especialidad
+        </button>
+      </div>
+    </div>
+
+    <!-- Botones de acción -->
+    <div class="contenedor-botones">
+      <button 
+        type="button" 
+        (click)="cerrarModal()"
+        class="boton boton-cancelar"
+        [disabled]="enviando"
+      >
+        Cancelar
+      </button>
+      <button 
+        type="submit" 
+        class="boton boton-guardar"
+        [disabled]="enviando"
+      >
+        {{ enviando ? 'Guardando...' : 'Guardar Cambios' }}
+      </button>
+    </div>
+
+  </form>
+</ion-content>

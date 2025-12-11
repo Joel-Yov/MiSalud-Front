@@ -1,0 +1,148 @@
+<ion-header>
+  <ion-toolbar class="modal-toolbar">
+    <ion-title class="modal-title">Ticket de Cita Médica</ion-title>
+    <ion-button fill="clear" slot="end" (click)="cerrarModal()" class="close-btn">
+      <ion-icon name="close" class="close-icon"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="modal-content" style="display: block !important; height: auto !important; min-height: 500px !important;">
+    <div class="ticket-container" style="display: block !important; visibility: visible !important;">
+      <!-- Header del Ticket -->
+      <div class="ticket-header">
+        <div class="logo-section">
+          <div class="logo-container">
+            <ion-icon name="medical" class="logo-icon"></ion-icon>
+          </div>
+          <div class="app-info">
+            <h2 class="app-name">MiSalud</h2>
+            <p class="ticket-subtitle">Ticket de Cita Médica</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- QR Code Section -->
+      <div class="qr-section">
+        <div class="qr-container">
+          <img 
+            src="https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg" 
+            alt="QR Code" 
+            class="qr-image"
+          />
+        </div>
+      </div>
+
+      <!-- Ticket Info -->
+      <div class="ticket-info">
+        <!-- Número de Cita -->
+        <div class="info-row">
+          <ion-icon name="bookmark-outline" class="info-icon"></ion-icon>
+          <div class="info-content">
+            <span class="info-label">Código de Cita</span>
+            <span class="info-value">{{ ticketNumber }}</span>
+          </div>
+        </div>
+
+        <!-- Fecha -->
+        <div class="info-row">
+          <ion-icon name="calendar-outline" class="info-icon"></ion-icon>
+          <div class="info-content">
+            <span class="info-label">Fecha</span>
+            <span class="info-value">{{ fechaGeneracion }}</span>
+          </div>
+        </div>
+
+        <!-- Hora -->
+        <div class="info-row">
+          <ion-icon name="time-outline" class="info-icon"></ion-icon>
+          <div class="info-content">
+            <span class="info-label">Hora</span>
+            <span class="info-value">{{ cita.hora }} - {{ cita.fechaCompleta }}</span>
+          </div>
+        </div>
+
+        <!-- Paciente -->
+        <div class="info-row">
+          <ion-icon name="person-outline" class="info-icon"></ion-icon>
+          <div class="info-content">
+            <span class="info-label">Paciente</span>
+            <span class="info-value">{{ cita.paciente.nombre }}</span>
+          </div>
+        </div>
+
+        <!-- Doctor -->
+        <div class="info-row">
+          <ion-icon name="medical-outline" class="info-icon"></ion-icon>
+          <div class="info-content">
+            <span class="info-label">Doctor</span>
+            <span class="info-value">{{ cita.doctor.nombre }}</span>
+          </div>
+        </div>
+
+        <!-- Especialidad -->
+        <div class="info-row">
+          <ion-icon name="fitness-outline" class="info-icon"></ion-icon>
+          <div class="info-content">
+            <span class="info-label">Especialidad</span>
+            <span class="info-value">{{ cita.doctor.especialidad }}</span>
+          </div>
+        </div>
+
+        <!-- Consultorio -->
+        <div class="info-row">
+          <ion-icon name="location-outline" class="info-icon"></ion-icon>
+          <div class="info-content">
+            <span class="info-label">Consultorio</span>
+            <span class="info-value">{{ cita.consultorio }}</span>
+          </div>
+        </div>
+
+        <!-- Motivo -->
+        <div class="info-row">
+          <ion-icon name="document-text-outline" class="info-icon"></ion-icon>
+          <div class="info-content">
+            <span class="info-label">Motivo de Consulta</span>
+            <span class="info-value">{{ cita.motivo }}</span>
+          </div>
+        </div>
+
+        <!-- Estado -->
+        <div class="info-row">
+          <ion-icon name="checkmark-circle-outline" class="info-icon"></ion-icon>
+          <div class="info-content">
+            <span class="info-label">Estado</span>
+            <span class="info-value status" [class.confirmada]="cita.estado === 'confirmada'" [class.programada]="cita.estado === 'programada'">
+              {{ cita.estado === 'confirmada' ? 'Confirmada' : 'Programada' }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Instrucciones -->
+      <div class="instructions bg-red-400">
+        <h3 class="instructions-title">Presenta este ticket en recepción</h3>
+        <p class=" text-white font-bold">Por favor llegar 15 minutos antes de su cita</p>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="action-buttons">
+        <ion-button 
+          expand="block" 
+          fill="outline" 
+          class="download-btn"
+          (click)="descargarTicket()">
+          <ion-icon name="download-outline" slot="start"></ion-icon>
+          Descargar / Imprimir
+        </ion-button>
+        
+        <ion-button 
+          expand="block" 
+          class="share-btn"
+          (click)="compartirTicket()">
+          <ion-icon name="share-outline" slot="start"></ion-icon>
+          Compartir
+        </ion-button>
+      </div>
+    </div>
+  </ion-content>

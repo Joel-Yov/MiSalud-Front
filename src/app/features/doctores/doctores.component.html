@@ -1,0 +1,132 @@
+<app-header></app-header>
+
+<ion-content class="p-5">
+<!-- Header -->
+<div class="doctors-header flex justify-between items-center px-[1%]">
+  <div>
+    <h1 class="doctors-title">Nuestros Doctores</h1>
+    <p class="doctors-subtitle">Profesionales altamente calificados para tu cuidado médico</p>
+    
+    <!-- Search Bar -->
+    <div class="search-container">
+      <ion-searchbar 
+        placeholder="Buscar por nombre o especialidad..."
+        class="custom-searchbar">
+      </ion-searchbar>
+    </div>
+  </div>
+  <ion-button *ngIf="esRolOperaciones" class="crear-doctor-btn" (click)="abrirModalCrearDoctor()">
+    <fa-icon [icon]="['fas', 'user-doctor']" class="text-[25px]"></fa-icon>
+    CONTRATAR DOCTOR
+  </ion-button>
+</div>
+
+<!-- Doctors Grid -->
+<div class="doctors-grid mb-20">
+  <div *ngFor="let doctor of doctores" class="doctor-card">
+    <!-- Card Top Section with gradient background -->
+    <div class="card-top">
+      <div *ngIf="esRolOperaciones" class="action-buttons flex justify-end">
+          <!-- BOTON PARA EDITAR/REPROGRAMAR LA CITA -->
+          <ion-button fill="clear" class="edit-btn" (click)="abrirEditarDoctorModal(doctor.doctorId)">
+            <fa-icon [icon]="['fas', 'file-pen']" class="text-[25px]"></fa-icon>
+          </ion-button>
+
+          <!-- BOTON PARA ELIMINAR LA CITA -->
+          <ion-button fill="clear" class="delete-btn" (click)="eliminarDoctor(doctor.doctorId)">
+            <fa-icon [icon]="['fas', 'trash']" class="text-[25px]"></fa-icon>
+          </ion-button>
+        </div>
+      
+      <!-- Doctor Image -->
+      <div class="doctor-image-container">
+        <img [src]="doctor.imagen" [alt]="doctor.nombre" class="doctor-image" />
+      </div>
+    </div>
+    
+    <!-- Card Bottom Section with dark background -->
+    <div class="card-bottom">
+      <!-- Doctor Info -->
+      <div class="doctor-info">
+        <h3 class="doctor-name">{{ doctor.nombre }}</h3>
+        <p class="doctor-specialty">{{ doctor.especialidad }}</p>
+        
+        <!-- Stats Row -->
+        <div class="stats-row">
+          <div class="stat-item">
+            <fa-icon [icon]="['fas', 'hospital-user']" class="text-[25px]"></fa-icon>
+            <div class="stat-content">
+              <span class="stat-label">Pacientes</span>
+              <span class="stat-value">{{ doctor.pacientesAtendidos }}+</span>
+            </div>
+          </div>
+          
+          <div class="stat-item">
+            <fa-icon [icon]="['fas', 'stars']" class="text-[25px]"></fa-icon>
+            <div class="stat-content">
+              <span class="stat-label">Calificación</span>
+              <span class="stat-value">{{ doctor.calificacion }}/5.0</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Certifications -->
+        <div class="certifications">
+          <span *ngFor="let cert of doctor.certificaciones" class="certification-badge">
+            {{ cert }}
+          </span>
+        </div>
+        
+        <!-- Location and Schedule -->
+        <div class="doctor-details">
+          <div class="detail-item">
+            <fa-icon [icon]="['fas', 'hospital']" class="text-[25px]"></fa-icon>
+            <span>{{ doctor.consultorio }}</span>
+          </div>
+          
+          <div class="detail-item">
+            <fa-icon [icon]="['fas', 'clock-desk']" class="text-[25px]"></fa-icon>
+            <span>{{ doctor.horarios[0] }}</span>
+          </div>
+          
+          <div class="detail-item">
+            <fa-icon [icon]="['fas', 'user-doctor']" class="text-[25px]"></fa-icon>
+            <span>{{ doctor.experiencia }}</span>
+          </div>
+          <div class="detail-item">
+            <fa-icon [icon]="['fas', 'user-doctor']" class="text-[25px]"></fa-icon>
+            <span>Colegiatura: {{ doctor.numeroColegiatura }}</span>
+          </div>
+          <div class="detail-item">
+            <fa-icon [icon]="['fas', 'user-doctor']" class="text-[25px]"></fa-icon>
+            <span>Doctor: {{ doctor.doctorId }}</span>
+          </div>
+        </div>
+        
+        <!-- Appointment Button -->
+        <ion-button *ngIf="esRolPaciente"
+          expand="block" 
+          class="appointment-btn"
+          (click)="agendarCita(doctor.doctorId)">
+          <fa-icon [icon]="['fas', 'calendar']" class="text-[25px]"></fa-icon>
+          Agendar Cita
+        </ion-button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Loading State -->
+<div *ngIf="loading" class="loading-container">
+  <ion-spinner name="crescent" class="loading-spinner"></ion-spinner>
+  <p class="loading-text">Cargando doctores...</p>
+</div>
+
+<!-- Empty State -->
+<div *ngIf="!loading && doctores.length === 0" class="empty-state">
+  <ion-icon name="medical-outline" class="empty-icon"></ion-icon>
+  <h3 class="empty-title">No se encontraron doctores</h3>
+  <p class="empty-message">Intenta ajustar tu búsqueda o vuelve a intentarlo más tarde.</p>
+</div>
+<app-footer></app-footer>
+</ion-content>

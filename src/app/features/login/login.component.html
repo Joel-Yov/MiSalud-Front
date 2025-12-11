@@ -1,0 +1,102 @@
+<app-header></app-header>
+
+<ion-content class="login-contenido">
+  <div class="login-background">
+    <!-- Aquí puedes cambiar la URL de la imagen de fondo -->
+    <div class="background-image" style="background-image: url('https://media.istockphoto.com/id/482858629/photo/doctors-hospital-corridor-nurse-pushing-gurney-stretcher-bed.jpg?s=612x612&w=0&k=20&c=unfa1VMpYQGt3PyrkuvxN1JkX7FRk-w0knEFCqjTugg=');"></div>
+    <div class="background-overlay"></div>
+  </div>
+
+  <div class="login-contenedor">
+    <div class="login-card">
+      <!-- Header del Login -->
+      <div class="login-header">
+        <div class="logo-section">
+          <div class="logo-container">
+            <ion-icon name="medical" class="logo-icon"></ion-icon>
+          </div>
+          <h1 class="app-title">MiSalud</h1>
+        </div>
+        <h2 class="login-title">Iniciar Sesión</h2>
+        <p class="login-subtitle">Accede a tu cuenta para gestionar tus citas médicas</p>
+      </div>
+
+      <div class="error-message" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+
+      <!-- Formulario de Login -->
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+        <!-- Campo Email -->
+        <div class="form-group">
+          <ion-item class="form-item" [class.error]="getErrorMessage('email')">
+            <ion-icon name="mail-outline" slot="start" class="input-icon"></ion-icon>
+            <ion-input
+              type="email"
+              placeholder="Correo electrónico"
+              formControlName="email"
+              class="form-input"
+              [class.error]="getErrorMessage('email')"
+            ></ion-input>
+          </ion-item>
+          <div class="error-message" *ngIf="getErrorMessage('email')">
+            {{ getErrorMessage('email') }}
+          </div>
+        </div>
+
+        <!-- Campo Contraseña -->
+        <div class="form-group">
+          <ion-item class="form-item" [class.error]="getErrorMessage('password')">
+            <ion-icon name="lock-closed-outline" slot="start" class="input-icon"></ion-icon>
+            <ion-input
+              [type]="showPassword ? 'text' : 'password'"
+              placeholder="Contraseña"
+              formControlName="password"
+              class="form-input"
+              [class.error]="getErrorMessage('password')"
+            ></ion-input>
+            <ion-button 
+              fill="clear" 
+              slot="end" 
+              (click)="togglePasswordVisibility()"
+              class="password-toggle">
+              <ion-icon [name]="showPassword ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
+            </ion-button>
+          </ion-item>
+          <div class="error-message" *ngIf="getErrorMessage('password')">
+            {{ getErrorMessage('password') }}
+          </div>
+        </div>
+
+        <!-- Opciones adicionales -->
+        <div class="form-options">
+          <label class="remember-me">
+            <input type="checkbox" class="checkbox">
+            <span class="checkmark"></span>
+            Recordarme
+          </label>
+          <a href="#" class="forgot-password">¿Olvidaste tu contraseña?</a>
+        </div>
+
+        <!-- Botón de Login -->
+        <ion-button 
+          expand="block" 
+          type="submit" 
+          class="login-btn"
+          [disabled]="isLoading">
+          <ion-icon name="log-in-outline" slot="start" *ngIf="!isLoading"></ion-icon>
+          <div class="loading-spinner" *ngIf="isLoading"></div>
+          {{ isLoading ? 'Iniciando sesión...' : 'Iniciar Sesión' }}
+        </ion-button>
+      </form>
+
+      <!-- Link de Registro -->
+      <div class="register-link">
+        <p class="register-text">
+          ¿Aún no tienes una cuenta? 
+          <a routerLink="/register" class="register-link-text">Regístrate aquí</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</ion-content>

@@ -1,0 +1,222 @@
+// Header Styles
+.doctors-header {
+  @apply mb-8;
+}
+
+.doctors-title {
+  @apply text-3xl font-bold text-white mb-2;
+}
+
+.doctors-subtitle {
+  @apply text-lg text-gray-300 mb-6;
+}
+
+.search-container {
+  @apply max-w-md;
+}
+
+.custom-searchbar {
+  @apply bg-gray-800 rounded-lg;
+  
+  --background: theme('colors.gray.800');
+  --color: theme('colors.white');
+  --placeholder-color: theme('colors.gray.400');
+  --icon-color: theme('colors.gray.400');
+  --border-radius: 0.5rem;
+}
+
+// Grid Layout
+.doctors-grid {
+  @apply grid gap-6 p-4;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+}
+
+// Doctor Card
+.doctor-card {
+  @apply bg-gray-800 rounded-2xl shadow-xl transform transition-all duration-300 hover:scale-105 hover:shadow-2xl overflow-hidden;
+  min-height: 520px;
+  border: 1px solid #374151;
+}
+
+// Card Top Section (Gradient background)
+.card-top {
+  @apply bg-gradient-to-br from-teal-400 to-teal-600 relative px-6 pt-4 pb-8;
+}
+
+.favorite-btn {
+  @apply absolute top-4 right-4 text-white;
+  --color: white;
+  z-index: 10;
+}
+
+.favorite-icon {
+  @apply text-lg;
+}
+
+// Doctor Image
+.doctor-image-container {
+  @apply flex justify-center mt-6;
+}
+
+.doctor-image {
+  @apply w-20 h-20 rounded-full border-4 border-white object-cover shadow-lg;
+}
+
+// Card Bottom Section (Dark background)
+.card-bottom {
+  @apply bg-gray-800 px-6 py-6;
+}
+
+// Doctor Info
+.doctor-info {
+  @apply text-center;
+}
+
+.doctor-name {
+  @apply text-xl font-bold mb-1 text-white;
+}
+
+.doctor-specialty {
+  @apply text-teal-400 text-sm font-medium mb-6;
+}
+
+// Stats Section
+.stats-row {
+  @apply flex justify-between items-center mb-6 bg-gray-700 rounded-lg p-4;
+}
+
+.stat-item {
+  @apply flex items-center gap-3;
+}
+
+.stat-icon {
+  @apply text-teal-400 text-lg;
+}
+
+.stat-content {
+  @apply text-left;
+}
+
+.stat-label {
+  @apply block text-xs text-gray-400 mb-1;
+}
+
+.stat-value {
+  @apply text-sm font-semibold text-white;
+}
+
+// Certifications
+.certifications {
+  @apply flex flex-wrap justify-center gap-2 mb-6;
+}
+
+.certification-badge {
+  @apply bg-gray-700 text-xs px-3 py-1 rounded-full text-gray-300 border border-gray-600;
+}
+
+// Doctor Details
+.doctor-details {
+  @apply space-y-3 mb-6 text-left;
+}
+
+.detail-item {
+  @apply flex items-center gap-3 text-sm text-gray-300;
+}
+
+.detail-icon {
+  @apply text-teal-400 text-base;
+}
+
+// Appointment Button
+.appointment-btn {
+  @apply bg-teal-500 text-white font-semibold rounded-lg shadow-lg transition-all duration-300 hover:bg-teal-600;
+  --background: theme('colors.teal.500');
+  --color: white;
+  --background-hover: theme('colors.teal.600');
+  height: 48px;
+}
+
+// Loading State
+.loading-container {
+  @apply flex flex-col items-center justify-center py-12;
+}
+
+.loading-spinner {
+  @apply mb-4;
+  --color: theme('colors.teal.500');
+}
+
+.loading-text {
+  @apply text-gray-400 text-sm;
+}
+
+// Empty State
+.empty-state {
+  @apply flex flex-col items-center justify-center py-16 text-center;
+}
+
+.empty-icon {
+  @apply text-6xl text-gray-600 mb-4;
+}
+
+.empty-title {
+  @apply text-xl font-semibold text-white mb-2;
+}
+
+.empty-message {
+  @apply text-gray-400 max-w-md;
+}
+
+// Responsive Design
+@media (max-width: 640px) {
+  .doctors-grid {
+    @apply grid-cols-1 gap-4 p-2;
+  }
+  
+  .doctor-card {
+    @apply p-4;
+    min-height: 480px;
+  }
+  
+  .doctors-title {
+    @apply text-2xl;
+  }
+  
+  .doctors-subtitle {
+    @apply text-base;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  .doctors-grid {
+    @apply grid-cols-2;
+  }
+}
+
+@media (min-width: 1025px) {
+  .doctors-grid {
+    @apply grid-cols-3;
+  }
+}
+
+.crear-doctor-btn {
+  @apply mt-4 h-12 font-semibold;
+  --background: linear-gradient(135deg, theme('colors.teal.500'), theme('colors.teal.600'));
+  --background-hover: linear-gradient(135deg, theme('colors.teal.600'), theme('colors.teal.700'));
+  --color: white;
+  --border-radius: 12px;
+}
+
+.edit-btn {
+  --color: theme('colors.blue.400');
+  --background: transparent;
+  --background-hover: rgba(59, 130, 246, 0.1);
+  @apply h-8 w-8;
+}
+
+.delete-btn {
+  --color: theme('colors.red.400');
+  --background: transparent;
+  --background-hover: rgba(239, 68, 68, 0.1);
+  @apply h-8 w-8;
+}
