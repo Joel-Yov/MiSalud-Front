@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { DoctorService, DoctorCard } from './doctor.service';
 import { IonSpinner, IonIcon, IonSearchbar, IonButton, IonContent, ModalController, AlertController } from "@ionic/angular/standalone";
 import { FooterComponent } from "../../shared/footer/footer.component";
@@ -17,12 +18,13 @@ import { CrearCitaComponent } from '../citas/modals/crear-cita/crear-cita.compon
   templateUrl: './doctores.component.html',
   styleUrls: ['./doctores.component.scss'],
   standalone: true,
-  imports: [CommonModule, IonSpinner, IonIcon, FooterComponent, HeaderComponent, IonSearchbar, IonButton, IonContent, FontAwesomeModule],
+  imports: [CommonModule, FormsModule, IonSpinner, IonIcon, FooterComponent, HeaderComponent, IonSearchbar, IonButton, IonContent, FontAwesomeModule],
 })
 export class DoctoresComponent implements OnInit {
   doctores: DoctorCard[] = [];
   loading = false;
   readonly fallbackFoto = 'https://via.placeholder.com/200?text=Doctor';
+  filtroTexto = '';
 
   constructor(
     private doctorService: DoctorService, 
@@ -129,6 +131,21 @@ export class DoctoresComponent implements OnInit {
     });
 
     await alert.present();
+  }
+
+  get doctoresFiltrados(): DoctorCard[] {
+    const termino = this.filtroTexto.trim().toLowerCase();
+    if (!termino) return this.doctores;
+    return this.doctores.filter((doctor) => {
+      const campos = [
+        doctor.nombre,
+        doctor.especialidadPrincipal,
+        ...(doctor.especialidades || []),
+        doctor.numeroColegiatura || '',
+        doctor.numeroDocumento || ''
+      ];
+      return campos.some((campo) => campo?.toLowerCase().includes(termino));
+    });
   }
 
   confirmarEliminacion(doctorId: number) {

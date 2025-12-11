@@ -11,7 +11,10 @@
     <div class="search-container">
       <ion-searchbar 
         placeholder="Buscar por nombre o especialidad..."
-        class="custom-searchbar">
+        class="custom-searchbar"
+        [(ngModel)]="filtroTexto"
+        [debounce]="200"
+      >
       </ion-searchbar>
     </div>
   </div>
@@ -23,7 +26,7 @@
 
 <!-- Doctors Grid -->
 <div class="doctors-grid mb-20">
-  <div *ngFor="let doctor of doctores" class="doctor-card">
+  <div *ngFor="let doctor of doctoresFiltrados" class="doctor-card">
     <!-- Card Top Section with gradient background -->
     <div class="card-top">
       <div *ngIf="esRolOperaciones" class="action-buttons flex justify-end">
@@ -94,10 +97,10 @@
 </div>
 
 <!-- Empty State -->
-<div *ngIf="!loading && doctores.length === 0" class="empty-state">
+<div *ngIf="!loading && doctoresFiltrados.length === 0" class="empty-state">
   <ion-icon name="medical-outline" class="empty-icon"></ion-icon>
   <h3 class="empty-title">No se encontraron doctores</h3>
-  <p class="empty-message">Intenta ajustar tu búsqueda o vuelve a intentarlo más tarde.</p>
+  <p class="empty-message">{{ filtroTexto ? 'Prueba con otro nombre o especialidad.' : 'Intenta ajustar tu búsqueda o vuelve a intentarlo más tarde.' }}</p>
 </div>
 <app-footer></app-footer>
 </ion-content>
